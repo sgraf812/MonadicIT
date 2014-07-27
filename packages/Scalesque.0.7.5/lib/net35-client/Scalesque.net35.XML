@@ -1,0 +1,1326 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Scalesque.net35</name>
+    </assembly>
+    <members>
+        <member name="M:Scalesque.OptionApplicativeFunctors.ApplicativeFunctor``3(Scalesque.Option{``0},Scalesque.Option{``1},System.Func{``0,``1,``2})">
+            <summary>
+            Implements an applicative functor on Option
+            </summary>
+        </member>
+        <member name="M:Scalesque.OptionApplicativeFunctors.ApplicativeFunctor``4(Scalesque.Option{``0},Scalesque.Option{``1},Scalesque.Option{``2},System.Func{``0,``1,``2,``3})">
+            <summary>
+            Implements an applicative functor on Option
+            </summary>
+        </member>
+        <member name="M:Scalesque.OptionApplicativeFunctors.ApplicativeFunctor``5(Scalesque.Option{``0},Scalesque.Option{``1},Scalesque.Option{``2},Scalesque.Option{``3},System.Func{``0,``1,``2,``3,``4})">
+            <summary>
+            Implements an applicative functor on Option
+            </summary>
+        </member>
+        <member name="M:Scalesque.OptionApplicativeFunctors.ApplicativeFunctor``6(Scalesque.Option{``0},Scalesque.Option{``1},Scalesque.Option{``2},Scalesque.Option{``3},Scalesque.Option{``4},Scalesque.Func{``0,``1,``2,``3,``4,``5})">
+            <summary>
+            Implements an applicative functor on Option
+            </summary>
+        </member>
+        <member name="M:Scalesque.OptionApplicativeFunctors.ApplicativeFunctor``7(Scalesque.Option{``0},Scalesque.Option{``1},Scalesque.Option{``2},Scalesque.Option{``3},Scalesque.Option{``4},Scalesque.Option{``5},Scalesque.Func{``0,``1,``2,``3,``4,``5,``6})">
+            <summary>
+            Implements an applicative functor on Option
+            </summary>
+        </member>
+        <member name="M:Scalesque.OptionApplicativeFunctors.ApplicativeFunctor``8(Scalesque.Option{``0},Scalesque.Option{``1},Scalesque.Option{``2},Scalesque.Option{``3},Scalesque.Option{``4},Scalesque.Option{``5},Scalesque.Option{``6},Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7})">
+            <summary>
+            Implements an applicative functor on Option
+            </summary>
+        </member>
+        <member name="M:Scalesque.OptionApplicativeFunctors.ApplicativeFunctor``9(Scalesque.Option{``0},Scalesque.Option{``1},Scalesque.Option{``2},Scalesque.Option{``3},Scalesque.Option{``4},Scalesque.Option{``5},Scalesque.Option{``6},Scalesque.Option{``7},Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8})">
+            <summary>
+            Implements an applicative functor on Option
+            </summary>
+        </member>
+        <member name="T:Scalesque.ValidationApplicativeFunctors">
+            <summary>
+            Applicative functor extension methods for Validation
+            </summary>
+        </member>
+        <member name="M:Scalesque.ValidationApplicativeFunctors.ApplicativeFunctor``4(Scalesque.Validation{Scalesque.ISemiJoin{``2},``0},Scalesque.Validation{Scalesque.ISemiJoin{``2},``1},System.Func{``0,``1,``3})">
+            <summary>
+            Implements an applicative functor for 2 Validation instances
+            </summary>
+        </member>
+        <member name="M:Scalesque.ValidationApplicativeFunctors.ApplicativeFunctor``5(Scalesque.Validation{Scalesque.ISemiJoin{``3},``0},Scalesque.Validation{Scalesque.ISemiJoin{``3},``1},Scalesque.Validation{Scalesque.ISemiJoin{``3},``2},System.Func{``0,``1,``2,``4})">
+            <summary>
+            Implements an applicative functor for 3 Validation instances
+            </summary>
+        </member>
+        <member name="M:Scalesque.ValidationApplicativeFunctors.ApplicativeFunctor``6(Scalesque.Validation{Scalesque.ISemiJoin{``4},``0},Scalesque.Validation{Scalesque.ISemiJoin{``4},``1},Scalesque.Validation{Scalesque.ISemiJoin{``4},``2},Scalesque.Validation{Scalesque.ISemiJoin{``4},``3},System.Func{``0,``1,``2,``3,``5})">
+            <summary>
+            Implements an applicative functor for 4 Validation instances
+            </summary>
+        </member>
+        <member name="M:Scalesque.ValidationApplicativeFunctors.ApplicativeFunctor``7(Scalesque.Validation{Scalesque.ISemiJoin{``5},``0},Scalesque.Validation{Scalesque.ISemiJoin{``5},``1},Scalesque.Validation{Scalesque.ISemiJoin{``5},``2},Scalesque.Validation{Scalesque.ISemiJoin{``5},``3},Scalesque.Validation{Scalesque.ISemiJoin{``5},``4},Scalesque.Func{``0,``1,``2,``3,``4,``6})">
+            <summary>
+            Implements an applicative functor for 5 Validation instances
+            </summary>
+        </member>
+        <member name="M:Scalesque.ValidationApplicativeFunctors.ApplicativeFunctor``8(Scalesque.Validation{Scalesque.ISemiJoin{``6},``0},Scalesque.Validation{Scalesque.ISemiJoin{``6},``1},Scalesque.Validation{Scalesque.ISemiJoin{``6},``2},Scalesque.Validation{Scalesque.ISemiJoin{``6},``3},Scalesque.Validation{Scalesque.ISemiJoin{``6},``4},Scalesque.Validation{Scalesque.ISemiJoin{``6},``5},Scalesque.Func{``0,``1,``2,``3,``4,``5,``7})">
+            <summary>
+            Implements an applicative functor for 6 Validation instances
+            </summary>
+        </member>
+        <member name="M:Scalesque.ValidationApplicativeFunctors.ApplicativeFunctor``9(Scalesque.Validation{Scalesque.ISemiJoin{``7},``0},Scalesque.Validation{Scalesque.ISemiJoin{``7},``1},Scalesque.Validation{Scalesque.ISemiJoin{``7},``2},Scalesque.Validation{Scalesque.ISemiJoin{``7},``3},Scalesque.Validation{Scalesque.ISemiJoin{``7},``4},Scalesque.Validation{Scalesque.ISemiJoin{``7},``5},Scalesque.Validation{Scalesque.ISemiJoin{``7},``6},Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``8})">
+            <summary>
+            Implements an applicative functor for 7 Validation instances
+            </summary>
+        </member>
+        <member name="M:Scalesque.ValidationApplicativeFunctors.ApplicativeFunctor``10(Scalesque.Validation{Scalesque.ISemiJoin{``8},``0},Scalesque.Validation{Scalesque.ISemiJoin{``8},``1},Scalesque.Validation{Scalesque.ISemiJoin{``8},``2},Scalesque.Validation{Scalesque.ISemiJoin{``8},``3},Scalesque.Validation{Scalesque.ISemiJoin{``8},``4},Scalesque.Validation{Scalesque.ISemiJoin{``8},``5},Scalesque.Validation{Scalesque.ISemiJoin{``8},``6},Scalesque.Validation{Scalesque.ISemiJoin{``8},``7},Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``9})">
+            <summary>
+            Implements an applicative functor for 8 Validation instances
+            </summary>
+        </member>
+        <member name="T:Scalesque.Catcher">
+            <summary>
+            Factory class for Catcher classes
+            </summary>
+        </member>
+        <member name="M:Scalesque.Catcher.Catching``1">
+            <summary>
+            Creates a <see cref="T:Scalesque.Catcher`1"/> instance which will catch exceptions of type E1 and handle conversions for you
+            </summary>
+            <typeparam name="E1"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.Catcher`1">
+            <summary>
+            Catches exceptions and replaces with Option&lt;T&gt; or Either&lt;E1,T&gt;
+            </summary>
+            <typeparam name="E1">E1 the type of the exception you want to catch</typeparam>
+        </member>
+        <member name="M:Scalesque.Catcher`1.ToOption``1(System.Func{``0})">
+            <summary>
+            Tries to execute the function returning an Option&lt;T&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="f"></param>
+            <returns>Some&lt;T&gt; if the function doesn't throw an exception of type E1 and None&lt;T&gt; if it does throw throw an exception of type E1</returns>
+        </member>
+        <member name="M:Scalesque.Catcher`1.ToEither``1(System.Func{``0})">
+            <summary>
+            Tries to execute the function returning an Either&lt;E1,T&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="f"></param>
+            <returns>Right&lt;E1,T&gt; if the function doesn't throw an exception of type E1 and Left&lt;E1,T&gt; if it does throw throw an exception of type E1</returns>
+        </member>
+        <member name="M:Scalesque.CollectionExtensions.FoldLeft``2(System.Collections.Generic.IEnumerable{``0},``1,System.Func{``1,``0,``1})">
+            <summary>
+            Folds a collection of instances of type &lt;T&gt; into a single instance of type &lt;U&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="list"></param>
+            <param name="accumulator"></param>
+            <param name="f"></param>
+            <returns>&lt;U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.CollectionExtensions.Map``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Maps a type &lt;T&gt; to a &lt;U&gt;  Alias for Linq Select
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="list"></param>
+            <param name="func"></param>
+            <returns>&lt;U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.CollectionExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            Performs a side effect on each member of a collection
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumerable"></param>
+            <param name="f"></param>
+        </member>
+        <member name="T:Scalesque.Collections.SList`1">
+            <summary>
+            An immutable linked list terminating in <see cref="T:Scalesque.Collections.Nil`1"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Scalesque.Collections.SList`1.Prepend(`0)">
+            <summary>
+            Prepends a new head to the list. O(1).
+            </summary>
+            <param name="newHead"></param>
+            <returns>A new instance of SList&lt;T&gt;</returns>
+        </member>
+        <member name="P:Scalesque.Collections.SList`1.Length">
+            <summary>
+            Gets the length of the list.  O(1).
+            </summary>
+        </member>
+        <member name="T:Scalesque.Collections.HeadAndTail">
+            <summary>
+            Extractor for a list with a head and a tail
+            </summary>
+        </member>
+        <member name="T:Scalesque.Collections.NonEmptySList`1">
+            <summary>
+            An immutable linked list guaranteed to not be empty.  Terminates in <see cref="T:Scalesque.Collections.Nil`1"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Scalesque.ISemiJoin`1">
+            <summary>
+            Identifies semi join categories
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Scalesque.ISemiJoin`1.Join(Scalesque.ISemiJoin{`0})">
+            <summary>
+            Tell semi join to join with another semi join of the same type
+            </summary>
+            <param name="other"></param>
+            <returns>T a new semi join which joins the two semi-joins</returns>
+        </member>
+        <member name="M:Scalesque.ISemiJoin`1.SemiJoin(Scalesque.ISemiJoin{`0})">
+            <summary>
+            Tell semi join to semi-join with another semi join of the same type
+            </summary>
+            <param name="other"></param>
+            <returns>ISemiJoin&lt;T&gt; a new semi join which joins the two semi-joins</returns>
+        </member>
+        <member name="M:Scalesque.Collections.NonEmptySList`1.prependWith(Scalesque.Collections.SList{`0})">
+            <summary>
+            Prepends the other to this until the other SList is Nil
+            </summary>
+            <param name="other"></param>
+            <returns>NonEmptySList&lt;T&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Collections.NonEmptySList`1.Join(Scalesque.ISemiJoin{Scalesque.Collections.NonEmptySList{`0}})">
+            <summary>
+            Joins this SList&lt;T&gt; to another SList&lt;T&gt;
+            </summary>
+            <param name="other"></param>
+            <returns>NonEmptySList&lt;T&gt; a unified list contain T from both lists</returns>
+        </member>
+        <member name="P:Scalesque.Collections.NonEmptySList`1.Scalesque#ISemiJoin{Scalesque#Collections#NonEmptySList{T}}#Value">
+            <summary>
+            Used for semi joins
+            </summary>
+        </member>
+        <member name="T:Scalesque.Collections.INil">
+            <summary>
+            Allows Nils of different types to detect and equal eachother
+            </summary>
+        </member>
+        <member name="T:Scalesque.Collections.Nil`1">
+            <summary>
+            The node at the end of a linked list.  All NiL&lt;T&gt; instances are equal to each other.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Scalesque.Collections.SList">
+            <summary>
+            Companion object for <see cref="T:Scalesque.Collections.SList`1"/>
+            </summary>
+        </member>
+        <member name="M:Scalesque.Collections.SList.cons``1(``0,Scalesque.Collections.SList{``0})">
+            <summary>
+            Prepens the value to an SList
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Collections.Nil.unapply``1(Scalesque.Collections.SList{``0})">
+            <summary>
+            An extractor for null
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="list"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.Either`2">
+            <summary>
+            Represents a value which can be either one type T, or another type U.  An Either is a Left or a Right.
+            </summary>
+            <typeparam name="T">T The type of the left side value</typeparam>
+            <typeparam name="U">U The type of the right side value</typeparam>
+        </member>
+        <member name="M:Scalesque.Either`2.ForEach(System.Action{`0},System.Action{`1})">
+            <summary>
+            Performs a side effect on the contents of the Either
+            </summary>
+            <param name="leftAction">Action&lt;T&gt; Side effect to perform on a Left&lt;T&gt;</param>
+            <param name="rightAction">Action&lt;U&gt; Side effect to perform on a Right&lt;U&gt;</param>
+        </member>
+        <member name="M:Scalesque.Either`2.Fold``1(System.Func{`0,``0},System.Func{`1,``0})">
+            <summary>
+            Unifies the disjoint into a &lt;A&gt;
+            </summary>
+            <typeparam name="T">A The unified type</typeparam>
+            <typeparam name="A"></typeparam>
+            <param name="foldLeft">Func&lt;T,A&gt; Takes a Left&lt;T&gt; and converted to a A</param>
+            <param name="foldRight">Func&lt;U,T&gt; Takes a Right&lt;U&gt; and converted to a A</param>
+            <returns>A The unified type</returns>
+        </member>
+        <member name="M:Scalesque.Either`2.GetLeft">
+            <summary>
+            Gets the Left value
+            </summary>
+            <exception cref="T:System.NotSupportedException">Thrown if called on a Right&lt;T,U&gt;</exception>
+            <returns>T</returns>
+        </member>
+        <member name="M:Scalesque.Either`2.GetRight">
+            <summary>
+            Gets the Right value
+            </summary>
+            <exception cref="T:System.NotSupportedException">Thrown if called on a Left&lt;T,U&gt;</exception>
+            <returns>U</returns>
+        </member>
+        <member name="M:Scalesque.Either`2.ProjectRight">
+            <summary>
+            Projects right which allows methods for manipulating a potential right value
+            </summary>
+            <returns>RightProjection&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Either`2.ProjectLeft">
+            <summary>
+            Projects left which allows methods for manipulating a potential left value
+            </summary>
+            <returns> LeftProjection&lt;T,U&gt;</returns>
+        </member>
+        <member name="P:Scalesque.Either`2.IsRight">
+            <summary>
+            Gets if this is a Right&lt;T,U&gt;
+            </summary>
+        </member>
+        <member name="P:Scalesque.Either`2.IsLeft">
+            <summary>
+            Gets if this is a Left&lt;T,U&gt;
+            </summary>
+        </member>
+        <member name="T:Scalesque.Left`2">
+            <summary>
+            Represents the left side of a disjunction.  Conventionally, this is the error side.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+        </member>
+        <member name="T:Scalesque.Right`2">
+            <summary>
+            Represents the right side of a disjunction.  Conventionally, this is the non-error side.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+        </member>
+        <member name="T:Scalesque.Either">
+            <summary>
+            Companion class for Either.  Provides factory methods.
+            </summary>
+        </member>
+        <member name="M:Scalesque.Either.Left``1(``0)">
+            <summary>
+            Creates a Left&lt;T,U&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns>Left&lt;T&gt; implicitly convertable to Either&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Either.Right``1(``0)">
+            <summary>
+            Creates a Right&lt;T,U&gt;
+            </summary>
+            <typeparam name="U"></typeparam>
+            <param name="value"></param>
+            <returns>Right&lt;T&gt; implicitly convertable to Either&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Either.ToLeft``1(``0)">
+            <summary>
+            Turns a object into a Left&lt;T,U&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Either.ToRight``1(``0)">
+            <summary>
+            Turns a object into a Right&lt;T,U&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Either.JoinRight``2(Scalesque.Either{``0,Scalesque.Either{``0,``1}})" -->
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Either.JoinLeft``2(Scalesque.Either{Scalesque.Either{``0,``1},``1})" -->
+        <member name="T:Scalesque.Left">
+            <summary>
+            Left extractor
+            </summary>
+        </member>
+        <member name="M:Scalesque.Left.unapply``2(Scalesque.Either{``0,``1})">
+            <summary>
+            Extractor for Left{T}
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="either"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.Right">
+            <summary>
+            Extractor for Right
+            </summary>
+        </member>
+        <member name="M:Scalesque.Right.unapply``2(Scalesque.Either{``0,``1})">
+            <summary>
+            Extractor for Right{T}
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="either"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.Left`1">
+            <summary>
+            Scalesque use only
+            </summary>
+            <remarks>This class allows us to simulate scala's type inference to return an Either{T,U} without the libary user having to tell the c# compiler the type of {U}</remarks>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Scalesque.Right`1">
+            <summary>
+            Scalesque use only
+            </summary>
+            <remarks>This class allows us to simulate scala's type inference to return an Either{T,U} without the libary user having to tell the c# compiler the type of {T}</remarks>
+            <typeparam name="U"></typeparam>
+        </member>
+        <member name="T:Scalesque.FailureProjection`2">
+            <summary>
+            A projection of the Failure side of an <see cref="T:Scalesque.Validation`2"/>.  Provides methods for manipulating the potential failure value.
+            </summary>
+            <typeparam name="T">T The type of the failure side value</typeparam>
+            <typeparam name="U">U The type of the Success side value</typeparam>
+        </member>
+        <member name="M:Scalesque.FailureProjection`2.Get">
+            <summary>
+            Gets the value of the Failure
+            </summary>
+            <exception cref="T:System.NotSupportedException">Thrown if called on a Success&lt;T,U&gt;</exception>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.FailureProjection`2.ToOption">
+            <summary>
+            Gets an optional Failure value
+            </summary>
+            <returns>Some&lt;T,U&gt; if Failure, else None&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.FailureProjection`2.ForEach(System.Action{`0})">
+            <summary>
+            Performs a side effect on the Failure value
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Scalesque.FailureProjection`2.Map``1(System.Func{`0,``0})">
+            <summary>
+            Maps through the Failure side
+            </summary>
+            <typeparam name="Y">New type of the Failure</typeparam>
+            <param name="f">Func&lt;T,Y&gt; A function to convert T to a Y</param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.FailureProjection`2.FlatMap``1(System.Func{`0,Scalesque.Validation{``0,`1}})">
+            <summary>
+            Flattens and maps through Failure side
+            </summary>
+            <typeparam name="Y"></typeparam>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.FailureProjection`2.GetOrElse(System.Func{`1,`0})">
+            <summary>
+            Gets the value of the Failure or converts the Success value to T
+            </summary>
+            <param name="or">Function to convert a U to a T</param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.General.format(System.String,System.Object[])">
+            <summary>
+            Convenience method for String.Format.  The replacement markup is still .net's {0} style.
+            </summary>
+            <param name="str"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.LeftProjection`2">
+            <summary>
+            A projection of the Left side of an <see cref="T:Scalesque.Either`2"/>.  Provides methods for manipulating the potential left value.
+            </summary>
+            <typeparam name="T">T The type of the left side value</typeparam>
+            <typeparam name="U">U The type of the right side value</typeparam>
+        </member>
+        <member name="M:Scalesque.LeftProjection`2.Get">
+            <summary>
+            Gets the value of the Left
+            </summary>
+            <exception cref="T:System.NotSupportedException">Thrown if called on a Right&lt;T,U&gt;</exception>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.LeftProjection`2.ToOption">
+            <summary>
+            Gets an optional Left value
+            </summary>
+            <returns>Some&lt;T,U&gt; if Left, else None&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.LeftProjection`2.ForEach(System.Action{`0})">
+            <summary>
+            Performs a side effect on the Left value
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Scalesque.LeftProjection`2.Map``1(System.Func{`0,``0})">
+            <summary>
+            Maps through the Left side
+            </summary>
+            <typeparam name="Y">New type of the Left</typeparam>
+            <param name="f">Func&lt;T,Y&gt; A function to convert T to a Y</param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.LeftProjection`2.FlatMap``1(System.Func{`0,Scalesque.Either{``0,`1}})">
+            <summary>
+            Flattens and maps through Left side
+            </summary>
+            <typeparam name="Y"></typeparam>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.LeftProjection`2.GetOrElse(System.Func{`1,`0})">
+            <summary>
+            Gets the value of the Left or converts the right value to T
+            </summary>
+            <param name="or">Function to convert a U to a T</param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.Map">
+            <summary>
+            Provides extension methods for Dictionaries
+            </summary>
+        </member>
+        <member name="M:Scalesque.Map.Get``2(System.Collections.Generic.IDictionary{``0,``1},``0)">
+            <summary>
+            Tries to get value from a dictionary, returning an Option
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="dict"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Map.GetOrElse``2(System.Collections.Generic.IDictionary{``0,``1},``0,System.Func{``1})">
+            <summary>
+            Gets a value from a dictionary if it exists, or a default if it doesn't
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="dict"></param>
+            <param name="key"></param>
+            <param name="orDefault"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.Option`1">
+            <summary>
+            Represents an optional value.  Is either a <see cref="T:Scalesque.Some`1"/> or a <see cref="T:Scalesque.None`1"/> representing value present or missing respectively.
+            </summary>
+            <typeparam name="T">&lt;T&gt; The type of the optional value</typeparam>
+        </member>
+        <member name="M:Scalesque.Option`1.Get">
+            <summary>
+            Gets the optional value if it is there or throws exception
+            </summary>
+            <returns>T</returns>
+        </member>
+        <member name="M:Scalesque.Option`1.Map``1(System.Func{`0,``0})">
+            <summary>
+            Maps the type of an optional value from &lt;T&gt; to a &lt;U&gt;
+            </summary>
+            <typeparam name="U"></typeparam>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Option`1.GetOrElse(System.Func{`0})" -->
+        <member name="M:Scalesque.Option`1.GetOrElse(`0)">
+            <summary>
+            Gets the value if it exists, else a default value.  No lazy evaluation of default value.
+            </summary>
+            <param name="default">T the default value.  This is evaluated regardless of whether it is used or not</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:Scalesque.Option`1.FlatMap``1(System.Func{`0,Scalesque.Option{``0}})">
+            <summary>
+            Flattens the value and maps it to an Option&lt;U&gt;
+            </summary>
+            <typeparam name="U"></typeparam>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Option`1.Or(System.Func{Scalesque.Option{`0}})">
+            <summary>
+            Opposite of flatMap.  Keeps the value if this is Some&lt;T&gt;, else returns the Option&lt;T&gt; of the function.
+            </summary>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Option`1.Fold``1(System.Func{``0},System.Func{`0,``0})">
+            <summary>
+            Returns result of ifEmpty if is <see cref="T:Scalesque.None`1"/> or passes value to f and returns result
+            </summary>
+            <typeparam name="Y"></typeparam>
+            <param name="ifEmpty"></param>
+            <param name="f"></param>
+            <returns>Y</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Option`1.Applicative``1(Scalesque.Option{System.Func{`0,``0}})" -->
+        <member name="P:Scalesque.Option`1.IsEmpty">
+            <summary>
+            Gets if the optional value is missing
+            </summary>
+        </member>
+        <member name="P:Scalesque.Option`1.HasValue">
+            <summary>
+            Gets if the optional value is present
+            </summary>
+        </member>
+        <member name="T:Scalesque.None`1">
+            <summary>
+            Represents a missing optional value
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Scalesque.Some`1">
+            <summary>
+            Represents a present optional value
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Scalesque.Option">
+            <summary>
+            Companion class for Option
+            </summary>
+        </member>
+        <member name="M:Scalesque.Option.apply``1(``0)">
+            <summary>
+            Creates an  <see cref="T:Scalesque.Option`1"/>.  Result be <see cref="M:Scalesque.Option.Some``1(``0)"/> if the reference is not null else will be <see cref="!:None&lt;T&gt;"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Option.Opt``1(``0)">
+            <summary>
+            Converts a reference to T an <see cref="T:Scalesque.Option`1"/>.  Result be <see cref="M:Scalesque.Option.Some``1(``0)"/> if the reference is not null else will be <see cref="!:None&lt;T&gt;"/>.
+            
+            Implicit method for <see cref="M:Scalesque.Option.apply``1(``0)"/>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Option.Flatten``1(System.Collections.Generic.IEnumerable{Scalesque.Option{``0}})">
+            <summary>
+            Flattens an IEnumerable&lt;Option&lt;T&gt;&gt; to a IEnenumerable&lt;T&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="enumerable"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Option.None">
+            <summary>
+            Convenience method for creating None&lt;T&gt;
+            </summary>
+            <returns>None.  implicitly converted to None&lt;T&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Option.Some``1(``0)">
+            <summary>
+            Constructs a Some&lt;T&gt; from a variable
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Option.ToSome``1(``0)" -->
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Option.ToNone``1(``0)" -->
+        <member name="T:Scalesque.Some">
+            <summary>
+            Extractor for Some&lt;T&gt;
+            </summary>
+        </member>
+        <member name="T:Scalesque.None">
+            <summary>
+            Extractor for None.
+            </summary>
+        </member>
+        <member name="M:Scalesque.None.#ctor">
+            <summary>
+             Instance use, scalesque only (improves c# compiler type inference)
+            </summary>
+        </member>
+        <member name="T:Scalesque.PartialFunctions">
+            <summary>
+            An implementation of partially applied functions
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``2(System.Func{``0,``1},``0)">
+            <summary>
+            Creates a partially applied function of arity 0 from a function of arity 1
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``3(System.Func{``0,``1,``2},``0)">
+            <summary>
+            Creates a partially applied function of arity 1 from a function of arity 2
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``3(System.Func{``0,``1,``2},``0,``1)">
+            <summary>
+            Creates a partially applied function of arity 0 from a function of arity 2
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``4(System.Func{``0,``1,``2,``3},``0)">
+            <summary>
+            Creates a partially applied function of arity 2 from a function of arity 3
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``4(System.Func{``0,``1,``2,``3},``0,``1)">
+            <summary>
+            Creates a partially applied function of arity 1 from a function of arity 3
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``4(System.Func{``0,``1,``2,``3},``0,``1,``2)">
+            <summary>
+            Creates a partially applied function of arity 0 from a function of arity 3
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``5(System.Func{``0,``1,``2,``3,``4},``0)">
+            <summary>
+            Creates a partially applied function of arity 3 from a function of arity 4
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``5(System.Func{``0,``1,``2,``3,``4},``0,``1)">
+            <summary>
+            Creates a partially applied function of arity 2 from a function of arity 4
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``5(System.Func{``0,``1,``2,``3,``4},``0,``1,``2)">
+            <summary>
+            Creates a partially applied function of arity 1 from a function of arity 4
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``5(System.Func{``0,``1,``2,``3,``4},``0,``1,``2,``3)">
+            <summary>
+            Creates a partially applied function of arity 0 from a function of arity 4
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``6(Scalesque.Func{``0,``1,``2,``3,``4,``5},``0)">
+            <summary>
+            Creates a partially applied function of arity 4 from a function of arity 5
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``6(Scalesque.Func{``0,``1,``2,``3,``4,``5},``0,``1)">
+            <summary>
+            Creates a partially applied function of arity 3 from a function of arity 5
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``6(Scalesque.Func{``0,``1,``2,``3,``4,``5},``0,``1,``2)">
+            <summary>
+            Creates a partially applied function of arity 2 from a function of arity 5
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``6(Scalesque.Func{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3)">
+            <summary>
+            Creates a partially applied function of arity 1 from a function of arity 5
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``6(Scalesque.Func{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4)">
+            <summary>
+            Creates a partially applied function of arity 0 from a function of arity 5
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``7(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6},``0)">
+            <summary>
+            Creates a partially applied function of arity 5 from a function of arity 6
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``7(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6},``0,``1)">
+            <summary>
+            Creates a partially applied function of arity 4 from a function of arity 6
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``7(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2)">
+            <summary>
+            Creates a partially applied function of arity 3 from a function of arity 6
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``7(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3)">
+            <summary>
+            Creates a partially applied function of arity 2 from a function of arity 6
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``7(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3,``4)">
+            <summary>
+            Creates a partially applied function of arity 1 from a function of arity 6
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``7(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6},``0,``1,``2,``3,``4,``5)">
+            <summary>
+            Creates a partially applied function of arity 0 from a function of arity 6
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``8(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7},``0)">
+            <summary>
+            Creates a partially applied function of arity 6 from a function of arity 7
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``8(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1)">
+            <summary>
+            Creates a partially applied function of arity 5 from a function of arity 7
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``8(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2)">
+            <summary>
+            Creates a partially applied function of arity 4 from a function of arity 7
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``8(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3)">
+            <summary>
+            Creates a partially applied function of arity 3 from a function of arity 7
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``8(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4)">
+            <summary>
+            Creates a partially applied function of arity 2 from a function of arity 7
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``8(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4,``5)">
+            <summary>
+            Creates a partially applied function of arity 1 from a function of arity 7
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``8(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7},``0,``1,``2,``3,``4,``5,``6)">
+            <summary>
+            Creates a partially applied function of arity 0 from a function of arity 7
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0)">
+            <summary>
+            Creates a partially applied function of arity 7 from a function of arity 8
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1)">
+            <summary>
+            Creates a partially applied function of arity 6 from a function of arity 8
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2)">
+            <summary>
+            Creates a partially applied function of arity 5 from a function of arity 8
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3)">
+            <summary>
+            Creates a partially applied function of arity 4 from a function of arity 8
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4)">
+            <summary>
+            Creates a partially applied function of arity 3 from a function of arity 8
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5)">
+            <summary>
+            Creates a partially applied function of arity 2 from a function of arity 8
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5,``6)">
+            <summary>
+            Creates a partially applied function of arity 1 from a function of arity 8
+            </summary>
+        </member>
+        <member name="M:Scalesque.PartialFunctions.Partial``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8},``0,``1,``2,``3,``4,``5,``6,``7)">
+            <summary>
+            Creates a partially applied function of arity 0 from a function of arity 8
+            </summary>
+        </member>
+        <member name="T:Scalesque.PatternMatcher`2">
+            <summary>
+            Allows scala like pattern matching syntax and behaviour
+            </summary>
+            <typeparam name="A">The type of the instance you are pattern matching against</typeparam>
+            <typeparam name="C">The result type of a pattern matching function</typeparam>
+            <remarks>Pattern matching is a more powerful form of switching.  See http://www.codecommit.com/blog/scala/scala-for-java-refugees-part-4 </remarks>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`2.Add``1(System.Func{`0,Scalesque.Option{``0}},System.Func{``0,`1})">
+            <summary>
+            Adds an extractor to match on the pattern, and a handler to invoke if the extractor succeeds
+            </summary>
+            <typeparam name="B">{B} The return type of an extraction</typeparam>
+            <param name="extractor">Func{A, Option{B}} Function which tries to extract a {B} from the {A}</param>
+            <param name="handler">Func{B,C} Handler function which takes the successfully extracted {B} from the extractor and converts it to a {C}</param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`2.Add(System.Func{`1})">
+            <summary>
+            Allows the adding of a default matching pattern.  This matches all patterns.
+            </summary>
+            <param name="f"></param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`2.Add(System.Predicate{`0},System.Func{`1})">
+            <summary>
+            Adds a predicate pattern
+            </summary>
+            <param name="pattern"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`2.Add(System.Predicate{`0},System.Func{`0,`1})">
+            <summary>
+            Adds a predicate which extracts the A to pass to the handler
+            </summary>
+            <param name="pattern"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`2.Add(System.Func{System.Boolean},System.Func{`1})">
+            <summary>
+            Adds a even simpler predicate pattern
+            </summary>
+            <param name="predicate"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`2.Add(`0,System.Func{`1})">
+            <summary>
+            Adds a pattern which matches literals
+            </summary>
+            <param name="literal"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`2.Get(`0)">
+            <summary>
+            Checks the pattern against the pattern matchers.  The first extractor which matches the pattern is the result.  If no patterns match, the result is None{T}
+            </summary>
+            <param name="pattern">A</param>
+            <returns>Option&lt;C&gt;.  Some&lt;C&gt; if a pattern matches, else None&lt;C&gt;</returns>
+        </member>
+        <member name="T:Scalesque.PatternMatcher`1">
+            <summary>
+            A side effect pattern matcher
+            </summary>
+            <typeparam name="A">&lt;A&gt; The type of the pattern you want to match against</typeparam>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`1.Match(`0)">
+            <summary>
+            Pattern matches against the pattern and executes the corresponding side effect if a pattern matches
+            </summary>
+            <param name="pattern">A the pattern to match against</param>
+            <returns>bool  True if a side effect was executed</returns>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`1.Add``1(System.Func{`0,Scalesque.Option{``0}},System.Action{``0})">
+            <summary>
+            Adds an extractor pattern
+            </summary>
+            <typeparam name="B"></typeparam>
+            <param name="extractor"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`1.perform(System.Action)">
+            <summary>
+            Convenience method for performing actions
+            </summary>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`1.Add(System.Predicate{`0},System.Action{`0})">
+            <summary>
+            Adds a predicate pattern matcher
+            </summary>
+            <param name="pattern"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`1.Add(System.Func{System.Boolean},System.Action)">
+            <summary>
+            Adds an even simpler predicate pattern matcher
+            </summary>
+            <param name="pattern"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="M:Scalesque.PatternMatcher`1.Add(`0,System.Action)">
+            <summary>
+            Adds a pattern which matches literals
+            </summary>
+            <param name="literal"></param>
+            <param name="handler"></param>
+        </member>
+        <member name="T:Scalesque.RightProjection`2">
+            <summary>
+            A projection of the Right side of an <see cref="T:Scalesque.Either`2"/>.  Provides methods for manipulating the potential right value.
+            </summary>
+            <typeparam name="T">T The type of the left side value</typeparam>
+            <typeparam name="U">U The type of the right side value</typeparam>
+        </member>
+        <member name="M:Scalesque.RightProjection`2.Get">
+            <summary>
+            Gets the value of the Right
+            </summary>
+            <exception cref="T:System.NotSupportedException">Thrown if called on a Left&lt;T,U&gt;</exception>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.RightProjection`2.ToOption">
+            <summary>
+            Gets an optional Right value
+            </summary>
+            <returns>Some&lt;U,U&gt; if Right, else None&lt;U,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.RightProjection`2.ForEach(System.Action{`1})">
+            <summary>
+            Performs a side effect on the Right value
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Scalesque.RightProjection`2.Map``1(System.Func{`1,``0})">
+            <summary>
+            Maps through the Right side
+            </summary>
+            <typeparam name="Y">New type of the Right</typeparam>
+            <param name="f">Func&lt;U,Y&gt; A function to convert U to a Y</param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.RightProjection`2.FlatMap``1(System.Func{`1,Scalesque.Either{`0,``0}})">
+            <summary>
+            Flattens and maps through Right side
+            </summary>
+            <typeparam name="Y"></typeparam>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.RightProjection`2.GetOrElse(System.Func{`0,`1})">
+            <summary>
+            Gets the value of the Right or converts the left to U
+            </summary>
+            <param name="or">Function to convert a T to a U</param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.SuccessProjection`2">
+            <summary>
+            A projection of the Success side of an <see cref="T:Scalesque.Validation`2"/>.  Provides methods for manipulating the potential success value.
+            </summary>
+            <typeparam name="T">T The type of the failure side value</typeparam>
+            <typeparam name="U">U The type of the success side value</typeparam>
+        </member>
+        <member name="M:Scalesque.SuccessProjection`2.Get">
+            <summary>
+            Gets the value of the Success
+            </summary>
+            <exception cref="T:System.NotSupportedException">Thrown if called on a Failure&lt;T,U&gt;</exception>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.SuccessProjection`2.ToOption">
+            <summary>
+            Gets an optional Success value
+            </summary>
+            <returns>Some&lt;U,U&gt; if Success, else None&lt;U,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.SuccessProjection`2.ForEach(System.Action{`1})">
+            <summary>
+            Performs a side effect on the Success value
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:Scalesque.SuccessProjection`2.Map``1(System.Func{`1,``0})">
+            <summary>
+            Maps through the Success side
+            </summary>
+            <typeparam name="Y">New type of the Success</typeparam>
+            <param name="f">Func&lt;U,Y&gt; A function to convert U to a Y</param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.SuccessProjection`2.FlatMap``1(System.Func{`1,Scalesque.Validation{`0,``0}})">
+            <summary>
+            Flattens and maps through Success side
+            </summary>
+            <typeparam name="Y"></typeparam>
+            <param name="f"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.SuccessProjection`2.GetOrElse(System.Func{`0,`1})">
+            <summary>
+            Gets the value of the Success or converts the failure to U
+            </summary>
+            <param name="or">Function to convert a T to a U</param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.Tuple">
+            <summary>
+            Provides tuples in versions of the .net Framework that don't have them in the base library
+            </summary>
+        </member>
+        <member name="T:Scalesque.Unit">
+            <summary>
+            Represents a method with side effects
+            </summary>
+        </member>
+        <member name="T:Scalesque.Validation`2">
+            <summary>
+            A monad representing either success or failure during validation
+            </summary>
+            <typeparam name="T">T The type of failure</typeparam>
+            <typeparam name="U">U The type of success</typeparam>
+        </member>
+        <member name="M:Scalesque.Validation`2.ForEach(System.Action{`0},System.Action{`1})">
+            <summary>
+            Performs a side effect on the contents of the Validation
+            </summary>
+            <param name="failAction">Action&lt;T&gt; Side effect to perform on a Failure&lt;T&gt;</param>
+            <param name="successAction">Action&lt;U&gt; Side effect to perform on a Success&lt;U&gt;</param>
+        </member>
+        <member name="M:Scalesque.Validation`2.Fold``1(System.Func{`0,``0},System.Func{`1,``0})">
+            <summary>
+            Unifies the disjoint into a &lt;A&gt;
+            </summary>
+            <typeparam name="T">A The unified type</typeparam>
+            <typeparam name="A"></typeparam>
+            <param name="foldFailure">Func&lt;T,A&gt; Takes a Failure&lt;T&gt; and converted to a A</param>
+            <param name="foldSuccess">Func&lt;U,T&gt; Takes a Success&lt;U&gt; and converted to a A</param>
+            <returns>A The unified type</returns>
+        </member>
+        <member name="M:Scalesque.Validation`2.GetFailure">
+            <summary>
+            Gets the Failure value
+            </summary>
+            <exception cref="T:System.NotSupportedException">Thrown if called on a Success&lt;T,U&gt;</exception>
+            <returns>T</returns>
+        </member>
+        <member name="M:Scalesque.Validation`2.GetSuccess">
+            <summary>
+            Gets the Success value
+            </summary>
+            <exception cref="T:System.NotSupportedException">Thrown if called on a Failure&lt;T,U&gt;</exception>
+            <returns>U</returns>
+        </member>
+        <member name="M:Scalesque.Validation`2.ProjectSuccess">
+            <summary>
+            Projects success which allows methods for manipulating a potential success value
+            </summary>
+            <returns>SuccessProjection&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Validation`2.ProjectFailure">
+            <summary>
+            Projects fail which allows methods for manipulating a potential fail value
+            </summary>
+            <returns> FailureProjection&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Validation`2.LiftFailNel">
+            <summary>
+            Lifts the failure side of the Validation into an non empty list of failures
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Validation`2.Applicative``1(Scalesque.Validation{`0,System.Func{`1,``0}},System.Func{`0,`0,`0})">
+            <summary>
+            Implements an applicative for Validation&lt;T,U&gt;
+            </summary>
+            <typeparam name="TSuccess"></typeparam>
+            <param name="applicative"></param>
+            <param name="failApplicative"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Scalesque.Validation`2.IsSuccess">
+            <summary>
+            Gets if this is a Success&lt;T,U&gt;
+            </summary>
+        </member>
+        <member name="P:Scalesque.Validation`2.IsFailure">
+            <summary>
+            Gets if this is a Failure&lt;T,U&gt;
+            </summary>
+        </member>
+        <member name="T:Scalesque.Failure`2">
+            <summary>
+            Represents the failure side of a disjunction.  Conventionally, this is the error side.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+        </member>
+        <member name="T:Scalesque.Success`2">
+            <summary>
+            Represents the success side of a disjunction.  Conventionally, this is the non-error side.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+        </member>
+        <member name="T:Scalesque.Validation">
+            <summary>
+            Companion class for Validation.  Provides factory methods.
+            </summary>
+        </member>
+        <member name="M:Scalesque.Validation.Failure``1(``0)">
+            <summary>
+            Creates a Failure&lt;T,U&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns>Failure&lt;T&gt; implicitly convertable to Validation&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Validation.Success``1(``0)">
+            <summary>
+            Creates a Success&lt;T,U&gt;
+            </summary>
+            <typeparam name="U"></typeparam>
+            <param name="value"></param>
+            <returns>Success&lt;T&gt; implicitly convertable to Validation&lt;T,U&gt;</returns>
+        </member>
+        <member name="M:Scalesque.Validation.ToFailure``1(``0)">
+            <summary>
+            Turns a object into a Failure&lt;T,U&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.Validation.ToSuccess``1(``0)">
+            <summary>
+            Turns a object into a Success&lt;T,U&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Validation.JoinSuccess``2(Scalesque.Validation{``0,Scalesque.Validation{``0,``1}})" -->
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Validation.JoinFailure``2(Scalesque.Validation{Scalesque.Validation{``0,``1},``1})" -->
+        <member name="T:Scalesque.Success">
+            <summary>
+            An extractor class for Validations
+            </summary>
+        </member>
+        <member name="M:Scalesque.Success.unapply``2(Scalesque.Validation{``0,``1})">
+            <summary>
+            An extractor for the success side of a Validation&lt;T,U&gt;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="U"></typeparam>
+            <param name="validation"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Scalesque.Failure">
+            <summary>
+            An extractor class for Validations
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Scalesque.Failure.unapply``2(Scalesque.Validation{``0,``1})" -->
+        <member name="T:Scalesque.Failure`1">
+            <summary>
+            Scalesque use only
+            </summary>
+            <remarks>This class allows us to simulate scala's type inference to return an Validation{T,U} without the libary user having to tell the c# compiler the type of {U}</remarks>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:Scalesque.Success`1">
+            <summary>
+            Scalesque use only
+            </summary>
+            <remarks>This class allows us to simulate scala's type inference to return an Validation{T,U} without the libary user having to tell the c# compiler the type of {T}</remarks>
+            <typeparam name="U"></typeparam>
+        </member>
+        <member name="T:Scalesque.YumCurry">
+            <summary>
+            My favourite is madrass
+            </summary>
+        </member>
+        <member name="M:Scalesque.YumCurry.Curry``3(System.Func{``0,``1,``2})">
+            <summary>
+            Curries a function of arity 2
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.YumCurry.Curry``4(System.Func{``0,``1,``2,``3})">
+            <summary>
+            Curries a function of arity 3
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="T3"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.YumCurry.Curry``5(System.Func{``0,``1,``2,``3,``4})">
+            <summary>
+            Curries a function of arity 4
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="T3"></typeparam>
+            <typeparam name="T4"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.YumCurry.Curry``6(Scalesque.Func{``0,``1,``2,``3,``4,``5})">
+            <summary>
+            Curries a function of arity 5
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="T3"></typeparam>
+            <typeparam name="T4"></typeparam>
+            <typeparam name="T5"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.YumCurry.Curry``7(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6})">
+            <summary>
+            Curries a function of arity 6
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="T3"></typeparam>
+            <typeparam name="T4"></typeparam>
+            <typeparam name="T5"></typeparam>
+            <typeparam name="T6"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.YumCurry.Curry``8(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7})">
+            <summary>
+            Curries a function of arity 7
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="T3"></typeparam>
+            <typeparam name="T4"></typeparam>
+            <typeparam name="T5"></typeparam>
+            <typeparam name="T6"></typeparam>
+            <typeparam name="T7"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Scalesque.YumCurry.Curry``9(Scalesque.Func{``0,``1,``2,``3,``4,``5,``6,``7,``8})">
+            <summary>
+            Curries a function of arity 8
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <typeparam name="T3"></typeparam>
+            <typeparam name="T4"></typeparam>
+            <typeparam name="T5"></typeparam>
+            <typeparam name="T6"></typeparam>
+            <typeparam name="T7"></typeparam>
+            <typeparam name="T8"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="func"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

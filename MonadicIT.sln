@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1E2A71
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonadicIT.Hack", "MonadicIT.Hack\MonadicIT.Hack.csproj", "{0998C269-C29B-4B99-B18C-E7E947436C77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{98CD9C93-4C8B-4037-9574-7D51C2D65F6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98CD9C93-4C8B-4037-9574-7D51C2D65F6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98CD9C93-4C8B-4037-9574-7D51C2D65F6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0998C269-C29B-4B99-B18C-E7E947436C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0998C269-C29B-4B99-B18C-E7E947436C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0998C269-C29B-4B99-B18C-E7E947436C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0998C269-C29B-4B99-B18C-E7E947436C77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

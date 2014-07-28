@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -52,7 +53,8 @@ namespace MonadicIT.Source.Lossless
 
         public static HuffmanCoder<T> FromProbabilities(IDictionary<T, float> probabilities)
         {
-            Contract.Requires<ArgumentException>(probabilities.Count > 0, "There is no code for an empty dictionary");
+            if (probabilities.Count == 0)
+                throw new ArgumentException("There is no code for an empty dictionary");
 
             // intialize the priority queue with leafs corresponding to the probability map
             C5.IPriorityQueue<PrefixNode> queue = new C5.IntervalHeap<PrefixNode>(probabilities.Count, PrefixNode.Comparer);
@@ -87,7 +89,7 @@ namespace MonadicIT.Source.Lossless
 
                 if (cur.IsLeaf)
                 {
-                    dict[cur.Value] = bits.ToArray();
+                    dict[cur.Value] = bits.Reverse().ToArray();
                     path.Pop();
                     bits.Pop();
                 }
@@ -103,7 +105,14 @@ namespace MonadicIT.Source.Lossless
                     {
                         // cur is fully visited. ascend
                         path.Pop();
-                        bits.Pop();
+                        if (bits.Count > 0)
+                        {
+                            bits.Pop();
+                        }
+                        else
+                        {
+                            Debug.Assert(path.Count == 0, "Can only happen when the path turned empty.");
+                        }
                     }
                     else
                     {
@@ -128,7 +137,7 @@ namespace MonadicIT.Source.Lossless
             public bool IsLeaf { get { return _data.IsLeft; } }
             public T Value { get { return _data.ProjectLeft().Get(); } }
             public PrefixNode Left { get { return _data.ProjectRight().Get().Item1; } }
-            public PrefixNode Right { get { return _data.ProjectRight().Get().Item1; } }
+            public PrefixNode Right { get { return _data.ProjectRight().Get().Item2; } }
 
             private PrefixNode()
             {

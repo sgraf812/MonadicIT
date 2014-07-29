@@ -1,31 +1,30 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
+using MonadicIT.Common;
 using Scalesque;
 
 namespace MonadicIT.Source.Lossless
 {
-    public class HuffmanCoder<T> : ISourceEncoder<T>, ISourceDecoder<T>
+    public class HuffmanCoder<T> : ISourceEncoder<T>, ISourceDecoder<T> where T : /* Enum, */ struct
     {
         private readonly PrefixNode _decoder;
-        private readonly IDictionary<T, IEnumerable<bool>> _encoder;
+        private readonly IDictionary<T, IEnumerable<Binary>> _encoder;
 
-        private HuffmanCoder(PrefixNode decoder, IDictionary<T, IEnumerable<bool>> encoder)
+        private HuffmanCoder(PrefixNode decoder, IDictionary<T, IEnumerable<Binary>> encoder)
         {
             _decoder = decoder;
             _encoder = encoder;
         }
 
-        public IEnumerable<bool> Encode(IEnumerable<T> symbols)
+        public IEnumerable<Binary> Encode(IEnumerable<T> symbols)
         {
             return symbols.SelectMany(s => _encoder[s]);
         }
 
-        public IEnumerable<T> Decode(IEnumerable<bool> bits)
+        public IEnumerable<T> Decode(IEnumerable<Binary> bits)
         {
             var cur = _decoder;
 
@@ -35,7 +34,7 @@ namespace MonadicIT.Source.Lossless
 
             foreach (var b in bits)
             {
-                cur = b ? cur.Right : cur.Left;
+                cur = b == Binary.I ? cur.Right : cur.Left;
 
                 if (cur.IsLeaf)
                 {
@@ -44,23 +43,23 @@ namespace MonadicIT.Source.Lossless
                 }
             }
 
-            if (cur != _decoder) // the last symbol was decoded incompletely.
-            {
-                throw new InvalidDataException("The input bit stream ended unexpectedly. " +
-                                               "There might be an incompletely decoded symbol.");
-            }
+            Throw.If<InvalidDataException>(cur != _decoder, "The input bit stream ended unexpectedly. " +
+                                                               "There might be an incompletely decoded symbol.");
         }
 
-        public static HuffmanCoder<T> FromProbabilities(IDictionary<T, float> probabilities)
+        public static HuffmanCoder<T> FromDistribution(Distribution<T> distribution)
         {
-            if (probabilities.Count == 0)
-                throw new ArgumentException("There is no code for an empty dictionary");
+            var symbolCount = EnumHelper<T>.Values.Length;
+            Throw.If<ArgumentException>(symbolCount == 0,
+                "There is no code for an empty dictionary");
 
             // intialize the priority queue with leafs corresponding to the probability map
-            C5.IPriorityQueue<PrefixNode> queue = new C5.IntervalHeap<PrefixNode>(probabilities.Count, PrefixNode.Comparer);
+            C5.IPriorityQueue<PrefixNode> queue = new C5.IntervalHeap<PrefixNode>(symbolCount, PrefixNode.Comparer);
             queue.AddAll(
-                from p in probabilities
-                select PrefixNode.Leaf(p.Value, p.Key));
+                from s in EnumHelper<T>.Values
+                let p = distribution[s]
+                where p > 0
+                select PrefixNode.Leaf(p, s));
 
             // the usual steps of the huffman algorithm
             var a = queue.DeleteMin();
@@ -75,11 +74,11 @@ namespace MonadicIT.Source.Lossless
             return new HuffmanCoder<T>(a, DictionaryFromPrefixTree(a));
         }
 
-        private static IDictionary<T, IEnumerable<bool>> DictionaryFromPrefixTree(PrefixNode root)
+        private static IDictionary<T, IEnumerable<Binary>> DictionaryFromPrefixTree(PrefixNode root)
         {
-            var dict = new Dictionary<T, IEnumerable<bool>>();
+            var dict = new Dictionary<T, IEnumerable<Binary>>();
             var path = new Stack<PrefixNode>();
-            var bits = new Stack<bool>();
+            var bits = new Stack<Binary>();
             path.Push(root);
 
             PrefixNode last = null;
@@ -99,7 +98,7 @@ namespace MonadicIT.Source.Lossless
                     {
                         // visit the right child now
                         path.Push(cur.Right);
-                        bits.Push(true); // 1
+                        bits.Push(Binary.I);
                     }
                     else if (last == cur.Right)
                     {
@@ -118,7 +117,7 @@ namespace MonadicIT.Source.Lossless
                     {
                         // visit the left child
                         path.Push(cur.Left);
-                        bits.Push(false); // 0
+                        bits.Push(Binary.O);
                     }
                 }
 
@@ -131,7 +130,7 @@ namespace MonadicIT.Source.Lossless
         private class PrefixNode
         {
             public static readonly IComparer<PrefixNode> Comparer = new HuffmanNodeComparer();
-            private float Probability { get; set; }
+            private double Probability { get; set; }
             private Either<T, Tuple<PrefixNode, PrefixNode>> _data;
 
             public bool IsLeaf { get { return _data.IsLeft; } }
@@ -143,7 +142,7 @@ namespace MonadicIT.Source.Lossless
             {
             }
 
-            public static PrefixNode Leaf(float probability, T value)
+            public static PrefixNode Leaf(double probability, T value)
             {
                 return new PrefixNode
                 {

@@ -3,29 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MonadicIT.Channel;
+using MonadicIT.Common;
+using MonadicIT.Source;
 using MonadicIT.Source.Lossless;
 
 namespace MonadicIT.Hack
 {
     class Program
     {
-        private static readonly IDictionary<char, float> Distribution = new Dictionary<char, float>
+        private static readonly Distribution<Ternary> Distribution = Distribution<Ternary>.FromProbabilites(new[]
         {
-            { 'a', 0.25f }, 
-            { 'b', 0.25f }, 
-            { 'c', 0.5f }
-        };
+            Tuple.Create(Ternary.Zero, 0.25),
+            Tuple.Create(Ternary.One, 0.25),
+            Tuple.Create(Ternary.Two, 0.5),
+        });
 
         private delegate IEnumerable<T> TransmissionSystem<T>(IEnumerable<T> source);
 
         public static void Main()
         {
-            var entropy = HuffmanCoder<char>.FromProbabilities(Distribution);
-            TransmissionSystem<char> system = c =>
-                Sentry("Sink symbol",
-                       entropy.Decode(Sentry("Entropy bit",
-                                             entropy.Encode(Sentry("Source symbol",
-                                                                   c)))));
+            Console.WriteLine("Source Entropy: {0}", Distribution.Entropy);
+
+            var channel = new SymmetricChannel<Binary>(0.95);
+            var huffman = HuffmanCoder<Ternary>.FromDistribution(Distribution);
+            TransmissionSystem<Ternary> system = source =>
+            {
+                var bits = huffman.Encode(Sentry("Source", source));
+                var sink = huffman.Decode(Sentry("Entropy bit", bits));
+                return Sentry("Sink", sink);
+            };
+
             foreach (var c in system(ConsoleChars()))
             {
                 Console.WriteLine();
@@ -41,13 +49,24 @@ namespace MonadicIT.Hack
             }
         }
 
-        public static IEnumerable<char> ConsoleChars()
+        public static IEnumerable<Ternary> ConsoleChars()
         {
             while (true)
             {
                 foreach (var c in Console.ReadLine())
                 {
-                    yield return c;
+                    switch (c)
+                    {
+                        case '0':
+                            yield return Ternary.Zero;
+                            break;
+                        case '1':
+                            yield return Ternary.One;
+                            break;
+                        case '2':
+                            yield return Ternary.Two;
+                            break;
+                    }
                 }
             }
         } 

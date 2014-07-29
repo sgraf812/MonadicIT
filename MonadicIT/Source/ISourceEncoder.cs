@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using MonadicIT.Common;
 
 namespace MonadicIT.Source
 {
-    public interface ISourceEncoder<in T>
+    public interface ISourceEncoder<in T> where T : /* Enum, */ struct
     {
-        IEnumerable<bool> Encode(IEnumerable<T> symbols);
+        IEnumerable<Binary> Encode(IEnumerable<T> symbols);
     }
 }

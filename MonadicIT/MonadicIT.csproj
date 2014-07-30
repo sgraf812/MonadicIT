@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channel\BlockCoder.cs" />
     <Compile Include="Channel\IDiscreteChannel.cs" />
     <Compile Include="Channel\IChannelCoder.cs" />
     <Compile Include="Channel\SymmetricChannel.cs" />

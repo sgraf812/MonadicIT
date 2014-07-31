@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MonadicIT.Channel;
 using MonadicIT.Common;
-using MonadicIT.Source;
 using MonadicIT.Source.Lossless;
 
 namespace MonadicIT.Hack
@@ -45,6 +42,11 @@ namespace MonadicIT.Hack
                 return Sentry("Sink", sink);
             };
 
+            Console.WriteLine("Estimated error rates for one bit: without code: {0} with code: {1}", channel.ErrorRate(), channelCode.ResidualErrorRatePerSymbol(channel));
+            double without10 = MathHelper.KOutOfNProbability(15, 0, channel.ErrorRate());
+            double with10 = MathHelper.KOutOfNProbability(15, 0, channelCode.ResidualErrorRatePerSymbol(channel));
+            Console.WriteLine("Estimated error rates for 15 bits (10 symbols): without code: {0} with code: {1}", without10, with10);
+
             var n = 0;
             var p1 = 0;
             var p2 = 0;
@@ -68,7 +70,7 @@ namespace MonadicIT.Hack
         {
             try
             {
-                return system(seq).Zip(seq, (a, b) => a == b).PadWith(false, seq.Count).All(b => b);
+                return system(seq).Zip(seq, (a, b) => a == b).PadWith(false, seq.Count).Take(10).All(b => b);
             }
             catch (Exception)
             {

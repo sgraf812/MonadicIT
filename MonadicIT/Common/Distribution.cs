@@ -42,17 +42,31 @@ namespace MonadicIT.Common
             return default(T);
         }
 
-        public Distribution<U> SelectMany<U>(Func<T, Distribution<U>> transitionDistribution)
+        public Distribution<U> JointDistribution<U>(Func<T, Distribution<U>> transitionDistribution)
             where U : /* Enum, */ struct
         {
             var probs =
                 from t in _probs
                 from u in transitionDistribution(t.Item1)._probs
-                group new {t, u} by u.Item1
-                into g
-                select Tuple.Create(g.Key, g.Sum(x => x.t.Item2*x.u.Item2));
+                group new { t, u } by u.Item1
+                    into g
+                    select Tuple.Create(g.Key, g.Sum(x => x.t.Item2 * x.u.Item2));
 
             return Distribution<U>.FromProbabilites(probs);
+        }
+
+        public Distribution<V> JointDistribution<U, V>(Func<T, Distribution<U>> transitionDistribution, Func<T, U, V> jointSelector)
+            where U : /* Enum, */ struct
+            where V : /* Enum, */ struct
+        {
+            var probs =
+                from t in _probs
+                from u in transitionDistribution(t.Item1)._probs
+                group new { t, u } by jointSelector(t.Item1, u.Item1)
+                    into g
+                    select Tuple.Create(g.Key, g.Sum(x => x.t.Item2 * x.u.Item2));
+
+            return Distribution<V>.FromProbabilites(probs);
         } 
 
         public static Distribution<T> FromProbabilites(IEnumerable<Tuple<T, double>> probabilities)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
 using MonadicIT.Common;
 
 namespace MonadicIT.Channel
@@ -11,6 +12,8 @@ namespace MonadicIT.Channel
     {
         public int N { get; private set; }
         public int K { get; private set; }
+
+        public double CodeRate { get { return K/(double) N; } }
 
         public HammingCode(int m)
         {
@@ -134,6 +137,20 @@ namespace MonadicIT.Channel
 
                 Debug.Assert(m == N - K, "Didn't extract the right number of parity bits.");
             }
+        }
+
+        public double ResidualErrorRatePerSymbol(IDiscreteChannel<Binary> channel)
+        {
+            var errorDist = from a in Distribution<Binary>.Uniform(EnumHelper<Binary>.Values)
+                            from b in channel.GetTransitionDistribution(a)
+                            select (a == b).ToBool();
+
+            var pe = errorDist[Bool.False]; // bit error probability of channel
+
+            // residual error probability is the probability of having more than one bit error
+            // which lead to incorrect detection
+            // we actually compute the complementary probability, so we only need to compute 2 summands.
+            return (1 - (MathHelper.KOutOfNProbability(N, 0, pe) + MathHelper.KOutOfNProbability(N, 1, pe))) / K;
         }
     }
 }

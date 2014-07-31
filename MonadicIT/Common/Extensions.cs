@@ -1,14 +1,35 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using MonadicIT.Channel;
 
 namespace MonadicIT.Common
 {
     public static class Extensions
     {
-        public static Func<A, C> Then<A, B, C>(this Func<A, B> f, Func<B, C> g)
+        public static Bool ToBool(this bool b)
         {
-            return a => g(f(a));
+            return b ? Bool.True : Bool.False;
+        }
+
+        public static Distribution<V> SelectMany<T, U, V>(
+            this Distribution<T> dist, 
+            Func<T, Distribution<U>> transitionDistribution, 
+            Func<T, U, V> jointSelector)
+            where U : /* Enum, */ struct
+            where T : /* Enum, */ struct
+            where V : /* Enum, */ struct
+        {
+            return dist.JointDistribution(transitionDistribution, jointSelector);
+        }
+
+        public static double ErrorRate<T>(this IDiscreteChannel<T> channel)
+            where T : /* Enum, */ struct
+        {
+            var errorDist = from a in Distribution<T>.Uniform(EnumHelper<T>.Values)
+                            from b in channel.GetTransitionDistribution(a)
+                            select a.Equals(b).ToBool();
+
+            return errorDist[Bool.False];
         }
 
         public static IEnumerable<IReadOnlyList<T>> InChunksOf<T>(this IEnumerable<T> seq, int chunkSize)

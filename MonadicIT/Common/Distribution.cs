@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MonadicIT.Common
 {
     public class Distribution<T> where T : /* Enum, */ struct
     {
+        private static readonly Random Rng = new Random();
         private readonly Tuple<T, double>[] _probs;
 
         private Distribution(Tuple<T, double>[] probs)
@@ -21,6 +23,23 @@ namespace MonadicIT.Common
         public double Entropy
         {
             get { return _probs.Sum(p => -p.Item2 * Math.Log(p.Item2, 2)); }
+        }
+
+        public T Sample()
+        {
+            var rnd = Rng.NextDouble();
+            var accum = 0.0;
+            foreach (var t in _probs)
+            {
+                var p = t.Item2;
+                accum += p;
+                if (accum >= rnd)
+                {
+                    return t.Item1;
+                }
+            }
+            // can not reach this point
+            return default(T);
         }
 
         public Distribution<U> SelectMany<U>(Func<T, Distribution<U>> transitionDistribution)

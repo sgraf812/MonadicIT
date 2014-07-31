@@ -26,25 +26,67 @@ namespace MonadicIT.Hack
             Console.WriteLine("Source Entropy: {0}", Distribution.Entropy);
 
             var channel = new SymmetricChannel<Binary>(0.95);
+            var channelCode = new HammingCode(2);
             var huffman = HuffmanCoder<Ternary>.FromDistribution(Distribution);
             TransmissionSystem<Ternary> system = source =>
             {
-                var bits = huffman.Encode(Sentry("Source", source));
-                var sink = huffman.Decode(Sentry("Entropy bit", bits));
+                var encEntropyBits = huffman.Encode(Sentry("Source", source));
+                var encChannelBits = channelCode.Encode(Sentry("Enc entropy bit", encEntropyBits));
+                var decChannelBits = Distort(channel)(Sentry("Enc channel bit", encChannelBits));
+                var decEntropyBits = channelCode.Decode(Sentry("Dec channel bit", decChannelBits));
+                var sink = huffman.Decode(Sentry("Dec entropy bit", decEntropyBits));
+                return Sentry("Sink", sink);
+            };
+            TransmissionSystem<Ternary> system2 = source =>
+            {
+                var encEntropyBits = huffman.Encode(Sentry("Source", source));
+                var decEntropyBits = Distort(channel)(Sentry("Enc channel bit", encEntropyBits));
+                var sink = huffman.Decode(Sentry("Dec entropy bit", decEntropyBits));
                 return Sentry("Sink", sink);
             };
 
-            foreach (var c in system(ConsoleChars()))
+            var n = 0;
+            var p1 = 0;
+            var p2 = 0;
+            while (true)
             {
-                Console.WriteLine();
+                var seq = Enumerable.Range(0, 10).Select(_ => Distribution.Sample()).ToArray();
+                n++;
+                if (CorrectTransmission(system, seq))
+                {
+                    p1++;
+                }
+                if (CorrectTransmission(system2, seq))
+                {
+                    p2++;
+                }
+                Console.WriteLine("without channel code: {0}, with: {1}", p2/(double) n, p1/(double) n);
             }
+        }
+
+        private static bool CorrectTransmission(TransmissionSystem<Ternary> system, ICollection<Ternary> seq)
+        {
+            try
+            {
+                return system(seq).Zip(seq, (a, b) => a == b).PadWith(false, seq.Count).All(b => b);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private static Func<IEnumerable<T>, IEnumerable<T>>  Distort<T>(IDiscreteChannel<T> channel) where T : /* Enum, */ struct
+        {
+            return e => from s in e
+                        select channel.GetTransitionDistribution(s).Sample();
         }
 
         public static IEnumerable<T> Sentry<T>(string prefix, IEnumerable<T> ts)
         {
             foreach (var t in ts)
             {
-                Console.WriteLine("{0}: {1}", prefix, t);
+                //Console.WriteLine("{0}: {1}", prefix, t);
                 yield return t;
             }
         }

@@ -47,13 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Channel\BlockCoder.cs" />
+    <Compile Include="Channel\HammingCode.cs" />
     <Compile Include="Channel\IDiscreteChannel.cs" />
     <Compile Include="Channel\IChannelCoder.cs" />
     <Compile Include="Channel\SymmetricChannel.cs" />
     <Compile Include="Common\Distribution.cs" />
     <Compile Include="Common\EnumHelper.cs" />
-    <Compile Include="Common\FuncExtensions.cs" />
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\Throw.cs" />
     <Compile Include="Common\Vocabulary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

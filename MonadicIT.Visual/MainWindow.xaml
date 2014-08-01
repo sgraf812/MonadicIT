@@ -1,0 +1,38 @@
+﻿<Window x:Class="MonadicIT.Visual.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="600" Width="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <GroupBox Header="Source" Grid.Column="1" Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
+                <Label Content="Entropy: " Grid.Row="0" Grid.Column="0" />
+                <Label x:Name="Entropy" Content="" Grid.Row="0" Grid.Column="1" />
+                
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Entropy coder" Grid.Column="1" Grid.Row="1">
+
+        </GroupBox>
+        <GroupBox Header="Channel coder" Grid.Column="1" Grid.Row="2">
+
+        </GroupBox>
+    </Grid>
+</Window>

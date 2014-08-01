@@ -12,6 +12,6 @@ namespace MonadicIT.Channel
 
         IEnumerable<Binary> Decode(IEnumerable<T> code);
 
-        double ResidualErrorRatePerSymbol(IDiscreteChannel<T> channel);
+        double ResidualErrorRate(IDiscreteChannel<T> channel);
     }
 }

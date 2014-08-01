@@ -21,7 +21,12 @@ namespace MonadicIT.Hack
         public static void Main()
         {
             var channel = new SymmetricChannel<Binary>(0.99);
-            var channelCode = new HammingCode(3);
+            var mm = Enumerable.Range(2, 20).Max(m =>
+            {
+                var c = new HammingCode(m);
+                return Tuple.Create(c.CodeRate*(1 - c.ResidualErrorRate(channel)), m);
+            });
+            var channelCode = new HammingCode(mm.Item2);
             var huffman = HuffmanCoder<Ternary>.FromDistribution(Distribution);
 
             Console.WriteLine("Source Entropy: {0}", Distribution.Entropy);
@@ -46,38 +51,47 @@ namespace MonadicIT.Hack
                 return Sentry("Sink", sink);
             };
 
-            Console.WriteLine("Estimated correct transmission rates for one bit: without code: {0} with code: {1}", 1-channel.ErrorRate(), 1-channelCode.ResidualErrorRatePerSymbol(channel));
+            TransmissionSystem<Binary> channelSystem = bits =>
+            {
+                var encChannelBits = channelCode.Encode(Sentry("Enc entropy bit", bits));
+                var decChannelBits = Distort(channel)(Sentry("Enc channel bit", encChannelBits));
+                var decEntropyBits = channelCode.Decode(Sentry("Dec channel bit", decChannelBits));
+                return decEntropyBits;
+            };
+            var channelSystem2 = new TransmissionSystem<Binary>(Distort(channel));
+
+            Console.WriteLine("Estimated correct transmission rates for one bit: without code: {0} with code: {1}", 1-channel.ErrorRate(), 1-channelCode.ResidualErrorRate(channel));
             var nbits = channelCode.K;
-            var nsym = (int)Math.Ceiling(nbits/Distribution.Entropy);
             double without10 = MathHelper.KOutOfNProbability(nbits, 0, channel.ErrorRate());
-            double with10 = MathHelper.KOutOfNProbability(nbits, 0, channelCode.ResidualErrorRatePerSymbol(channel));
-            Console.WriteLine("Estimated correct transmission rates for {2} bits ({3} symbols): without code: {0} with code: {1}", without10, with10, nbits, nsym);
+            double with10 = 1-channelCode.ResidualErrorRate(channel);
+            Console.WriteLine("Estimated correct transmission rates for blocks of {2} bits: without code: {0} with code: {1}", without10, with10, nbits);
 
             var n = 0;
             var p1 = 0;
             var p2 = 0;
+            var bitDist = Distribution<Binary>.Uniform(EnumHelper<Binary>.Values);
             while (true)
             {
-                var seq = Enumerable.Range(0, nsym).Select(_ => Distribution.Sample()).ToArray();
+                var seq = Enumerable.Range(0, nbits).Select(_ => bitDist.Sample()).ToArray();
                 n++;
-                if (CorrectTransmission(system, seq))
+                if (CorrectTransmission(channelSystem, seq))
                 {
                     p1++;
                 }
-                if (CorrectTransmission(system2, seq))
+                if (CorrectTransmission(channelSystem2, seq))
                 {
                     p2++;
                 }
-                if (n% (100000/nsym) == 0)
+                if (n% (100000/nbits) == 0)
                 Console.WriteLine("without channel code: {0}, with: {1}", p2/(double) n, p1/(double) n);
             }
         }
 
-        private static bool CorrectTransmission(TransmissionSystem<Ternary> system, ICollection<Ternary> seq)
+        private static bool CorrectTransmission<T>(TransmissionSystem<T> system, ICollection<T> seq)
         {
             try
             {
-                return system(seq).Zip(seq, (a, b) => a == b).PadWith(false, seq.Count).Take(seq.Count).All(b => b);
+                return system(seq).Zip(seq, (a, b) => a.Equals(b)).PadWith(false, seq.Count).Take(seq.Count).All(b => b);
             }
             catch (Exception)
             {

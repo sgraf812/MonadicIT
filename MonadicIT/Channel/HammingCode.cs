@@ -139,7 +139,7 @@ namespace MonadicIT.Channel
             }
         }
 
-        public double ResidualErrorRatePerSymbol(IDiscreteChannel<Binary> channel)
+        public double ResidualErrorRate(IDiscreteChannel<Binary> channel)
         {
             var errorDist = from a in Distribution<Binary>.Uniform(EnumHelper<Binary>.Values)
                             from b in channel.GetTransitionDistribution(a)
@@ -150,9 +150,7 @@ namespace MonadicIT.Channel
             // residual error probability is the probability of having more than one bit error
             // which lead to incorrect detection
             // we actually compute the complementary probability, so we only need to compute 2 summands.
-            var successfulBlock = MathHelper.KOutOfNProbability(N, 0, pe) + MathHelper.KOutOfNProbability(N, 1, pe);
-            var successfulSymbol = Math.Pow(successfulBlock, 1/(double)K); // kth root
-            return 1-successfulSymbol;
+            return 1 - MathHelper.KOutOfNProbability(N, 0, pe) - MathHelper.KOutOfNProbability(N, 1, pe);
         }
     }
 }

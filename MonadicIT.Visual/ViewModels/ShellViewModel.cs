@@ -19,6 +19,8 @@ namespace MonadicIT.Visual.ViewModels
             _windowManager = windowManager;
             SourceSink = ssvm;
             EntropyCoder = ecvm;
+            Items.Add(SourceSink);
+            Items.Add(EntropyCoder);
         }
 
         public void ToggleWindow(object wnd)

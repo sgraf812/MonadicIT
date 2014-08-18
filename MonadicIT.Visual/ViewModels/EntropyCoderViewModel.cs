@@ -20,30 +20,25 @@ namespace MonadicIT.Visual.ViewModels
         public EntropyCoderViewModel(ISource source)
         {
             _source = source;
-        }
 
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
             var coderAndDistribution = from d in _source.Distribution
-                                       let t = typeof (EntropyCoderViewModel).MakeGenericType(d.SymbolType)
-                                       let m =
-                                           t.GetMethod("HuffmanCoderFromDistribution",
-                                               BindingFlags.NonPublic | BindingFlags.Static)
+                                       let m = typeof (EntropyCoderViewModel).GetMethod("HuffmanCoderFromDistribution",
+                                           BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(d.SymbolType)
                                        select Tuple.Create(m.Invoke(null, new object[] {d}), d);
 
             BitDistribution = (from cd in coderAndDistribution
                                let coder = cd.Item1
                                let dist = cd.Item2
-                               let m = coder.GetType().GetMethod("GetBitDistribution", BindingFlags.Public)
-                               select (Distribution<Binary>) m.Invoke(coder, new[] {dist})).ToReactiveProperty();
+                               let m = coder.GetType().GetMethod("GetBitDistribution", BindingFlags.Public | BindingFlags.Instance)
+                               select (Distribution<Binary>)m.Invoke(coder, new[] { dist })).ToReactiveProperty();
 
             Encoder = (from cd in coderAndDistribution
                        let coder = cd.Item1
                        let dist = cd.Item2
-                       let symbolType = dist.SymbolType
-                       let m = typeof (EntropyCoderViewModel).GetMethod("HuffmanCoderEncode")
-                           .MakeGenericMethod(symbolType)
+                       let m =
+                           typeof (EntropyCoderViewModel).GetMethod("HuffmanCoderEncode",
+                               BindingFlags.NonPublic | BindingFlags.Static)
+                               .MakeGenericMethod(dist.SymbolType)
                        select (Func<IEnumerable<object>, IEnumerable<Binary>>) m.Invoke(null, new[] {coder}))
                 .ToReactiveProperty();
 
@@ -51,21 +46,16 @@ namespace MonadicIT.Visual.ViewModels
                        let coder = cd.Item1
                        let dist = cd.Item2
                        let symbolType = dist.SymbolType
-                       let m = typeof (EntropyCoderViewModel).GetMethod("HuffmanCoderDecode")
-                           .MakeGenericMethod(symbolType)
+                       let m = typeof (EntropyCoderViewModel).GetMethod("HuffmanCoderDecode",
+                               BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(symbolType)
                        select (Func<IEnumerable<Binary>, IEnumerable<object>>) m.Invoke(null, new[] {coder}))
                 .ToReactiveProperty();
         }
 
+// ReSharper disable UnusedMember.Local
         private static HuffmanCoder<T> HuffmanCoderFromDistribution<T>(IDistribution distribution) where T : struct
         {
             return HuffmanCoder<T>.FromDistribution((Distribution<T>) distribution);
-        }
-
-        private static Distribution<Binary> HuffmanCoderGetBitDistribution<T>(object coder, IDistribution distribution) where T : struct
-        {
-            var huffmanCoder = (HuffmanCoder<T>) coder;
-            return huffmanCoder.GetBitDistribution((Distribution<T>) distribution);
         }
 
         private static Func<IEnumerable<object>, IEnumerable<Binary>> HuffmanCoderEncode<T>(object coder) where T : struct
@@ -79,5 +69,6 @@ namespace MonadicIT.Visual.ViewModels
             var huffmanCoder = (HuffmanCoder<T>)coder;
             return s => huffmanCoder.Decode(s).Cast<object>();
         }
+// ReSharper restore UnusedMember.Local
     }
 }

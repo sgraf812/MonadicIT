@@ -123,10 +123,14 @@
     </Compile>
     <Compile Include="ViewModels\DistributionViewModel.cs" />
     <Compile Include="ViewModels\EntropyCoderViewModel.cs" />
+    <Compile Include="ViewModels\ISource.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SourceSinkViewModel.cs" />
     <Compile Include="Views\DistributionView.xaml.cs">
       <DependentUpon>DistributionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EntropyCoderView.xaml.cs">
+      <DependentUpon>EntropyCoderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -136,6 +140,10 @@
     </Compile>
     <Compile Include="WpfBootstrapper.cs" />
     <Page Include="Views\DistributionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EntropyCoderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

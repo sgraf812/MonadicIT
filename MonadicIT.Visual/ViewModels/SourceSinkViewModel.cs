@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using Caliburn.Micro;
@@ -29,16 +30,5 @@ namespace MonadicIT.Visual.ViewModels
                         let probs = Enum.GetValues(d.SymbolType).Cast<object>().Select(o => d[o])
                         select names.Zip(probs, Tuple.Create)).ToReactiveProperty();
         }
-
-        protected override void OnInitialize()
-        {
-            base.OnInitialize();
-            ActivateItem(Items[0]);
-        }
-    }
-
-    public interface ISource
-    {
-        ReactiveProperty<IDistribution> Distribution { get; } 
     }
 }

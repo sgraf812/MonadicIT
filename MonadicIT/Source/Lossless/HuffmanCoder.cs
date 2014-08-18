@@ -50,11 +50,13 @@ namespace MonadicIT.Source.Lossless
         public Distribution<Binary> GetBitDistribution(Distribution<T> distribution)
         {
             var weightedOneAndZeros = (from s in EnumHelper<T>.Values
-                                       let bits = Encode(new[] {s})
+                                       let p = distribution[s]
+                                       where p > 0
+                                       let bits = Encode(new[] {s}).ToArray()
                                        let zeros = bits.Count(b => b == Binary.O)
                                        let ones = bits.Count(b => b == Binary.I)
-                                       let p = distribution[s]
-                                       select Tuple.Create(p*zeros, p*ones)).ToArray();
+                                       let all = bits.Length
+                                       select Tuple.Create(p*zeros/all, p*ones/all)).ToArray();
             var pZero = weightedOneAndZeros.Sum(t => t.Item1);
             var pOne = weightedOneAndZeros.Sum(t => t.Item2);
 
@@ -104,7 +106,16 @@ namespace MonadicIT.Source.Lossless
                 {
                     dict[cur.Value] = bits.Reverse().ToArray();
                     path.Pop();
-                    bits.Pop();
+                    if (bits.Count == 0)
+                    {
+                        // does only happen when there is exactly one symbol with probability 1.
+                        // in that case, the path will be emtpy, too.
+                        Debug.Assert(path.Count == 0);
+                    }
+                    else
+                    {
+                        bits.Pop();
+                    }
                 }
                 else
                 {

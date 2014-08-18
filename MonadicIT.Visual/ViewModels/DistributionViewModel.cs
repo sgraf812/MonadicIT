@@ -54,7 +54,6 @@ namespace MonadicIT.Visual.ViewModels
 
             try
             {
-                var changedIdx = Occurrences.IndexOf(changed);
                 var p = changed.Probability;
                 // sum the probs we have to stretch. 
                 var others = Occurrences.Except(new[] {changed}).ToArray();

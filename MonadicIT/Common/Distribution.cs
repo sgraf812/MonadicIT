@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using MonadicIT.Common;
 
 namespace MonadicIT.Common
 {
-    public class Distribution<T> where T : /* Enum, */ struct
+    public interface IDistribution
+    {
+        Type SymbolType { get; }
+        double this[object symbol] { get; }
+    }
+
+    public class Distribution<T> : IDistribution where T : /* Enum, */ struct
     {
         private static readonly Random Rng = new Random();
         private readonly Tuple<T, double>[] _probs;
@@ -99,6 +105,13 @@ namespace MonadicIT.Common
         public static Distribution<T> Certainly(T value)
         {
             return FromProbabilites(new[] {Tuple.Create(value, 1.0)});
-        } 
+        }
+
+        public Type SymbolType { get { return typeof (T); } }
+
+        double IDistribution.this[object symbol]
+        {
+            get { return this[(T) symbol]; }
+        }
     }
 }

@@ -1,0 +1,35 @@
+﻿<Window x:Class="MonadicIT.Visual.Views.SourceSinkView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
+        Title="SourceSinkView" Height="400" Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ContentControl x:Name="ActiveItem" Grid.Row="0" Grid.Column="1" />
+        
+        <ItemsControl x:Name="Items"  Grid.Column="1" Grid.Row="1">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton GroupName="SymbolTypes" 
+                                 Content="{Binding SymbolTypeName}" 
+                                 IsChecked="{Binding IsActive, Mode=OneWay}"
+                                 cal:Message.Attach="[Event Checked] = [Action ActivateItem($dataContext)]" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>

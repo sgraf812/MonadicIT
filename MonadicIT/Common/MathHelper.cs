@@ -20,5 +20,10 @@ namespace MonadicIT.Common
         {
             return BinomialCoefficient(n, k)*Math.Pow(p, k)*Math.Pow(1 - p, n - k);
         }
+
+        public static double Clamp(this double val, double min, double max)
+        {
+            return Math.Min(max, Math.Max(min, val));
+        }
     }
 }

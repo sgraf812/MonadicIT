@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace MonadicIT.Visual
+namespace MonadicIT.Visual.Views
 {
     public partial class ShellView : Window
     {

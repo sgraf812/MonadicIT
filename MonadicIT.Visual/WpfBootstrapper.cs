@@ -40,14 +40,15 @@ namespace MonadicIT.Visual
             _container.PerRequest<ShellViewModel>();
             _container.PerRequest<SourceSinkViewModel>();
             //_container.Singleton<DistributionViewModel>();
-            RegisterDistributionVMInstance<Binary>();
-            RegisterDistributionVMInstance<Ternary>();
-            RegisterDistributionVMInstance<Common.Decimal>();
+            RegisterDistributionVMHandler<Binary>();
+            RegisterDistributionVMHandler<Ternary>();
+            RegisterDistributionVMHandler<Common.Decimal>();
         }
 
-        private void RegisterDistributionVMInstance<T>() where T : /*Enum, */struct
+        private void RegisterDistributionVMHandler<T>() where T : /*Enum, */struct
         {
-            _container.Instance(new DistributionViewModel(Distribution<T>.Uniform(EnumHelper<T>.Values)));
+            _container.Handler<DistributionViewModel>(
+                _ => new DistributionViewModel(Distribution<T>.Uniform(EnumHelper<T>.Values)));
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)

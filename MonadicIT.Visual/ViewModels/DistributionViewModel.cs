@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
 using Caliburn.Micro;
+using Codeplex.Reactive;
 using MonadicIT.Common;
 
 namespace MonadicIT.Visual.ViewModels
@@ -16,11 +17,10 @@ namespace MonadicIT.Visual.ViewModels
     {
         private readonly Type _symbolType;
         private readonly IEnumerable<string> _symbols;
-        private event Action<IDistribution> NotifyDistribution = delegate { };
         private bool _adjustingProbabilities;
 
         public IList<Occurrence> Occurrences { get; private set; } 
-        public IObservable<IDistribution> Distribution { get; private set; }
+        public ReactiveProperty<IDistribution> Distribution { get; private set; }
 
         public string SymbolTypeName { get { return _symbolType.Name; } }
 
@@ -31,7 +31,7 @@ namespace MonadicIT.Visual.ViewModels
             var probs = from v in Enum.GetValues(distribution.SymbolType).Cast<object>()
                         select distribution[v];
 
-            Occurrences = new List<Occurrence>(_symbols.Zip(probs, (s, p)=>new Occurrence
+            Occurrences = new List<Occurrence>(_symbols.Zip(probs, (s, p) => new Occurrence
             {
                 Symbol = s,
                 Probability = p
@@ -42,9 +42,7 @@ namespace MonadicIT.Visual.ViewModels
                 occ.PropertyChanged += (s,e) => AdjustProbabilities(occ);
             }
 
-            Distribution = Observable.FromEvent<IDistribution>(
-                h => NotifyDistribution += h,
-                h => NotifyDistribution -= h);
+            Distribution = new ReactiveProperty<IDistribution>(distribution);
 
             _adjustingProbabilities = false;
         }
@@ -76,8 +74,7 @@ namespace MonadicIT.Visual.ViewModels
                 var fromProbs = typeof (DistributionViewModel)
                     .GetMethod("DistributionFromProbabilites", BindingFlags.NonPublic | BindingFlags.Static)
                     .MakeGenericMethod(_symbolType);
-                var dist = (IDistribution) fromProbs.Invoke(null, new object[] {Occurrences});
-                NotifyDistribution(dist);
+                Distribution.Value = (IDistribution) fromProbs.Invoke(null, new object[] {Occurrences});
             }
             finally
             {

@@ -3,20 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:oxy="http://oxyplot.codeplex.com"
         Title="SourceSinkView" Height="400" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
-        <ContentControl x:Name="ActiveItem" Grid.Row="0" Grid.Column="1" />
         
-        <ItemsControl x:Name="Items"  Grid.Column="1" Grid.Row="1">
+        <oxy:PlotView LegendPlacement="Inside" LegendPosition="TopRight" LegendOrientation="Vertical" 
+                      Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <oxy:PlotView.Axes>
+                <oxy:CategoryAxis ItemsSource="{Binding PlotData.Value}" LabelField="Item1" IsZoomEnabled="False" IsPanEnabled="False"/>
+                <oxy:LinearAxis AbsoluteMaximum="1.0" Maximum="1.0" Minimum="0.0" AbsoluteMinimum="0.0"/>
+            </oxy:PlotView.Axes>
+            <oxy:PlotView.Series>
+                <oxy:ColumnSeries ItemsSource="{Binding PlotData.Value}" ValueField="Item2" />
+            </oxy:PlotView.Series>
+        </oxy:PlotView>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Padding="10">
+            <ContentControl x:Name="ActiveItem" />
+        </ScrollViewer>
+
+        <ItemsControl x:Name="Items"  Grid.Column="0" Grid.Row="1" Padding="10" HorizontalAlignment="Center" VerticalAlignment="Center">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel />

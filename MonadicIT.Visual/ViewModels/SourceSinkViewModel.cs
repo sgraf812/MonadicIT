@@ -9,7 +9,7 @@ using MonadicIT.Common;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class SourceSinkViewModel : Conductor<DistributionViewModel>.Collection.OneActive
+    public class SourceSinkViewModel : Conductor<DistributionViewModel>.Collection.OneActive, ISource
     {
         public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
 
@@ -34,5 +34,10 @@ namespace MonadicIT.Visual.ViewModels
                         let probs = Enum.GetValues(d.SymbolType).Cast<object>().Select(o => d[o])
                         select names.Zip(probs, Tuple.Create)).ToReactiveProperty();
         }
+    }
+
+    public interface ISource
+    {
+        ReactiveProperty<IDistribution> Distribution { get; } 
     }
 }

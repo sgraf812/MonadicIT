@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using MonadicIT.Channel;
 
 namespace MonadicIT.Common

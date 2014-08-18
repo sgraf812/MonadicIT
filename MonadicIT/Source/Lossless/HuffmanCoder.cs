@@ -47,6 +47,20 @@ namespace MonadicIT.Source.Lossless
                                                                "There might be an incompletely decoded symbol.");
         }
 
+        public Distribution<Binary> GetBitDistribution(Distribution<T> distribution)
+        {
+            var weightedOneAndZeros = (from s in EnumHelper<T>.Values
+                                       let bits = Encode(new[] {s})
+                                       let zeros = bits.Count(b => b == Binary.O)
+                                       let ones = bits.Count(b => b == Binary.I)
+                                       let p = distribution[s]
+                                       select Tuple.Create(p*zeros, p*ones)).ToArray();
+            var pZero = weightedOneAndZeros.Sum(t => t.Item1);
+            var pOne = weightedOneAndZeros.Sum(t => t.Item2);
+
+            return Distribution<Binary>.FromProbabilites(new[]{ Tuple.Create(Binary.O, pZero), Tuple.Create(Binary.I, pOne)});
+        }
+
         public static HuffmanCoder<T> FromDistribution(Distribution<T> distribution)
         {
             var symbolCount = EnumHelper<T>.Values.Length;

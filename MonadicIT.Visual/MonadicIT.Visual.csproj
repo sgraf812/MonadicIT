@@ -122,6 +122,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\DistributionViewModel.cs" />
+    <Compile Include="ViewModels\EntropyCoderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SourceSinkViewModel.cs" />
     <Compile Include="Views\DistributionView.xaml.cs">

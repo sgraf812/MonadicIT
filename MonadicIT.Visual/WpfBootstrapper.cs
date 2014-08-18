@@ -38,8 +38,9 @@ namespace MonadicIT.Visual
             _container = new SimpleContainer();
             _container.Singleton<IWindowManager, WindowManager>();
             _container.PerRequest<ShellViewModel>();
-            _container.PerRequest<SourceSinkViewModel>();
-            //_container.Singleton<DistributionViewModel>();
+            _container.Singleton<SourceSinkViewModel>();
+            _container.Singleton<ISource, SourceSinkViewModel>();
+            _container.Singleton<EntropyCoderViewModel>();
             RegisterDistributionVMHandler<Binary>();
             RegisterDistributionVMHandler<Ternary>();
             RegisterDistributionVMHandler<Common.Decimal>();

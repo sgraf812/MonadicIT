@@ -48,7 +48,7 @@ namespace MonadicIT.Channel
             get
             {
                 var n = _transitionMatrix.Length;
-                Func<double, double> log2 = x => Math.Log(x, 2);
+                Func<double, double> log2 = x => Math.Log(x > 0 ? x : double.Epsilon, 2);
                 return log2(n) + _p*log2(_p) + (1 - _p)*log2((1 - _p)/(n - 1));
             }
         }

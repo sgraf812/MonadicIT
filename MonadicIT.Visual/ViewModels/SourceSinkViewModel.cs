@@ -20,7 +20,7 @@ namespace MonadicIT.Visual.ViewModels
 
         public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
 
-        public ReactiveProperty<IDistribution> Distribution { get; private set; } 
+        public ReactiveProperty<IDistribution> Distribution { get; private set; }
 
         public SourceSinkViewModel(IEnumerable<DistributionViewModel> distributionViewModels)
         {

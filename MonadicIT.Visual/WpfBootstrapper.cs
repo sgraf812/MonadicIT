@@ -41,6 +41,7 @@ namespace MonadicIT.Visual
             _container.Singleton<SourceSinkViewModel>();
             _container.Handler<ISource>(c => c.GetInstance<SourceSinkViewModel>());
             _container.Singleton<EntropyCoderViewModel>();
+            _container.Singleton<ChannelViewModel>();
             RegisterDistributionVMHandler<Binary>();
             RegisterDistributionVMHandler<Ternary>();
             RegisterDistributionVMHandler<Common.Decimal>();

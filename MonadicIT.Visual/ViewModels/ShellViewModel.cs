@@ -10,13 +10,17 @@ namespace MonadicIT.Visual.ViewModels
 
         public EntropyCoderViewModel EntropyCoder { get; private set; }
 
-        public ShellViewModel(IWindowManager windowManager, SourceSinkViewModel ssvm, EntropyCoderViewModel ecvm)
+        public ChannelViewModel Channel { get; private set; }
+
+        public ShellViewModel(IWindowManager windowManager, SourceSinkViewModel ssvm, EntropyCoderViewModel ecvm, ChannelViewModel cvm)
         {
             _windowManager = windowManager;
             SourceSink = ssvm;
             EntropyCoder = ecvm;
+            Channel = cvm;
             Items.Add(SourceSink);
             Items.Add(EntropyCoder);
+            Items.Add(Channel);
         }
 
         public void ToggleWindow(object wnd)

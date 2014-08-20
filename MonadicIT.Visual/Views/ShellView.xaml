@@ -24,7 +24,7 @@
 
         <ToggleButton Height="150" Width="100" Content="Source" DataContext="{Binding SourceSink}"
                       Background="#FFEFF6FF" BorderBrush="#FF3F89FF" BorderThickness="2"
-                      Grid.Row="0" Grid.Column="0"
+                      Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5"
                       cal:Message.Attach="ToggleWindow($dataContext)" />
 
         <ToggleButton Height="150" Width="200" Content="Entropy coder" DataContext="{Binding EntropyCoder}"
@@ -33,18 +33,25 @@
                       cal:Message.Attach="ToggleWindow($dataContext)" />
 
         <GroupBox Header="Source" Grid.Column="0" Grid.Row="2">
-            <TextBlock Text="{Binding Path=SourceSink.Distribution.Value.Entropy, StringFormat=Entropy: {0:F3}}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Path=SourceSink.Distribution.Value.Entropy, StringFormat=Entropy: {0:F3} bit/symbol}" 
+                           Grid.Row="0" Grid.Column="0" />
+            </Grid>
         </GroupBox>
 
         <GroupBox Header="Entropy coder" Grid.Column="1" Grid.Row="2">
-
+            <TextBlock Text="{Binding Path=EntropyCoder.MeanCodeWordLength.Value, StringFormat=Mean code word length: {0:F3} bit/symbol}" />
         </GroupBox>
         <GroupBox Header="Channel coder" Grid.Column="2" Grid.Row="2">
 
         </GroupBox>
 
         <GroupBox Header="Channel model" Grid.Column="3" Grid.Row="2">
-
+            <ContentControl cal:View.Model="{Binding Channel}" />
         </GroupBox>
     </Grid>
 </Window>

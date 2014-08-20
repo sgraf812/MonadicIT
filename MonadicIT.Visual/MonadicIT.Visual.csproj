@@ -121,11 +121,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\DistributionViewModel.cs" />
     <Compile Include="ViewModels\EntropyCoderViewModel.cs" />
     <Compile Include="ViewModels\ISource.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SourceSinkViewModel.cs" />
+    <Compile Include="Views\ChannelView.xaml.cs">
+      <DependentUpon>ChannelView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DistributionView.xaml.cs">
       <DependentUpon>DistributionView.xaml</DependentUpon>
     </Compile>
@@ -139,6 +143,10 @@
       <DependentUpon>SourceSinkView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfBootstrapper.cs" />
+    <Page Include="Views\ChannelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DistributionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

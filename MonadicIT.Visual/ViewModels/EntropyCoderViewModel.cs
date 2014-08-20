@@ -19,6 +19,7 @@ namespace MonadicIT.Visual.ViewModels
         public ReactiveProperty<Distribution<Binary>> BitDistribution { get; private set; }
         public ReactiveProperty<IEnumerable<IPrefixTree>> CodeTree { get; private set; }
         public ReactiveProperty<IEnumerable<Tuple<object, string, double>>> CodeWords { get; private set; }
+        public ReactiveProperty<double> MeanCodeWordLength { get; private set; } 
 
         public EntropyCoderViewModel(ISource source)
         {
@@ -61,6 +62,9 @@ namespace MonadicIT.Visual.ViewModels
                              BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(dist.SymbolType)
                          select (IEnumerable<Tuple<object, string, double>>) m.Invoke(null, new[] {coder, dist}))
                 .ToReactiveProperty();
+
+            MeanCodeWordLength = (from codeWords in CodeWords
+                                  select codeWords.Sum(cw => cw.Item2.Length*cw.Item3)).ToReactiveProperty();
         }
 
 // ReSharper disable UnusedMember.Local

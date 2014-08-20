@@ -5,16 +5,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:viewModels="clr-namespace:MonadicIT.Visual.ViewModels"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:oxy="http://oxyplot.codeplex.com"
         mc:Ignorable="d" 
-        d:DataContext="{d:DesignInstance Type=viewModels:SourceSinkViewModel}"
+        d:DataContext="{d:DesignInstance Type=viewModels:ChannelCoderViewModel}"
         Title="ChannelCoderView" Height="300" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <ContentControl cal:View.Model="{Binding Selector}" />
+
+        <oxy:PlotView Grid.Row="1">
+            <oxy:PlotView.Axes>
+                <oxy:LinearAxis AbsoluteMaximum="1.0" Maximum="1.0" Minimum="0.0" AbsoluteMinimum="0.0" Position="Bottom"/>
+                <oxy:CategoryAxis ItemsSource="{Binding PlotData.Value}" LabelField="Item1" IsZoomEnabled="False" IsPanEnabled="False" Position="Left" />
+            </oxy:PlotView.Axes>
+            <oxy:PlotView.Series>
+                <oxy:BarSeries ItemsSource="{Binding PlotData.Value}" ValueField="Item2" />
+            </oxy:PlotView.Series>
+        </oxy:PlotView>
+        
+        
     </Grid>
 </Window>

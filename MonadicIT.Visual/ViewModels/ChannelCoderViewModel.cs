@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using Caliburn.Micro;
 using Codeplex.Reactive;
@@ -15,11 +16,7 @@ namespace MonadicIT.Visual.ViewModels
 
         public SelectorViewModel<IChannelCoderDetailViewModel> Selector { get; private set; }
 
-        public ReactiveProperty<double> CodeRate { get; private set; }
-
-        public ReactiveProperty<int> BlockLength { get; private set; } 
-
-        public ReactiveProperty<double> ResidualErrorRate { get; private set; }  
+        public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
 
         public ChannelCoderViewModel(
             IEnumerable<IChannelCoderDetailViewModel> channelCoderDetailViewModels, 
@@ -31,11 +28,16 @@ namespace MonadicIT.Visual.ViewModels
                     from coder in detail.ChannelCoder
                     select coder;
 
-            CodeRate = Coder.Select(c => c.CodeRate).ToReactiveProperty();
-            BlockLength = Coder.Select(c => c.BlockLength).ToReactiveProperty();
-            ResidualErrorRate = (from code in Coder
-                                 from ch in channel.Channel
-                                 select code.ResidualErrorRate(ch)).ToReactiveProperty();
+            PlotData = (from coder in Coder
+                        from ch in channel.Channel
+                        select
+                            new[]
+                            {
+                                Tuple.Create("Code rate", coder.CodeRate),
+                                Tuple.Create("Channel capacity", ch.ChannelCapacity),
+                                Tuple.Create("Residual error rate", coder.ResidualErrorRate(ch)),
+                                Tuple.Create("Channel error rate", ch.ErrorRate()),
+                            }.AsEnumerable()).ToReactiveProperty();
         }
     }
 }

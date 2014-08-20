@@ -20,8 +20,8 @@ namespace MonadicIT.Visual.ViewModels
         {
             ErrorProbability = new ReactiveProperty<double>(0);
 
-            Channel = (from pe in ErrorProbability
-                       select new SymmetricChannel<Binary>(1 - pe)).ToReactiveProperty();
+            Channel = from pe in ErrorProbability
+                      select new SymmetricChannel<Binary>(1 - pe);
 
             ChannelCapacity = Channel.Select(x => x.ChannelCapacity).ToReactiveProperty();
         }

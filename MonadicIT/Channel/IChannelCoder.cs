@@ -7,6 +7,8 @@ namespace MonadicIT.Channel
     {
         double CodeRate { get; }
 
+        int BlockLength { get; }
+
         IEnumerable<T> Encode(IEnumerable<Binary> bits);
 
         IEnumerable<Binary> Decode(IEnumerable<T> code);

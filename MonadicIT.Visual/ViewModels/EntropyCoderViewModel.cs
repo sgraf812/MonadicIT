@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using Codeplex.Reactive;
 using MonadicIT.Common;
 using MonadicIT.Source.Lossless;
+using MonadicIT.Visual.Backbone;
 
 namespace MonadicIT.Visual.ViewModels
 {
@@ -21,7 +22,7 @@ namespace MonadicIT.Visual.ViewModels
         public ReactiveProperty<IEnumerable<Tuple<object, string, double>>> CodeWords { get; private set; }
         public ReactiveProperty<double> MeanCodeWordLength { get; private set; } 
 
-        public EntropyCoderViewModel(ISource source)
+        public EntropyCoderViewModel(ISourceSettings source)
         {
             var coderAndDistribution = (from d in source.Distribution
                                         let m = typeof (EntropyCoderViewModel).GetMethod("HuffmanCoderFromDistribution",

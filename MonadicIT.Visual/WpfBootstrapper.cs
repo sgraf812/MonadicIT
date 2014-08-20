@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Caliburn.Micro;
 using MonadicIT.Common;
+using MonadicIT.Visual.Backbone;
 using MonadicIT.Visual.ViewModels;
 
 namespace MonadicIT.Visual
@@ -39,15 +40,16 @@ namespace MonadicIT.Visual
             _container.Singleton<IWindowManager, WindowManager>();
             _container.PerRequest<ShellViewModel>();
             _container.Singleton<SourceSinkViewModel>();
-            _container.Handler<ISource>(c => c.GetInstance<SourceSinkViewModel>());
             _container.Singleton<EntropyCoderViewModel>();
             _container.Singleton<ChannelCoderViewModel>();
             _container.Singleton<ChannelViewModel>();
+            _container.Handler<ISourceSettings>(c => c.GetInstance<SourceSinkViewModel>());
+            _container.Handler<IChannelSettings>(c => c.GetInstance<ChannelViewModel>());
             RegisterDistributionViewModelHandler<Binary>();
             RegisterDistributionViewModelHandler<Ternary>();
             RegisterDistributionViewModelHandler<Common.Decimal>();
-            _container.Singleton<IChannelCoderDetailViewModel, HammingCodeViewModel>();
             _container.Singleton<IChannelCoderDetailViewModel, IdentityCoderViewModel>();
+            _container.Singleton<IChannelCoderDetailViewModel, HammingCodeViewModel>();
         }
 
         private void RegisterDistributionViewModelHandler<T>() where T : /*Enum, */struct

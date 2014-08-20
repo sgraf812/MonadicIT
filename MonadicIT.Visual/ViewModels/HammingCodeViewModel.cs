@@ -10,12 +10,12 @@ namespace MonadicIT.Visual.ViewModels
     {
         public override string DisplayName { get { return "Hamming code"; } }
         public IObservable<IChannelCoder<Binary>> ChannelCoder { get; private set; }
-        public ReactiveProperty<int> M { get; private set; } 
+        public ReactiveProperty<int> ParityBits { get; private set; } 
 
         public HammingCodeViewModel()
         {
-            M = new ReactiveProperty<int>(2);
-            ChannelCoder = from m in M select new HammingCode(m);
+            ParityBits = new ReactiveProperty<int>(2);
+            ChannelCoder = from m in ParityBits select new HammingCode(m);
         }
     }
 }

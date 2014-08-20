@@ -121,6 +121,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Backbone\IChannelSettings.cs" />
+    <Compile Include="Backbone\ISourceSettings.cs" />
     <Compile Include="ViewModels\ChannelCoderViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\DistributionViewModel.cs" />
@@ -129,14 +131,17 @@
     <Compile Include="ViewModels\IChannelCoderDetailViewModel.cs" />
     <Compile Include="ViewModels\IdentityCoderViewModel.cs" />
     <Compile Include="ViewModels\ISelectable.cs" />
-    <Compile Include="ViewModels\ISource.cs" />
     <Compile Include="ViewModels\SelectableViewModelBase.cs" />
     <Compile Include="ViewModels\SelectorViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SourceSinkViewModel.cs" />
+    <Compile Include="Views\ChannelCoderView.xaml.cs">
+      <DependentUpon>ChannelCoderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ClosableViewModel.cs" />
     <Compile Include="Views\DistributionView.xaml.cs">
       <DependentUpon>DistributionView.xaml</DependentUpon>
     </Compile>
@@ -159,6 +164,10 @@
       <DependentUpon>SourceSinkView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfBootstrapper.cs" />
+    <Page Include="Views\ChannelCoderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChannelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

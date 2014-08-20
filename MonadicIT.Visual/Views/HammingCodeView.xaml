@@ -14,8 +14,8 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <TextBlock Text="Number of parity bits (M):" Grid.Column="0" Margin="2"/>
-        <Slider Value="{Binding M.Value}" Minimum="2" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2"
+        <Slider Value="{Binding ParityBits.Value}" Minimum="2" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True" Margin="2"
                 LargeChange="2" SmallChange="1" Grid.Column="1"/>
-        <TextBlock Text="{Binding M.Value}" Grid.Column="2" Margin="2"/>
+        <TextBlock Text="{Binding ParityBits.Value}" Grid.Column="2" Margin="2"/>
     </Grid>
 </UserControl>

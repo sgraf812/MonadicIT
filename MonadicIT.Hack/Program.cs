@@ -61,7 +61,7 @@ namespace MonadicIT.Hack
             var channelSystem2 = new TransmissionSystem<Binary>(Distort(channel));
 
             Console.WriteLine("Estimated correct transmission rates for one bit: without code: {0} with code: {1}", 1-channel.ErrorRate(), 1-channelCode.ResidualErrorRate(channel));
-            var nbits = channelCode.K;
+            var nbits = channelCode.ParityBits;
             double without10 = MathHelper.KOutOfNProbability(nbits, 0, channel.ErrorRate());
             double with10 = 1-channelCode.ResidualErrorRate(channel);
             Console.WriteLine("Estimated correct transmission rates for blocks of {2} bits: without code: {0} with code: {1}", without10, with10, nbits);

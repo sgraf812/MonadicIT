@@ -4,10 +4,11 @@ using Caliburn.Micro;
 using Codeplex.Reactive;
 using MonadicIT.Channel;
 using MonadicIT.Common;
+using MonadicIT.Visual.Backbone;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class ChannelViewModel : PropertyChangedBase
+    public class ChannelViewModel : PropertyChangedBase, IChannelSettings
     {
         public IObservable<IDiscreteChannel<Binary>> Channel { get; private set; }
 

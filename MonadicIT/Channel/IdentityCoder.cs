@@ -6,6 +6,7 @@ namespace MonadicIT.Channel
     public class IdentityCoder : IChannelCoder<Binary>
     {
         public double CodeRate { get { return 1; } }
+        public int BlockLength { get { return 1; } }
 
         public IEnumerable<Binary> Encode(IEnumerable<Binary> bits)
         {

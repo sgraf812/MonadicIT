@@ -1,9 +1,9 @@
 ﻿using Codeplex.Reactive;
 using MonadicIT.Common;
 
-namespace MonadicIT.Visual.ViewModels
+namespace MonadicIT.Visual.Backbone
 {
-    public interface ISource
+    public interface ISourceSettings
     {
         ReactiveProperty<IDistribution> Distribution { get; } 
     }

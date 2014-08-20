@@ -2,40 +2,38 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Cryptography;
 using MonadicIT.Common;
 
 namespace MonadicIT.Channel
 {
     public class HammingCode : IChannelCoder<Binary>
     {
-        public int N { get; private set; }
-        public int K { get; private set; }
+        public int BlockLength { get; private set; }
+        public int ParityBits { get; private set; }
 
-        public double CodeRate { get { return K/(double) N; } }
+        public double CodeRate { get { return ParityBits/(double) BlockLength; } }
 
-        public HammingCode(int m)
+        public HammingCode(int parityBits)
         {
-            if (m < 2) throw new ArgumentOutOfRangeException("m", "Must be at least 2");
-            N = MaxNForParityBits(m);
-            K = N - m;
+            if (parityBits < 2) throw new ArgumentOutOfRangeException("parityBits", "Must be at least 2 parity bits");
+            BlockLength = MaxNForParityBits(parityBits);
+            ParityBits = BlockLength - parityBits;
         }
 
-        public static int MaxNForParityBits(int m)
+        public static int MaxNForParityBits(int parityBits)
         {
-            return (1 << m) - 1; // 2^m - 1
+            return (1 << parityBits) - 1; // 2^parityBits - 1
         }
 
         public IEnumerable<Binary> Encode(IEnumerable<Binary> bits)
         {
             // reused buffer
-            var codeBlock = new Binary[N];
+            var codeBlock = new Binary[BlockLength];
 
-            foreach (var block in bits.InChunksOf(K))
+            foreach (var block in bits.InChunksOf(ParityBits))
             {
                 // fill up the last chunk with 0s
-                var paddedBlock = block.Count < K ? block.Concat(Binary.O.Repeat()).Take(K).ToArray() : block;
+                var paddedBlock = block.Count < ParityBits ? block.Concat(Binary.O.Repeat()).Take(ParityBits).ToArray() : block;
 
                 var m = 0; // running number of parity bits
                 var n = 0; // running number of all bits
@@ -50,7 +48,7 @@ namespace MonadicIT.Channel
                         m++;
                     }
 
-                    // postcondition: codeBlock.Count < N, so we can safely insert an information bit
+                    // postcondition: codeBlock.Count < BlockLength, so we can safely insert an information bit
                     codeBlock[n++] = bit;
                 }
 
@@ -65,7 +63,7 @@ namespace MonadicIT.Channel
                     codeBlock[idx] = ComputeParityBit(codeBlock, idx, stride);
                 }
 
-                Debug.Assert(n == N, "Didn't insert the right number of parity bits.");
+                Debug.Assert(n == BlockLength, "Didn't insert the right number of parity bits.");
                 foreach (var bit in codeBlock)
                 {
                     yield return bit;
@@ -93,9 +91,9 @@ namespace MonadicIT.Channel
 
         public IEnumerable<Binary> Decode(IEnumerable<Binary> code)
         {
-            foreach (var codeBlock in code.InChunksOf(N))
+            foreach (var codeBlock in code.InChunksOf(BlockLength))
             {
-                var M = N - K;
+                var M = BlockLength - ParityBits;
                 var bitToFix = 0; // one-based index into the array, so 0 actually means that there was no error
                 for (var i = 0; i < M; i++)
                 {
@@ -135,7 +133,7 @@ namespace MonadicIT.Channel
                     n++;
                 }
 
-                Debug.Assert(m == N - K, "Didn't extract the right number of parity bits.");
+                Debug.Assert(m == BlockLength - ParityBits, "Didn't extract the right number of parity bits.");
             }
         }
 
@@ -146,7 +144,7 @@ namespace MonadicIT.Channel
             // residual error probability is the probability of having more than one bit error
             // which lead to incorrect detection
             // we actually compute the complementary probability, so we only need to compute 2 summands.
-            return 1 - MathHelper.KOutOfNProbability(N, 0, pe) - MathHelper.KOutOfNProbability(N, 1, pe);
+            return 1 - MathHelper.KOutOfNProbability(BlockLength, 0, pe) - MathHelper.KOutOfNProbability(BlockLength, 1, pe);
         }
     }
 }

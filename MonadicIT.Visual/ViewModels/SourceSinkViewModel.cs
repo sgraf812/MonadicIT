@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using Caliburn.Micro;
 using Codeplex.Reactive;
 using MonadicIT.Common;
+using MonadicIT.Visual.Backbone;
+using MonadicIT.Visual.Views;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public sealed class SourceSinkViewModel : Screen, ISource
+    public sealed class SourceSinkViewModel : Screen, ISourceSettings
     {
         public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
 

@@ -22,17 +22,17 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ToggleButton Height="150" Width="100" Content="Source" DataContext="{Binding SourceSink}"
+        <ToggleButton Height="150" Width="100" Content="Source" DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}"
                       Background="#FFEFF6FF" BorderBrush="#FF3F89FF" BorderThickness="2"
                       Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5"
                       cal:Message.Attach="ToggleWindow($dataContext)" />
 
-        <ToggleButton Height="150" Width="200" Content="Entropy coder" DataContext="{Binding EntropyCoder}"
+        <ToggleButton Height="150" Width="200" Content="Entropy coder" DataContext="{Binding EntropyCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
                       Background="#FFEFFEED" BorderBrush="#FF0DBC3F" BorderThickness="2"
-                      Grid.Row="0" Grid.Column="1"
+                      Grid.Row="0" Grid.Column="1" 
                       cal:Message.Attach="ToggleWindow($dataContext)" />
 
-        <ToggleButton Height="150" Width="200" Content="Channel coder" DataContext="{Binding ChannelCoder}"
+        <ToggleButton Height="150" Width="200" Content="Channel coder" DataContext="{Binding ChannelCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
                       Background="#FEF2ED" BorderBrush="#BC4E0D" BorderThickness="2"
                       Grid.Row="0" Grid.Column="2"
                       cal:Message.Attach="ToggleWindow($dataContext)" />

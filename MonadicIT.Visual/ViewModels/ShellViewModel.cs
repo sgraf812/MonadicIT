@@ -2,7 +2,7 @@
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class ShellViewModel : Conductor<object>.Collection.AllActive 
+    public class ShellViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
 
@@ -22,15 +22,23 @@ namespace MonadicIT.Visual.ViewModels
             EntropyCoder = ecvm;
             ChannelCoder = ccvm;
             Channel = cvm;
-            Items.Add(SourceSink);
-            Items.Add(EntropyCoder);
-            Items.Add(Channel);
-            Items.Add(ChannelCoder);
         }
 
-        public void ToggleWindow(object wnd)
+        protected override void OnDeactivate(bool close)
         {
-            _windowManager.ShowWindow(wnd);
+            base.OnDeactivate(close);
+            if (close)
+            {
+                SourceSink.TryClose();
+                EntropyCoder.TryClose();
+                ChannelCoder.TryClose(); 
+            }
+        }
+
+        public void ToggleWindow(Screen wnd)
+        {
+            if (wnd.IsActive) wnd.TryClose();
+            else _windowManager.ShowWindow(wnd);
         }
     }
 }

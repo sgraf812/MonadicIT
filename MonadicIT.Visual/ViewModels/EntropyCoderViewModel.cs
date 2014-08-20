@@ -16,14 +16,21 @@ namespace MonadicIT.Visual.ViewModels
     public class EntropyCoderViewModel : Screen
     {
         public ReactiveProperty<Func<IEnumerable<object>, IEnumerable<Binary>>> Encoder { get; private set; }
+
         public ReactiveProperty<Func<IEnumerable<Binary>, IEnumerable<object>>> Decoder { get; private set; }
+
         public ReactiveProperty<Distribution<Binary>> BitDistribution { get; private set; }
+
         public ReactiveProperty<IEnumerable<IPrefixTree>> CodeTree { get; private set; }
+
         public ReactiveProperty<IEnumerable<Tuple<object, string, double>>> CodeWords { get; private set; }
+
         public ReactiveProperty<double> MeanCodeWordLength { get; private set; } 
 
         public EntropyCoderViewModel(ISourceSettings source)
         {
+            DisplayName = "Entropy coder properties";
+
             var coderAndDistribution = (from d in source.Distribution
                                         let m = typeof (EntropyCoderViewModel).GetMethod("HuffmanCoderFromDistribution",
                                             BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(d.SymbolType)

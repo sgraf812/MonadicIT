@@ -20,11 +20,14 @@ namespace MonadicIT.Visual.ViewModels
 
         public SourceSinkViewModel(IEnumerable<DistributionViewModel> viewModels)
         {
+            DisplayName = "Source distribution properties";
+
             Selector = new SelectorViewModel<DistributionViewModel>(viewModels);
 
             Distribution = (from ai in Selector.SelectedItem
                             from dist in ai.Distribution
                             select dist).ToReactiveProperty(); // or just SelectMany
+
             PlotData = (from d in Distribution
                         let names = Enum.GetNames(d.SymbolType)
                         let probs = Enum.GetValues(d.SymbolType).Cast<object>().Select(o => d[o])

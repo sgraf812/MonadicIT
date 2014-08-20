@@ -22,6 +22,8 @@ namespace MonadicIT.Visual.ViewModels
             IEnumerable<IChannelCoderDetailViewModel> channelCoderDetailViewModels, 
             IChannelSettings channel)
         {
+            DisplayName = "Channel coder properties";
+
             Selector = new SelectorViewModel<IChannelCoderDetailViewModel>(channelCoderDetailViewModels);
 
             Coder = from detail in Selector.SelectedItem

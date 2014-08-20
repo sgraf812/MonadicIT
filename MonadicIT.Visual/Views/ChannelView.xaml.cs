@@ -10,7 +10,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace MonadicIT.Visual.Views
@@ -18,7 +17,7 @@ namespace MonadicIT.Visual.Views
     /// <summary>
     /// Interaktionslogik für ChannelView.xaml
     /// </summary>
-    public partial class ChannelView : UserControl
+    public partial class ChannelView : Window
     {
         public ChannelView()
         {

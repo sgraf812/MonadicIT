@@ -2,7 +2,7 @@
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class ShellViewModel : Screen
+    public sealed class ShellViewModel : Screen
     {
         private readonly IWindowManager _windowManager;
 
@@ -17,6 +17,7 @@ namespace MonadicIT.Visual.ViewModels
         public ShellViewModel(IWindowManager windowManager, SourceSinkViewModel ssvm, 
             EntropyCoderViewModel ecvm, ChannelCoderViewModel ccvm, ChannelViewModel cvm)
         {
+            DisplayName = "Information Transmission Simulation";
             _windowManager = windowManager;
             SourceSink = ssvm;
             EntropyCoder = ecvm;
@@ -31,7 +32,8 @@ namespace MonadicIT.Visual.ViewModels
             {
                 SourceSink.TryClose();
                 EntropyCoder.TryClose();
-                ChannelCoder.TryClose(); 
+                ChannelCoder.TryClose();
+                Channel.TryClose();
             }
         }
 

@@ -13,8 +13,8 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <ItemsControl x:Name="Items" ItemsSource="{Binding Items}" Margin="30"
-                      HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+        <ItemsControl x:Name="Items" ItemsSource="{Binding Items}"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Margin="30,0">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel />

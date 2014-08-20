@@ -6,36 +6,23 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Caliburn.Micro;
 using Codeplex.Reactive;
-using Codeplex.Reactive.Extensions;
 using MonadicIT.Common;
 
 namespace MonadicIT.Visual.ViewModels
 {
     public sealed class SourceSinkViewModel : Screen, ISource
     {
-        private readonly IList<DistributionViewModel> _distributionViewModels;
-
-        public IList<DistributionViewModel> Items { get { return _distributionViewModels; } }
-        public ReactiveProperty<DistributionViewModel> ActiveItem { get; private set; }
-
         public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
 
         public ReactiveProperty<IDistribution> Distribution { get; private set; }
 
-        public SourceSinkViewModel(IEnumerable<DistributionViewModel> distributionViewModels)
+        public SelectorViewModel<DistributionViewModel> Selector { get; private set; } 
+
+        public SourceSinkViewModel(IEnumerable<DistributionViewModel> viewModels)
         {
-            _distributionViewModels = distributionViewModels.ToList();
+            Selector = new SelectorViewModel<DistributionViewModel>(viewModels);
 
-            var activeItemStreams = from dvm in _distributionViewModels
-                                    let activeItem = from b in dvm.ObserveProperty(x => x.IsActive)
-                                                     where b
-                                                     select dvm
-                                    select activeItem;
-            ActiveItem = activeItemStreams.Merge().ToReactiveProperty();
-
-            _distributionViewModels.First().IsActive = true;
-
-            Distribution = (from ai in ActiveItem
+            Distribution = (from ai in Selector.SelectedItem
                             from dist in ai.Distribution
                             select dist).ToReactiveProperty(); // or just SelectMany
             PlotData = (from d in Distribution

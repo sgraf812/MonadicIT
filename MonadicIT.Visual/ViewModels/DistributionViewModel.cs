@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using Caliburn.Micro;
@@ -8,24 +9,24 @@ using MonadicIT.Common;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class DistributionViewModel : PropertyChangedBase
+    public class DistributionViewModel : PropertyChangedBase, ISelectable
     {
         private readonly Type _symbolType;
         private bool _adjustingProbabilities;
-        private bool _isActive;
+        private bool _isSelected;
 
         public IList<Occurrence> Occurrences { get; private set; } 
         public ReactiveProperty<IDistribution> Distribution { get; private set; }
 
-        public string SymbolTypeName { get { return _symbolType.Name; } }
+        public string DisplayName { get { return _symbolType.Name; } }
 
-        public bool IsActive
+        public bool IsSelected
         {
-            get { return _isActive; }
+            get { return _isSelected; }
             set
             {
-                if (value.Equals(_isActive)) return;
-                _isActive = value;
+                if (value.Equals(_isSelected)) return;
+                _isSelected = value;
                 NotifyOfPropertyChange();
             }
         }

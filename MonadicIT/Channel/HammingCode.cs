@@ -141,11 +141,7 @@ namespace MonadicIT.Channel
 
         public double ResidualErrorRate(IDiscreteChannel<Binary> channel)
         {
-            var errorDist = from a in Distribution<Binary>.Uniform(EnumHelper<Binary>.Values)
-                            from b in channel.GetTransitionDistribution(a)
-                            select (a == b).ToBool();
-
-            var pe = errorDist[Bool.False]; // bit error probability of channel
+            var pe = channel.ErrorRate(); // bit error probability of channel
 
             // residual error probability is the probability of having more than one bit error
             // which lead to incorrect detection

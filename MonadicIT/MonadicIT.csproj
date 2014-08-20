@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channel\HammingCode.cs" />
+    <Compile Include="Channel\IdentityCoder.cs" />
     <Compile Include="Channel\IDiscreteChannel.cs" />
     <Compile Include="Channel\IChannelCoder.cs" />
     <Compile Include="Channel\SymmetricChannel.cs" />

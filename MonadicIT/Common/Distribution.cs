@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using MonadicIT.Common;
 
 namespace MonadicIT.Common
 {
-    public interface IDistribution
-    {
-        Type SymbolType { get; }
-        double this[object symbol] { get; }
-    }
-
     public class Distribution<T> : IDistribution where T : /* Enum, */ struct
     {
         private static readonly Random Rng = new Random();
@@ -28,7 +23,13 @@ namespace MonadicIT.Common
 
         public double Entropy
         {
-            get { return _probs.Sum(p => -p.Item2 * Math.Log(p.Item2, 2)); }
+            get
+            {
+                return (from prob in _probs
+                        let p = prob.Item2
+                        where p > 0
+                        select -p*Math.Log(p, 2)).Sum();
+            }
         }
 
         public T Sample()

@@ -54,6 +54,7 @@
     <Compile Include="Common\Distribution.cs" />
     <Compile Include="Common\EnumHelper.cs" />
     <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Common\IDistribution.cs" />
     <Compile Include="Common\MathHelper.cs" />
     <Compile Include="Common\Throw.cs" />
     <Compile Include="Common\Vocabulary.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Source\ISourceDecoder.cs" />
     <Compile Include="Source\ISourceEncoder.cs" />
     <Compile Include="Source\Lossless\HuffmanCoder.cs" />
+    <Compile Include="Source\Lossless\IPrefixTree.cs" />
+    <Compile Include="Source\Lossless\PrefixTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

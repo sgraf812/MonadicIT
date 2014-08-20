@@ -3,30 +3,32 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using C5;
 using MonadicIT.Common;
-using Scalesque;
 
 namespace MonadicIT.Source.Lossless
 {
     public class HuffmanCoder<T> : ISourceEncoder<T>, ISourceDecoder<T> where T : /* Enum, */ struct
     {
-        private readonly PrefixNode _decoder;
-        private readonly IDictionary<T, IEnumerable<Binary>> _encoder;
+        private static readonly IComparer<PrefixTree<T>> Comparer = new HuffmanNodeComparer();
 
-        private HuffmanCoder(PrefixNode decoder, IDictionary<T, IEnumerable<Binary>> encoder)
+        public Dictionary<T, IEnumerable<Binary>> CodeDictionary { get; private set; }
+        public PrefixTree<T> CodeTree { get; private set; }
+
+        private HuffmanCoder(PrefixTree<T> codeTree, Dictionary<T, IEnumerable<Binary>> codeDictionary)
         {
-            _decoder = decoder;
-            _encoder = encoder;
+            CodeTree = codeTree;
+            CodeDictionary = codeDictionary;
         }
 
         public IEnumerable<Binary> Encode(IEnumerable<T> symbols)
         {
-            return symbols.SelectMany(s => _encoder[s]);
+            return symbols.SelectMany(s => CodeDictionary[s]);
         }
 
         public IEnumerable<T> Decode(IEnumerable<Binary> bits)
         {
-            var cur = _decoder;
+            var cur = CodeTree;
 
             // iff we have only one code symbol, there is no information transmitted
             while (cur.IsLeaf) 
@@ -39,11 +41,11 @@ namespace MonadicIT.Source.Lossless
                 if (cur.IsLeaf)
                 {
                     yield return cur.Value;
-                    cur = _decoder;
+                    cur = CodeTree;
                 }
             }
 
-            Throw.If<InvalidDataException>(cur != _decoder, "The input bit stream ended unexpectedly. " +
+            Throw.If<InvalidDataException>(cur != CodeTree, "The input bit stream ended unexpectedly. " +
                                                                "There might be an incompletely decoded symbol.");
         }
 
@@ -70,19 +72,19 @@ namespace MonadicIT.Source.Lossless
                 "There is no code for an empty dictionary");
 
             // intialize the priority queue with leafs corresponding to the probability map
-            C5.IPriorityQueue<PrefixNode> queue = new C5.IntervalHeap<PrefixNode>(symbolCount, PrefixNode.Comparer);
+            IPriorityQueue<PrefixTree<T>> queue = new IntervalHeap<PrefixTree<T>>(symbolCount, Comparer);
             queue.AddAll(
                 from s in EnumHelper<T>.Values
                 let p = distribution[s]
                 where p > 0
-                select PrefixNode.Leaf(p, s));
+                select PrefixTree<T>.Leaf(p, s));
 
             // the usual steps of the huffman algorithm
             var a = queue.DeleteMin();
             while (!queue.IsEmpty)
             {
                 var b = queue.DeleteMin();
-                queue.Add(PrefixNode.Inner(a, b));
+                queue.Add(PrefixTree<T>.Inner(a, b));
                 a = queue.DeleteMin();
             }
 
@@ -90,14 +92,14 @@ namespace MonadicIT.Source.Lossless
             return new HuffmanCoder<T>(a, DictionaryFromPrefixTree(a));
         }
 
-        private static IDictionary<T, IEnumerable<Binary>> DictionaryFromPrefixTree(PrefixNode root)
+        private static Dictionary<T, IEnumerable<Binary>> DictionaryFromPrefixTree(PrefixTree<T> root)
         {
             var dict = new Dictionary<T, IEnumerable<Binary>>();
-            var path = new Stack<PrefixNode>();
+            var path = new Stack<PrefixTree<T>>();
             var bits = new Stack<Binary>();
             path.Push(root);
 
-            PrefixNode last = null;
+            PrefixTree<T> last = null;
             while (path.Count > 0)
             {
                 var cur = path.Peek();
@@ -152,46 +154,12 @@ namespace MonadicIT.Source.Lossless
             return dict;
         }
 
-        private class PrefixNode
+        private sealed class HuffmanNodeComparer : IComparer<PrefixTree<T>> 
         {
-            public static readonly IComparer<PrefixNode> Comparer = new HuffmanNodeComparer();
-            private double Probability { get; set; }
-            private Either<T, Tuple<PrefixNode, PrefixNode>> _data;
-
-            public bool IsLeaf { get { return _data.IsLeft; } }
-            public T Value { get { return _data.ProjectLeft().Get(); } }
-            public PrefixNode Left { get { return _data.ProjectRight().Get().Item1; } }
-            public PrefixNode Right { get { return _data.ProjectRight().Get().Item2; } }
-
-            private PrefixNode()
+            public int Compare(PrefixTree<T> x, PrefixTree<T> y)
             {
-            }
-
-            public static PrefixNode Leaf(double probability, T value)
-            {
-                return new PrefixNode
-                {
-                    Probability = probability,
-                    _data = Either.Left(value)
-                };
-            }
-
-            public static PrefixNode Inner(PrefixNode l, PrefixNode r)
-            {
-                return new PrefixNode
-                {
-                    Probability = l.Probability + r.Probability,
-                    _data = Either.Right(Tuple.Create(l, r))
-                };
-            }
-
-            private class HuffmanNodeComparer : IComparer<PrefixNode>
-            {
-                public int Compare(PrefixNode x, PrefixNode y)
-                {
-                    var delta = x.Probability - y.Probability;
-                    return delta < 0 ? -1 : delta > 0 ? 1 : 0;
-                }
+                var delta = x.Probability - y.Probability;
+                return delta < 0 ? -1 : delta > 0 ? 1 : 0;
             }
         }
     }

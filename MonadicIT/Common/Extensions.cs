@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Reflection;
 using MonadicIT.Channel;
 
@@ -95,6 +96,11 @@ namespace MonadicIT.Common
             {
                 yield return value;
             }
+        }
+
+        public static IEnumerable<T> SingleValue<T>(this T value)
+        {
+            yield return value;
         }
     }
 }

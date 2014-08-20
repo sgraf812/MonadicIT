@@ -1,12 +1,8 @@
-﻿using System.Windows.Threading;
-using Caliburn.Micro;
-using Caliburn.Micro.ReactiveUI;
-using MonadicIT.Source;
-using ReactiveUI;
+﻿using Caliburn.Micro;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class ShellViewModel : ReactiveConductor<object>.Collection.AllActive 
+    public class ShellViewModel : Conductor<object>.Collection.AllActive 
     {
         private readonly IWindowManager _windowManager;
 

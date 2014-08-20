@@ -3,11 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:oxy="http://oxyplot.codeplex.com"
-        Title="SourceSinkView" Height="400" Width="600">
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:MonadicIT.Visual.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=viewModels:SourceSinkViewModel}"
+        Title="SourceSinkView" Height="500" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -26,10 +32,10 @@
         </oxy:PlotView>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Padding="10">
-            <ContentControl x:Name="ActiveItem" />
+            <ContentControl cal:View.Model="{Binding ActiveItem.Value}" />
         </ScrollViewer>
 
-        <ItemsControl x:Name="Items"  Padding="10" 
+        <ItemsControl x:Name="Items" ItemsSource="{Binding Items}"
                       HorizontalAlignment="Center" VerticalAlignment="Center"
                       Grid.Column="0" Grid.Row="1">
             <ItemsControl.ItemsPanel>
@@ -38,11 +44,10 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:DistributionViewModel}">
                     <RadioButton GroupName="SymbolTypes" 
                                  Content="{Binding SymbolTypeName}" 
-                                 IsChecked="{Binding IsActive, Mode=OneWay}"
-                                 cal:Message.Attach="[Event Checked] = [Action ActivateItem($dataContext)]" />
+                                 IsChecked="{Binding IsActive}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

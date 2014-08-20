@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,10 +14,11 @@ namespace MonadicIT.Visual.ViewModels
 {
     public class EntropyCoderViewModel : Screen
     {
-        private readonly IDisposable _subscription;
         public ReactiveProperty<Func<IEnumerable<object>, IEnumerable<Binary>>> Encoder { get; private set; }
         public ReactiveProperty<Func<IEnumerable<Binary>, IEnumerable<object>>> Decoder { get; private set; }
-        public ReactiveProperty<Distribution<Binary>> BitDistribution { get; private set; } 
+        public ReactiveProperty<Distribution<Binary>> BitDistribution { get; private set; }
+        public ReactiveProperty<IEnumerable<IPrefixTree>> CodeTree { get; private set; }
+        public ReactiveProperty<IEnumerable<Tuple<object, string, double>>> CodeWords { get; private set; }
 
         public EntropyCoderViewModel(ISource source)
         {
@@ -46,11 +48,19 @@ namespace MonadicIT.Visual.ViewModels
                                BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(dist.SymbolType)
                        select (Func<IEnumerable<Binary>, IEnumerable<object>>) m.Invoke(null, new[] {coder}))
                 .ToReactiveProperty();
-        }
 
-        private static void Hi(Distribution<Binary> distribution)
-        {
-            
+            CodeTree = (from cd in coderAndDistribution
+                        let coder = cd.Item1
+                        let p = coder.GetType().GetProperty("CodeTree", BindingFlags.Public | BindingFlags.Instance)
+                        select ((IPrefixTree) p.GetValue(coder)).SingleValue()).ToReactiveProperty();
+
+            CodeWords = (from cd in coderAndDistribution
+                         let coder = cd.Item1
+                         let dist = cd.Item2
+                         let m = typeof (EntropyCoderViewModel).GetMethod("HuffmanCoderGetCodeWords",
+                             BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(dist.SymbolType)
+                         select (IEnumerable<Tuple<object, string, double>>) m.Invoke(null, new[] {coder, dist}))
+                .ToReactiveProperty();
         }
 
 // ReSharper disable UnusedMember.Local
@@ -69,6 +79,17 @@ namespace MonadicIT.Visual.ViewModels
         {
             var huffmanCoder = (HuffmanCoder<T>)coder;
             return s => huffmanCoder.Decode(s).Cast<object>();
+        }
+
+        private static IEnumerable<Tuple<object, string, double>> HuffmanCoderGetCodeWords<T>(object coder, IDistribution distribution) where T : struct
+        {
+            var huffmanCoder = (HuffmanCoder<T>) coder;
+            return from p in huffmanCoder.CodeDictionary
+                   let symbol = (object)p.Key
+                   let codeWord = string.Join("", p.Value.Select(c => c.ToString()))
+                   let prob = distribution[symbol]
+                   orderby prob descending
+                   select Tuple.Create(symbol, codeWord, prob);
         }
 // ReSharper restore UnusedMember.Local
     }

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Reflection;
 using Caliburn.Micro;
 using Codeplex.Reactive;
@@ -13,25 +8,36 @@ using MonadicIT.Common;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class DistributionViewModel : Screen
+    public class DistributionViewModel : PropertyChangedBase
     {
         private readonly Type _symbolType;
-        private readonly IEnumerable<string> _symbols;
         private bool _adjustingProbabilities;
+        private bool _isActive;
 
         public IList<Occurrence> Occurrences { get; private set; } 
         public ReactiveProperty<IDistribution> Distribution { get; private set; }
 
         public string SymbolTypeName { get { return _symbolType.Name; } }
 
+        public bool IsActive
+        {
+            get { return _isActive; }
+            set
+            {
+                if (value.Equals(_isActive)) return;
+                _isActive = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public DistributionViewModel(IDistribution distribution)
         {
             _symbolType = distribution.SymbolType;
-            _symbols = Enum.GetNames(_symbolType);
             var probs = from v in Enum.GetValues(distribution.SymbolType).Cast<object>()
                         select distribution[v];
 
-            Occurrences = new List<Occurrence>(_symbols.Zip(probs, (s, p) => new Occurrence
+            var symbols = Enum.GetNames(_symbolType);
+            Occurrences = new List<Occurrence>(symbols.Zip(probs, (s, p) => new Occurrence
             {
                 Symbol = s,
                 Probability = p
@@ -39,7 +45,8 @@ namespace MonadicIT.Visual.ViewModels
 
             foreach (var occ in Occurrences)
             {
-                occ.PropertyChanged += (s,e) => AdjustProbabilities(occ);
+                var o = occ;
+                occ.PropertyChanged += (s, e) => AdjustProbabilities(o);
             }
 
             Distribution = new ReactiveProperty<IDistribution>(distribution);

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using Caliburn.Micro;
 using Codeplex.Reactive;
 using Codeplex.Reactive.Extensions;
 

@@ -52,7 +52,7 @@
             <TextBlock Text="{Binding Path=EntropyCoder.MeanCodeWordLength.Value, StringFormat=Mean code word length: {0:F3} bit/symbol}" />
         </GroupBox>
         <GroupBox Header="Channel coder" Grid.Column="2" Grid.Row="2">
-
+            <ContentControl cal:View.Model="{Binding ChannelCoder.Selector}" />
         </GroupBox>
 
         <GroupBox Header="Channel model" Grid.Column="3" Grid.Row="2">

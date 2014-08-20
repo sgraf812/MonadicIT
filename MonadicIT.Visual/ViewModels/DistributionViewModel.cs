@@ -9,27 +9,15 @@ using MonadicIT.Common;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class DistributionViewModel : PropertyChangedBase, ISelectable
+    public class DistributionViewModel : SelectableViewModelBase
     {
         private readonly Type _symbolType;
         private bool _adjustingProbabilities;
-        private bool _isSelected;
 
         public IList<Occurrence> Occurrences { get; private set; } 
         public ReactiveProperty<IDistribution> Distribution { get; private set; }
 
-        public string DisplayName { get { return _symbolType.Name; } }
-
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set
-            {
-                if (value.Equals(_isSelected)) return;
-                _isSelected = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        public override string DisplayName { get { return _symbolType.Name; } }
 
         public DistributionViewModel(IDistribution distribution)
         {

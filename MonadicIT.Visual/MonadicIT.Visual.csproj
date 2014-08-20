@@ -125,8 +125,12 @@
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\DistributionViewModel.cs" />
     <Compile Include="ViewModels\EntropyCoderViewModel.cs" />
+    <Compile Include="ViewModels\HammingCodeViewModel.cs" />
+    <Compile Include="ViewModels\IChannelCoderDetailViewModel.cs" />
+    <Compile Include="ViewModels\IdentityCoderViewModel.cs" />
     <Compile Include="ViewModels\ISelectable.cs" />
     <Compile Include="ViewModels\ISource.cs" />
+    <Compile Include="ViewModels\SelectableViewModelBase.cs" />
     <Compile Include="ViewModels\SelectorViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\SourceSinkViewModel.cs" />
@@ -138,6 +142,12 @@
     </Compile>
     <Compile Include="Views\EntropyCoderView.xaml.cs">
       <DependentUpon>EntropyCoderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HammingCodeView.xaml.cs">
+      <DependentUpon>HammingCodeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IdentityCoderView.xaml.cs">
+      <DependentUpon>IdentityCoderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectorView.xaml.cs">
       <DependentUpon>SelectorView.xaml</DependentUpon>
@@ -158,6 +168,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EntropyCoderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HammingCodeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IdentityCoderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

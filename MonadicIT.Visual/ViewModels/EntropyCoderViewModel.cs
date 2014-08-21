@@ -13,7 +13,7 @@ using MonadicIT.Visual.Backbone;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class EntropyCoderViewModel : Screen
+    public class EntropyCoderViewModel : Screen, IEntropyCoderProperties
     {
         public ReactiveProperty<Func<IEnumerable<object>, IEnumerable<Binary>>> Encoder { get; private set; }
 
@@ -27,7 +27,7 @@ namespace MonadicIT.Visual.ViewModels
 
         public ReactiveProperty<double> MeanCodeWordLength { get; private set; } 
 
-        public EntropyCoderViewModel(ISourceSettings source)
+        public EntropyCoderViewModel(ISourceProperties source)
         {
             DisplayName = "Entropy coder properties";
 
@@ -104,5 +104,15 @@ namespace MonadicIT.Visual.ViewModels
                    select Tuple.Create(symbol, codeWord, prob);
         }
 // ReSharper restore UnusedMember.Local
+
+        IObservable<Func<IEnumerable<object>, IEnumerable<Binary>>> IEntropyCoderProperties.Encoder
+        {
+            get { return Encoder; }
+        }
+
+        IObservable<Func<IEnumerable<Binary>, IEnumerable<object>>> IEntropyCoderProperties.Decoder
+        {
+            get { return Decoder; }
+        }
     }
 }

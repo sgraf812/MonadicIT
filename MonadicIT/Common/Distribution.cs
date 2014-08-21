@@ -114,5 +114,10 @@ namespace MonadicIT.Common
         {
             get { return this[(T) symbol]; }
         }
+
+        object IDistribution.Sample()
+        {
+            return Sample();
+        }
     }
 }

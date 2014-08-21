@@ -43,13 +43,16 @@ namespace MonadicIT.Visual
             _container.Singleton<EntropyCoderViewModel>();
             _container.Singleton<ChannelCoderViewModel>();
             _container.Singleton<ChannelViewModel>();
-            _container.Handler<ISourceSettings>(c => c.GetInstance<SourceSinkViewModel>());
-            _container.Handler<IChannelSettings>(c => c.GetInstance<ChannelViewModel>());
+            _container.Singleton<IChannelCoderDetailViewModel, IdentityCoderViewModel>();
+            _container.Singleton<IChannelCoderDetailViewModel, HammingCodeViewModel>();
+            _container.Handler<ISourceProperties>(c => c.GetInstance<SourceSinkViewModel>());
+            _container.Handler<IEntropyCoderProperties>(c => c.GetInstance<EntropyCoderViewModel>());
+            _container.Handler<IChannelCoderProperties>(c => c.GetInstance<ChannelCoderViewModel>());
+            _container.Handler<IChannelProperties>(c => c.GetInstance<ChannelViewModel>());
             RegisterDistributionViewModelHandler<Binary>();
             RegisterDistributionViewModelHandler<Ternary>();
             RegisterDistributionViewModelHandler<Common.Decimal>();
-            _container.Singleton<IChannelCoderDetailViewModel, IdentityCoderViewModel>();
-            _container.Singleton<IChannelCoderDetailViewModel, HammingCodeViewModel>();
+            _container.Singleton<TransmissionSystem>();
         }
 
         private void RegisterDistributionViewModelHandler<T>() where T : /*Enum, */struct

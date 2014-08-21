@@ -8,9 +8,13 @@ using MonadicIT.Channel;
 using MonadicIT.Common;
 using MonadicIT.Visual.Backbone;
 
+namespace MonadicIT.Visual.Backbone
+{
+}
+
 namespace MonadicIT.Visual.ViewModels
 {
-    public class ChannelCoderViewModel : Screen
+    public class ChannelCoderViewModel : Screen, IChannelCoderProperties
     {
         public IObservable<IChannelCoder<Binary>> Coder { get; private set; }
 
@@ -20,7 +24,7 @@ namespace MonadicIT.Visual.ViewModels
 
         public ChannelCoderViewModel(
             IEnumerable<IChannelCoderDetailViewModel> channelCoderDetailViewModels, 
-            IChannelSettings channel)
+            IChannelProperties channel)
         {
             DisplayName = "Channel coder properties";
 

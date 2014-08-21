@@ -4,7 +4,7 @@ using MonadicIT.Common;
 
 namespace MonadicIT.Visual.Backbone
 {
-    public interface IChannelSettings
+    public interface IChannelProperties
     {
         IObservable<IDiscreteChannel<Binary>> Channel { get; }
     }

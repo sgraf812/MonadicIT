@@ -7,5 +7,6 @@ namespace MonadicIT.Common
         Type SymbolType { get; }
         double this[object symbol] { get; }
         double Entropy { get; }
+        object Sample();
     }
 }

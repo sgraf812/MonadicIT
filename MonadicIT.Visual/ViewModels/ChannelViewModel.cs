@@ -8,7 +8,7 @@ using MonadicIT.Visual.Backbone;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class ChannelViewModel : Screen, IChannelSettings
+    public class ChannelViewModel : Screen, IChannelProperties
     {
         public IObservable<IDiscreteChannel<Binary>> Channel { get; private set; }
 

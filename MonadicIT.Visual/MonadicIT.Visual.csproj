@@ -123,6 +123,12 @@
     </Compile>
     <Compile Include="Backbone\IChannelSettings.cs" />
     <Compile Include="Backbone\ISourceSettings.cs" />
+    <Compile Include="Controls\ConnectingLine.xaml.cs">
+      <DependentUpon>ConnectingLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TransmissionLayerControl.xaml.cs">
+      <DependentUpon>TransmissionLayerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ChannelCoderViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\DistributionViewModel.cs" />
@@ -164,6 +170,14 @@
       <DependentUpon>SourceSinkView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfBootstrapper.cs" />
+    <Page Include="Controls\ConnectingLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TransmissionLayerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChannelCoderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

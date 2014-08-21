@@ -126,9 +126,7 @@
     <Compile Include="Controls\ConnectingLine.xaml.cs">
       <DependentUpon>ConnectingLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TransmissionLayerControl.xaml.cs">
-      <DependentUpon>TransmissionLayerControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\TranslationNode.cs" />
     <Compile Include="ViewModels\ChannelCoderViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\DistributionViewModel.cs" />
@@ -147,7 +145,6 @@
     <Compile Include="Views\ChannelView.xaml.cs">
       <DependentUpon>ChannelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClosableViewModel.cs" />
     <Compile Include="Views\DistributionView.xaml.cs">
       <DependentUpon>DistributionView.xaml</DependentUpon>
     </Compile>
@@ -171,10 +168,6 @@
     </Compile>
     <Compile Include="WpfBootstrapper.cs" />
     <Page Include="Controls\ConnectingLine.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TransmissionLayerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

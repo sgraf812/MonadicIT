@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ReactiveUI;
 
 namespace MonadicIT.Visual.Controls
 {
@@ -37,26 +29,33 @@ namespace MonadicIT.Visual.Controls
         public ConnectingLine()
         {
             InitializeComponent();
+            var froms = CenterPointsOf(x => x.From);
+            var tos = CenterPointsOf(x => x.To);
+
+            froms.Subscribe(p =>
+            {
+                if (double.IsNaN(p.X) || double.IsNaN(p.Y)) return;
+                InnerLine.X1 = p.X;
+                InnerLine.Y1 = p.Y;
+            });
+
+            tos.Subscribe(p =>
+            {
+                if (double.IsNaN(p.X) || double.IsNaN(p.Y)) return;
+                InnerLine.X2 = p.X;
+                InnerLine.Y2 = p.Y;
+            });
         }
 
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        private IObservable<Point> CenterPointsOf(Expression<Func<ConnectingLine, FrameworkElement>> expr)
         {
-            base.OnPropertyChanged(e);
+            var accessor = expr.Compile();
 
-            if (e.Property == FromProperty)
-            {
-                var from = CenterOf(From);
-                if (double.IsNaN(from.X) || double.IsNaN(from.Y)) return;
-                InnerLine.X1 = from.X;
-                InnerLine.Y1 = from.Y;
-            }
-            else if (e.Property == ToProperty)
-            {
-                var to = CenterOf(To);
-                if (double.IsNaN(to.X) || double.IsNaN(to.Y)) return;
-                InnerLine.X2 = to.X;
-                InnerLine.Y2 = to.Y;
-            }
+            return from e in (from f in this.ObservableForProperty(expr)
+                              select Observable.FromEventPattern(
+                                  h => f.Value.LayoutUpdated += h,
+                                  h => f.Value.LayoutUpdated -= h)).Switch()
+                   select CenterOf(accessor(this));
         }
 
         private Point CenterOf(FrameworkElement element)

@@ -15,14 +15,16 @@
                 <Style TargetType="{x:Type Line}">
                     <Setter Property="Stroke" Value="DimGray" />
                     <Setter Property="StrokeDashArray" Value="5" />
+                    <Setter Property="StrokeThickness" Value="1" />
                 </Style>
                 <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
                     <Setter Property="Height" Value="150" />
-                    <Setter Property="Width" Value="{Binding Width, RelativeSource={RelativeSource TemplatedParent}}" />
+                    <Setter Property="Width" Value="{Binding Path=(controls:TranslationNode.Width), RelativeSource={RelativeSource TemplatedParent}}" />
                     <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
                     <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                     <Setter Property="BorderThickness" Value="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
                     <Setter Property="CornerRadius" Value="10" />
+                    <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, RelativeSource={RelativeSource TemplatedParent}}" />
                 </Style>
                 <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
                     <Setter Property="VerticalAlignment" Value="Center" />
@@ -35,14 +37,16 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 
-                <controls:ConnectingLine From="{Binding ElementName=Upper}" To="{Binding ElementName=Lower}" Grid.RowSpan="2" IsHitTestVisible="False" />
+                <controls:ConnectingLine From="{Binding ElementName=Top}" To="{Binding ElementName=Bottom}" Grid.RowSpan="2" IsHitTestVisible="False" />
 
-                <Border x:Name="Upper" Grid.Row="0" Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Source" Style="{StaticResource TextBlockStyle}" />
+                <Border x:Name="Top" Grid.Row="0" Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="{Binding (controls:TranslationNode.TopText), RelativeSource={RelativeSource TemplatedParent}}" 
+                               Style="{StaticResource TextBlockStyle}" />
                 </Border>
 
-                <Border x:Name="Lower" Grid.Row="1" Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="Sink" Style="{StaticResource TextBlockStyle}" />
+                <Border x:Name="Bottom" Grid.Row="1" Style="{StaticResource BorderStyle}">
+                    <TextBlock Text="{Binding (controls:TranslationNode.BottomText), RelativeSource={RelativeSource TemplatedParent}}" 
+                               Style="{StaticResource TextBlockStyle}" />
                 </Border>
             </Grid>
         </ControlTemplate>
@@ -60,28 +64,43 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        
+        <controls:ConnectingLine From="{Binding ElementName=SourceSink.Top}" To="{Binding ElementName=EntropyCoder.Top}" 
+                                 Grid.ColumnSpan="2"/>
+                            
 
-        <ToggleButton Width="100" DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}"
+        <ToggleButton DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="SourceSink"
                       Background="#FFEFF6FF" BorderBrush="#FF3F89FF" BorderThickness="2"
-                      Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5" Grid.RowSpan="2"
+                      Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Left" Margin="5" 
+                      controls:TranslationNode.Width="100" controls:TranslationNode.TopText="Source" controls:TranslationNode.BottomText="Sink"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
-        <ToggleButton Width="200" DataContext="{Binding EntropyCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
-                      Background="#FFEFFEED" BorderBrush="#FF0DBC3F" BorderThickness="2" Grid.RowSpan="2"
-                      Grid.Row="0" Grid.Column="1" 
+        <ToggleButton DataContext="{Binding EntropyCoder}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="EntropyCoder"
+                      Background="#FFEFFEED" BorderBrush="#FF0DBC3F" BorderThickness="2"
+                      Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+                      controls:TranslationNode.Width="200" controls:TranslationNode.TopText="Channel encoder" controls:TranslationNode.BottomText="Channel decoder"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
-        <ToggleButton Height="150" Width="200" Content="Channel coder" DataContext="{Binding ChannelCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
-                      Background="#FEF2ED" BorderBrush="#BC4E0D" BorderThickness="2"
-                      Grid.Row="0" Grid.Column="2"
-                      cal:Message.Attach="ToggleWindow($dataContext)" />
+        <ToggleButton DataContext="{Binding ChannelCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
+                      Background="#FEF2ED" BorderBrush="#BC4E0D" BorderThickness="2" 
+                      Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+                      controls:TranslationNode.Width="200" controls:TranslationNode.TopText="Channel encoder" controls:TranslationNode.BottomText="Channel decoder"
+                      cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
-        <ToggleButton Height="150" Width="100" Content="Channel" DataContext="{Binding Channel}" IsChecked="{Binding IsActive, Mode=OneWay}"
-                      Background="#F5EBFF" BorderBrush="#9B3FFF" BorderThickness="2"
+        <ToggleButton DataContext="{Binding Channel}" IsChecked="{Binding IsActive, Mode=OneWay}"
                       Grid.Row="0" Grid.Column="3" Grid.RowSpan="2"
                       HorizontalAlignment="Right" Margin="5"
-                      cal:Message.Attach="ToggleWindow($dataContext)" />
-        
+                      cal:Message.Attach="ToggleWindow($dataContext)">
+            <ToggleButton.Template>
+                <ControlTemplate>
+                    <Border Width="100" Height="150" 
+                            Background="#F5EBFF" BorderBrush="#9B3FFF" BorderThickness="2" CornerRadius="10">
+                        <TextBlock Text="Channel" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </ToggleButton.Template>
+        </ToggleButton>
+
 
         <GroupBox Header="Source" Grid.Column="0" Grid.Row="2">
             <Grid>

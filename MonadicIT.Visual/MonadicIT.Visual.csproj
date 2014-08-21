@@ -126,7 +126,7 @@
     <Compile Include="Controls\ConnectingLine.xaml.cs">
       <DependentUpon>ConnectingLine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TranslationNode.cs" />
+    <Compile Include="Controls\TransmissionNode.cs" />
     <Compile Include="ViewModels\ChannelCoderViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\DistributionViewModel.cs" />

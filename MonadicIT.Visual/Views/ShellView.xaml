@@ -19,7 +19,7 @@
                 </Style>
                 <Style x:Key="BorderStyle" TargetType="{x:Type Border}">
                     <Setter Property="Height" Value="150" />
-                    <Setter Property="Width" Value="{Binding Path=(controls:TranslationNode.Width), RelativeSource={RelativeSource TemplatedParent}}" />
+                    <Setter Property="Width" Value="{Binding Path=(controls:TransmissionNode.Width), RelativeSource={RelativeSource TemplatedParent}}" />
                     <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
                     <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
                     <Setter Property="BorderThickness" Value="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -40,12 +40,12 @@
                 <controls:ConnectingLine From="{Binding ElementName=Top}" To="{Binding ElementName=Bottom}" Grid.RowSpan="2" IsHitTestVisible="False" />
 
                 <Border x:Name="Top" Grid.Row="0" Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="{Binding (controls:TranslationNode.TopText), RelativeSource={RelativeSource TemplatedParent}}" 
+                    <TextBlock Text="{Binding (controls:TransmissionNode.TopText), RelativeSource={RelativeSource TemplatedParent}}" 
                                Style="{StaticResource TextBlockStyle}" />
                 </Border>
 
                 <Border x:Name="Bottom" Grid.Row="1" Style="{StaticResource BorderStyle}">
-                    <TextBlock Text="{Binding (controls:TranslationNode.BottomText), RelativeSource={RelativeSource TemplatedParent}}" 
+                    <TextBlock Text="{Binding (controls:TransmissionNode.BottomText), RelativeSource={RelativeSource TemplatedParent}}" 
                                Style="{StaticResource TextBlockStyle}" />
                 </Border>
             </Grid>
@@ -64,27 +64,23 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <controls:ConnectingLine From="{Binding ElementName=SourceSink.Top}" To="{Binding ElementName=EntropyCoder.Top}" 
-                                 Grid.ColumnSpan="2"/>
-                            
 
         <ToggleButton DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="SourceSink"
                       Background="#FFEFF6FF" BorderBrush="#FF3F89FF" BorderThickness="2"
                       Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Left" Margin="5" 
-                      controls:TranslationNode.Width="100" controls:TranslationNode.TopText="Source" controls:TranslationNode.BottomText="Sink"
+                      controls:TransmissionNode.Width="100" controls:TransmissionNode.TopText="Source" controls:TransmissionNode.BottomText="Sink"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
         <ToggleButton DataContext="{Binding EntropyCoder}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="EntropyCoder"
                       Background="#FFEFFEED" BorderBrush="#FF0DBC3F" BorderThickness="2"
                       Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
-                      controls:TranslationNode.Width="200" controls:TranslationNode.TopText="Channel encoder" controls:TranslationNode.BottomText="Channel decoder"
+                      controls:TransmissionNode.Width="200" controls:TransmissionNode.TopText="Channel encoder" controls:TransmissionNode.BottomText="Channel decoder"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
         <ToggleButton DataContext="{Binding ChannelCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
                       Background="#FEF2ED" BorderBrush="#BC4E0D" BorderThickness="2" 
                       Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
-                      controls:TranslationNode.Width="200" controls:TranslationNode.TopText="Channel encoder" controls:TranslationNode.BottomText="Channel decoder"
+                      controls:TransmissionNode.Width="200" controls:TransmissionNode.TopText="Channel encoder" controls:TransmissionNode.BottomText="Channel decoder"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
         <ToggleButton DataContext="{Binding Channel}" IsChecked="{Binding IsActive, Mode=OneWay}"

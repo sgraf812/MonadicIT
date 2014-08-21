@@ -7,14 +7,14 @@ using System.Windows;
 
 namespace MonadicIT.Visual.Controls
 {
-    public sealed class TranslationNode : DependencyObject
+    public sealed class TransmissionNode : DependencyObject
     {
         public static readonly DependencyProperty TopTextProperty = DependencyProperty.RegisterAttached(
-            "TopText", typeof(string), typeof(TranslationNode), new PropertyMetadata(default(string)));
+            "TopText", typeof(string), typeof(TransmissionNode), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty BottomTextProperty = DependencyProperty.RegisterAttached(
-            "BottomText", typeof(string), typeof(TranslationNode), new PropertyMetadata(default(string)));
+            "BottomText", typeof(string), typeof(TransmissionNode), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty WidthProperty = DependencyProperty.RegisterAttached(
-            "Width", typeof(int), typeof(TranslationNode), new PropertyMetadata(default(int)));
+            "Width", typeof(int), typeof(TransmissionNode), new PropertyMetadata(default(int)));
 
         public static void SetTopText(DependencyObject element, string value)
         {

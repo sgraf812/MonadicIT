@@ -9,11 +9,16 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding Path=MeanCodeWordLength.Value, StringFormat=Mean code word length: {0:F3} bit/symbol}" 
+                   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="1,5,1,5" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" />
         
         <TreeView ItemsSource="{Binding CodeTree.Value}"
-                  Grid.Row="0" Grid.Column="0">
+                  Grid.Row="1" Grid.Column="0">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="True" />
@@ -39,7 +44,7 @@
         </TreeView>
         
         <ItemsControl ItemsSource="{Binding CodeWords.Value}"
-                      Grid.Row="0" Grid.Column="1">
+                      Grid.Row="1" Grid.Column="1">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

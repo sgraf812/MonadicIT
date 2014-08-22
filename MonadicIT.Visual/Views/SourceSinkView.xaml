@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="200"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -49,5 +50,9 @@
 
         <ContentControl x:Name="Selector" HorizontalAlignment="Stretch"
                         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" />
+
+        <TextBlock Text="{Binding Path=Distribution.Value.Entropy, StringFormat=Entropy: {0:F3} bit/symbol}" 
+                   Grid.Row="3" Grid.Column="1" Margin="1,5,1,5" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" />
     </Grid>
 </Window>

@@ -51,7 +51,7 @@
             </Grid>
         </ControlTemplate>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="RootPanel">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -62,12 +62,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
+        <Canvas x:Name="Canv" Grid.RowSpan="2" Grid.ColumnSpan="4" Top="12" Left="200">
+            <Rectangle Height="10" Width="10" x:Name="MoveMe">
+                <Rectangle.Fill>Black</Rectangle.Fill>
+            </Rectangle>
+        </Canvas>
 
         <ToggleButton DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="SourceSink"
                       Background="#FFEFF6FF" BorderBrush="#FF3F89FF" BorderThickness="2"
-                      Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Left" Margin="5" 
+                      Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Left" Margin="5,0,5,0" 
                       controls:TransmissionNode.Width="100" controls:TransmissionNode.TopText="Source" controls:TransmissionNode.BottomText="Sink"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
@@ -86,6 +91,7 @@
         <ToggleButton DataContext="{Binding Channel}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="Channel"
                       Grid.Row="0" Grid.Column="3" Grid.RowSpan="2"
                       HorizontalAlignment="Right" Margin="5"
+                      Width="100" Height="150"
                       cal:Message.Attach="ToggleWindow($dataContext)">
             <ToggleButton.Template>
                 <ControlTemplate>
@@ -96,26 +102,5 @@
                 </ControlTemplate>
             </ToggleButton.Template>
         </ToggleButton>
-
-
-        <GroupBox Header="Source" Grid.Column="0" Grid.Row="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <TextBlock Text="{Binding Path=SourceSink.Distribution.Value.Entropy, StringFormat=Entropy: {0:F3} bit/symbol}" 
-                           Grid.Row="0" Grid.Column="0" />
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Header="Entropy coder" Grid.Column="1" Grid.Row="2">
-            <TextBlock Text="{Binding Path=EntropyCoder.MeanCodeWordLength.Value, StringFormat=Mean code word length: {0:F3} bit/symbol}" />
-        </GroupBox>
-        <GroupBox Header="Channel coder" Grid.Column="2" Grid.Row="2">
-        </GroupBox>
-
-        <GroupBox Header="Channel model" Grid.Column="3" Grid.Row="2">
-        </GroupBox>
     </Grid>
 </Window>

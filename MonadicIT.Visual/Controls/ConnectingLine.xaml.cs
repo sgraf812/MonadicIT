@@ -1,10 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using Codeplex.Reactive.Extensions;
+using MonadicIT.Visual.Annotations;
 using MonadicIT.Visual.Infrastructure;
-using ReactiveUI;
 
 namespace MonadicIT.Visual.Controls
 {
@@ -14,6 +18,9 @@ namespace MonadicIT.Visual.Controls
             "From", typeof(FrameworkElement), typeof(ConnectingLine), new PropertyMetadata(default(FrameworkElement)));
         public static readonly DependencyProperty ToProperty = DependencyProperty.Register(
             "To", typeof(FrameworkElement), typeof(ConnectingLine), new PropertyMetadata(default(FrameworkElement)));
+
+        private readonly BehaviorSubject<FrameworkElement> _toChanged;
+        private readonly BehaviorSubject<FrameworkElement> _fromChanged;  
 
         public FrameworkElement From
         {
@@ -30,8 +37,8 @@ namespace MonadicIT.Visual.Controls
         public ConnectingLine()
         {
             InitializeComponent();
-            var froms = CenterPointsOf(x => x.From);
-            var tos = CenterPointsOf(x => x.To);
+            var froms = CenterPointsOf(FromProperty);
+            var tos = CenterPointsOf(ToProperty);
 
             froms.Subscribe(p =>
             {
@@ -48,15 +55,18 @@ namespace MonadicIT.Visual.Controls
             });
         }
 
-        private IObservable<Point> CenterPointsOf(Expression<Func<ConnectingLine, FrameworkElement>> expr)
+        private IObservable<Point> CenterPointsOf(DependencyProperty property)
         {
-            var accessor = expr.Compile();
-
-            return from e in (from f in this.ObservableForProperty(expr)
+            var desc = DependencyPropertyDescriptor.FromProperty(property, GetType());
+            var changeNotifications = Observable.FromEventPattern(
+                h => desc.AddValueChanged(this, h),
+                h => desc.RemoveValueChanged(this, h));
+            return from e in (from _ in changeNotifications
+                              let f = (FrameworkElement) GetValue(property)
                               select Observable.FromEventPattern(
-                                  h => f.Value.LayoutUpdated += h,
-                                  h => f.Value.LayoutUpdated -= h)).Switch()
-                   select accessor(this).CenterRelativeTo(this);
+                                  h => f.LayoutUpdated += h,
+                                  h => f.LayoutUpdated -= h)).Switch()
+                   select ((FrameworkElement) GetValue(property)).CenterRelativeTo(this);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace MonadicIT.Visual.Backbone
                                   ? Observable.Return(-1L).Concat(Observable.Timer(now + i, i)) // we are already behind our schedule
                                   : Observable.Timer(next, i); // we can safely schedule the next tick
 
-            var tick = tickStreams.Switch().Do(_ => lastSample.OnNext(DateTimeOffset.Now)).Do(_ => Beep(440, 10));
+            var tick = tickStreams.Switch().Do(_ => lastSample.OnNext(DateTimeOffset.Now));
 
             _symbols = from _ in tick
                        from d in source.Distribution.Take(1)
@@ -52,10 +52,7 @@ namespace MonadicIT.Visual.Backbone
                            DistortedSymbol = distSymbol
                        };
 
-            _symbols.Subscribe(events.PublishOnUIThread);
+            _symbols.Subscribe(events.BeginPublishOnUIThread);
         }
-
-        [System.Runtime.InteropServices.DllImport("kernel32.dll")]
-        private static extern bool Beep(int freq, int dur);
     }
 }

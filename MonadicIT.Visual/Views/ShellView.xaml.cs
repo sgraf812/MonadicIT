@@ -110,7 +110,6 @@ namespace MonadicIT.Visual.Views
             };
 
             var p = new Path { Data = path, Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 1 };
-            Grid.SetRowSpan(p, RootPanel.RowDefinitions.Count);
             Grid.SetColumnSpan(p, RootPanel.ColumnDefinitions.Count);
                 RootPanel.Children.Insert(0, p);
             };

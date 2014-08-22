@@ -7,14 +7,16 @@ using System.Windows;
 
 namespace MonadicIT.Visual.Controls
 {
-    public sealed class TransmissionNode : DependencyObject
+    public sealed class TransmissionLayer : DependencyObject
     {
         public static readonly DependencyProperty TopTextProperty = DependencyProperty.RegisterAttached(
-            "TopText", typeof(string), typeof(TransmissionNode), new PropertyMetadata(default(string)));
+            "TopText", typeof(string), typeof(TransmissionLayer), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty BottomTextProperty = DependencyProperty.RegisterAttached(
-            "BottomText", typeof(string), typeof(TransmissionNode), new PropertyMetadata(default(string)));
+            "BottomText", typeof(string), typeof(TransmissionLayer), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty WidthProperty = DependencyProperty.RegisterAttached(
-            "Width", typeof(int), typeof(TransmissionNode), new PropertyMetadata(default(int)));
+            "Width", typeof(int), typeof(TransmissionLayer), new PropertyMetadata(default(int)));
+        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.RegisterAttached(
+            "Description", typeof(string), typeof(TransmissionLayer), new PropertyMetadata(default(string)));
 
         public static void SetTopText(DependencyObject element, string value)
         {
@@ -44,6 +46,16 @@ namespace MonadicIT.Visual.Controls
         public static int GetWidth(DependencyObject element)
         {
             return (int) element.GetValue(WidthProperty);
+        }
+
+        public static void SetDescription(DependencyObject element, string value)
+        {
+            element.SetValue(DescriptionProperty, value);
+        }
+
+        public static string GetDescription(DependencyObject element)
+        {
+            return (string) element.GetValue(DescriptionProperty);
         }
     }
 }

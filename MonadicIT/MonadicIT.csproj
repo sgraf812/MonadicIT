@@ -52,6 +52,7 @@
     <Compile Include="Channel\IDiscreteChannel.cs" />
     <Compile Include="Channel\IChannelCoder.cs" />
     <Compile Include="Channel\SymmetricChannel.cs" />
+    <Compile Include="Common\Catch.cs" />
     <Compile Include="Common\Distribution.cs" />
     <Compile Include="Common\EnumHelper.cs" />
     <Compile Include="Common\Extensions.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Reflection;
 using MonadicIT.Channel;
+using Scalesque;
 
 namespace MonadicIT.Common
 {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using Codeplex.Reactive;
 using Codeplex.Reactive.Extensions;
+using MonadicIT.Visual.Backbone;
 
 namespace MonadicIT.Visual.ViewModels
 {

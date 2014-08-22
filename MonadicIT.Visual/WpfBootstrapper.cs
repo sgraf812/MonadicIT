@@ -38,6 +38,7 @@ namespace MonadicIT.Visual
             MessageBinder.SpecialValues.Add("null", _ => null);
             _container = new SimpleContainer();
             _container.Singleton<IWindowManager, WindowManager>();
+            _container.Singleton<IEventAggregator, EventAggregator>();
             _container.PerRequest<ShellViewModel>();
             _container.Singleton<SourceSinkViewModel>();
             _container.Singleton<EntropyCoderViewModel>();

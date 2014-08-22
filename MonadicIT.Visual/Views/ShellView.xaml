@@ -77,13 +77,13 @@
                       controls:TransmissionNode.Width="200" controls:TransmissionNode.TopText="Channel encoder" controls:TransmissionNode.BottomText="Channel decoder"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
-        <ToggleButton DataContext="{Binding ChannelCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
+        <ToggleButton DataContext="{Binding ChannelCoder}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="ChannelCoder"
                       Background="#FEF2ED" BorderBrush="#BC4E0D" BorderThickness="2" 
                       Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                       controls:TransmissionNode.Width="200" controls:TransmissionNode.TopText="Channel encoder" controls:TransmissionNode.BottomText="Channel decoder"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
 
-        <ToggleButton DataContext="{Binding Channel}" IsChecked="{Binding IsActive, Mode=OneWay}"
+        <ToggleButton DataContext="{Binding Channel}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="Channel"
                       Grid.Row="0" Grid.Column="3" Grid.RowSpan="2"
                       HorizontalAlignment="Right" Margin="5"
                       cal:Message.Attach="ToggleWindow($dataContext)">

@@ -153,6 +153,7 @@
       <DependentUpon>ConnectingLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TransmissionNode.cs" />
+    <Compile Include="Infrastructure\Extensions.cs" />
     <Compile Include="ViewModels\ChannelCoderViewModel.cs" />
     <Compile Include="ViewModels\ChannelViewModel.cs" />
     <Compile Include="ViewModels\DistributionViewModel.cs" />

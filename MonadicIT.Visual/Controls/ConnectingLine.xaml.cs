@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using MonadicIT.Visual.Infrastructure;
 using ReactiveUI;
 
 namespace MonadicIT.Visual.Controls
@@ -55,12 +56,7 @@ namespace MonadicIT.Visual.Controls
                               select Observable.FromEventPattern(
                                   h => f.Value.LayoutUpdated += h,
                                   h => f.Value.LayoutUpdated -= h)).Switch()
-                   select CenterOf(accessor(this));
-        }
-
-        private Point CenterOf(FrameworkElement element)
-        {
-            return element.TransformToVisual(this).Transform(new Point(element.Width/2.0, element.Height/2.0));
+                   select accessor(this).CenterRelativeTo(this);
         }
     }
 }

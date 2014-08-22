@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MonadicIT.Common;
 using Scalesque;
@@ -6,7 +7,7 @@ namespace MonadicIT.Visual.Backbone
 {
     public class Transmission
     {
-        public object SourceSymbol { get; set; }
+        public object Symbol { get; set; }
         public IEnumerable<Binary> EntropyBits { get; set; }
         public IEnumerable<Binary> ChannelBits { get; set; }
         public IEnumerable<Binary> DistortedChannelBits { get; set; }
@@ -15,7 +16,7 @@ namespace MonadicIT.Visual.Backbone
 
         public override string ToString()
         {
-            return string.Format("Sent: {0}, Received: {1}", SourceSymbol,
+            return string.Format("Sent: {0}, Received: {1}", Symbol,
                 DistortedSymbol.HasValue ? DistortedSymbol.Get() : "<Error>");
         }
     }

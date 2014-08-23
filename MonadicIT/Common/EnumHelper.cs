@@ -8,7 +8,7 @@ namespace MonadicIT.Common
 
         public static object ThrowUnlessEnum()
         {
-            if (!typeof(T).IsEnum)
+            if (!typeof (T).IsEnum)
             {
                 throw new NotSupportedException("T must be an enumeration type for modeling " +
                                                 "a discrete vocabulary");

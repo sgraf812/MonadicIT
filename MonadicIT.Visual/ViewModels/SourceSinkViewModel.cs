@@ -6,20 +6,11 @@ using Caliburn.Micro;
 using Codeplex.Reactive;
 using MonadicIT.Common;
 using MonadicIT.Visual.Backbone;
-using MonadicIT.Visual.Views;
 
 namespace MonadicIT.Visual.ViewModels
 {
     public sealed class SourceSinkViewModel : Screen, ISourceProperties
     {
-        public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
-
-        public ReactiveProperty<IDistribution> Distribution { get; private set; }
-
-        public ReactiveProperty<int> SymbolRate { get; private set; }
-
-        public SelectorViewModel<DistributionViewModel> Selector { get; private set; } 
-
         public SourceSinkViewModel(IEnumerable<DistributionViewModel> viewModels)
         {
             DisplayName = "Source distribution properties";
@@ -37,6 +28,14 @@ namespace MonadicIT.Visual.ViewModels
                         let probs = Enum.GetValues(d.SymbolType).Cast<object>().Select(o => d[o])
                         select names.Zip(probs, Tuple.Create)).ToReactiveProperty();
         }
+
+        public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
+
+        public ReactiveProperty<IDistribution> Distribution { get; private set; }
+
+        public ReactiveProperty<int> SymbolRate { get; private set; }
+
+        public SelectorViewModel<DistributionViewModel> Selector { get; private set; }
 
         IObservable<IDistribution> ISourceProperties.Distribution
         {

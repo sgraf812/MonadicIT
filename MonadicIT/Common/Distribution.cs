@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using MonadicIT.Common;
 
 namespace MonadicIT.Common
 {
@@ -32,13 +30,28 @@ namespace MonadicIT.Common
             }
         }
 
+        public Type SymbolType
+        {
+            get { return typeof (T); }
+        }
+
+        double IDistribution.this[object symbol]
+        {
+            get { return this[(T) symbol]; }
+        }
+
+        object IDistribution.Sample()
+        {
+            return Sample();
+        }
+
         public T Sample()
         {
-            var rnd = Rng.NextDouble();
-            var accum = 0.0;
+            double rnd = Rng.NextDouble();
+            double accum = 0.0;
             foreach (var t in _probs)
             {
-                var p = t.Item2;
+                double p = t.Item2;
                 accum += p;
                 if (accum >= rnd)
                 {
@@ -52,53 +65,54 @@ namespace MonadicIT.Common
         public Distribution<U> JointDistribution<U>(Func<T, Distribution<U>> transitionDistribution)
             where U : /* Enum, */ struct
         {
-            var probs =
+            IEnumerable<Tuple<U, double>> probs =
                 from t in _probs
                 from u in transitionDistribution(t.Item1)._probs
-                group new { t, u } by u.Item1
-                    into g
-                    select Tuple.Create(g.Key, g.Sum(x => x.t.Item2 * x.u.Item2));
+                group new {t, u} by u.Item1
+                into g
+                select Tuple.Create(g.Key, g.Sum(x => x.t.Item2*x.u.Item2));
 
             return Distribution<U>.FromProbabilites(probs);
         }
 
-        public Distribution<V> JointDistribution<U, V>(Func<T, Distribution<U>> transitionDistribution, Func<T, U, V> jointSelector)
+        public Distribution<V> JointDistribution<U, V>(Func<T, Distribution<U>> transitionDistribution,
+            Func<T, U, V> jointSelector)
             where U : /* Enum, */ struct
             where V : /* Enum, */ struct
         {
-            var probs =
+            IEnumerable<Tuple<V, double>> probs =
                 from t in _probs
                 from u in transitionDistribution(t.Item1)._probs
-                group new { t, u } by jointSelector(t.Item1, u.Item1)
-                    into g
-                    select Tuple.Create(g.Key, g.Sum(x => x.t.Item2 * x.u.Item2));
+                group new {t, u} by jointSelector(t.Item1, u.Item1)
+                into g
+                select Tuple.Create(g.Key, g.Sum(x => x.t.Item2*x.u.Item2));
 
             return Distribution<V>.FromProbabilites(probs);
-        } 
+        }
 
         public static Distribution<T> FromProbabilites(IEnumerable<Tuple<T, double>> probabilities)
         {
             EnumHelper<T>.ThrowUnlessEnum();
 
-            var probs = probabilities.ToArray();
+            Tuple<T, double>[] probs = probabilities.ToArray();
 
             Throw.If<ArgumentException>(Math.Abs(probs.Sum(p => p.Item2) - 1.0) > 0.0001,
                 "The probabilites must sum up to 1.");
 
-            var mentionedSymbols = from p in probs 
-                                   select p.Item1;
-            var notMentioned = EnumHelper<T>.Values.Except(mentionedSymbols);
-            var allSymbols = probs.Concat(from s in notMentioned 
-                                          select Tuple.Create(s, 0.0));
+            IEnumerable<T> mentionedSymbols = from p in probs
+                                              select p.Item1;
+            IEnumerable<T> notMentioned = EnumHelper<T>.Values.Except(mentionedSymbols);
+            IEnumerable<Tuple<T, double>> allSymbols = probs.Concat(from s in notMentioned
+                                                                    select Tuple.Create(s, 0.0));
 
             return new Distribution<T>(allSymbols.ToArray());
         }
 
         public static Distribution<T> Uniform(IEnumerable<T> values)
         {
-            var vals = values.ToArray();
-            var probs = from v in vals
-                        select Tuple.Create(v, 1.0/vals.Length);
+            T[] vals = values.ToArray();
+            IEnumerable<Tuple<T, double>> probs = from v in vals
+                                                  select Tuple.Create(v, 1.0/vals.Length);
 
             return FromProbabilites(probs);
         }
@@ -106,18 +120,6 @@ namespace MonadicIT.Common
         public static Distribution<T> Certainly(T value)
         {
             return FromProbabilites(new[] {Tuple.Create(value, 1.0)});
-        }
-
-        public Type SymbolType { get { return typeof (T); } }
-
-        double IDistribution.this[object symbol]
-        {
-            get { return this[(T) symbol]; }
-        }
-
-        object IDistribution.Sample()
-        {
-            return Sample();
         }
     }
 }

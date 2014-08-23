@@ -9,37 +9,35 @@ namespace MonadicIT.Source.Lossless
     {
         private Either<T, Tuple<PrefixTree<T>, PrefixTree<T>>> _data;
 
-        public double Probability { get; set; }
-        public bool IsLeaf { get { return _data.IsLeft; } }
-        public T Value { get { return _data.ProjectLeft().Get(); } }
-        public PrefixTree<T> Left { get { return _data.ProjectRight().Get().Item1; } }
-        public PrefixTree<T> Right { get { return _data.ProjectRight().Get().Item2; } }
+        private PrefixTree()
+        {
+        }
+
+        public T Value
+        {
+            get { return _data.ProjectLeft().Get(); }
+        }
+
+        public PrefixTree<T> Left
+        {
+            get { return _data.ProjectRight().Get().Item1; }
+        }
+
+        public PrefixTree<T> Right
+        {
+            get { return _data.ProjectRight().Get().Item2; }
+        }
 
         public IEnumerable<PrefixTree<T>> Children
         {
             get { return IsLeaf ? Enumerable.Empty<PrefixTree<T>>() : new[] {Left, Right}; }
         }
 
-        private PrefixTree()
-        {
-        }
+        public double Probability { get; set; }
 
-        public static PrefixTree<T> Leaf(double probability, T value)
+        public bool IsLeaf
         {
-            return new PrefixTree<T>
-            {
-                Probability = probability,
-                _data = Either.Left(value)
-            };
-        }
-
-        public static PrefixTree<T> Inner(PrefixTree<T> l, PrefixTree<T> r)
-        {
-            return new PrefixTree<T>
-            {
-                Probability = l.Probability + r.Probability,
-                _data = Either.Right(Tuple.Create(l, r))
-            };
+            get { return _data.IsLeft; }
         }
 
         object IPrefixTree.Value
@@ -60,6 +58,24 @@ namespace MonadicIT.Source.Lossless
         IEnumerable<IPrefixTree> IPrefixTree.Children
         {
             get { return Children; }
+        }
+
+        public static PrefixTree<T> Leaf(double probability, T value)
+        {
+            return new PrefixTree<T>
+            {
+                Probability = probability,
+                _data = Either.Left(value)
+            };
+        }
+
+        public static PrefixTree<T> Inner(PrefixTree<T> l, PrefixTree<T> r)
+        {
+            return new PrefixTree<T>
+            {
+                Probability = l.Probability + r.Probability,
+                _data = Either.Right(Tuple.Create(l, r))
+            };
         }
     }
 }

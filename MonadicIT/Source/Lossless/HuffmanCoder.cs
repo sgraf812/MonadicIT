@@ -12,29 +12,24 @@ namespace MonadicIT.Source.Lossless
     {
         private static readonly IComparer<PrefixTree<T>> Comparer = new HuffmanNodeComparer();
 
-        public Dictionary<T, IEnumerable<Binary>> CodeDictionary { get; private set; }
-        public PrefixTree<T> CodeTree { get; private set; }
-
         private HuffmanCoder(PrefixTree<T> codeTree, Dictionary<T, IEnumerable<Binary>> codeDictionary)
         {
             CodeTree = codeTree;
             CodeDictionary = codeDictionary;
         }
 
-        public IEnumerable<Binary> Encode(IEnumerable<T> symbols)
-        {
-            return symbols.SelectMany(s => CodeDictionary[s]);
-        }
+        public Dictionary<T, IEnumerable<Binary>> CodeDictionary { get; private set; }
+        public PrefixTree<T> CodeTree { get; private set; }
 
         public IEnumerable<T> Decode(IEnumerable<Binary> bits)
         {
-            var cur = CodeTree;
+            PrefixTree<T> cur = CodeTree;
 
             // iff we have only one code symbol, there is no information transmitted
-            while (cur.IsLeaf) 
+            while (cur.IsLeaf)
                 yield return cur.Value; // infinite sequence of the single symbol
 
-            foreach (var b in bits)
+            foreach (Binary b in bits)
             {
                 cur = b == Binary.I ? cur.Right : cur.Left;
 
@@ -46,28 +41,35 @@ namespace MonadicIT.Source.Lossless
             }
 
             Throw.If<InvalidDataException>(cur != CodeTree, "The input bit stream ended unexpectedly. " +
-                                                               "There might be an incompletely decoded symbol.");
+                                                            "There might be an incompletely decoded symbol.");
+        }
+
+        public IEnumerable<Binary> Encode(IEnumerable<T> symbols)
+        {
+            return symbols.SelectMany(s => CodeDictionary[s]);
         }
 
         public Distribution<Binary> GetBitDistribution(Distribution<T> distribution)
         {
-            var weightedOneAndZeros = (from s in EnumHelper<T>.Values
-                                       let p = distribution[s]
-                                       where p > 0
-                                       let bits = Encode(new[] {s}).ToArray()
-                                       let zeros = bits.Count(b => b == Binary.O)
-                                       let ones = bits.Count(b => b == Binary.I)
-                                       let all = bits.Length
-                                       select Tuple.Create(p*zeros/all, p*ones/all)).ToArray();
-            var pZero = weightedOneAndZeros.Sum(t => t.Item1);
-            var pOne = weightedOneAndZeros.Sum(t => t.Item2);
+            Tuple<double, double>[] weightedOneAndZeros = (from s in EnumHelper<T>.Values
+                                                           let p = distribution[s]
+                                                           where p > 0
+                                                           let bits = Encode(new[] {s}).ToArray()
+                                                           let zeros = bits.Count(b => b == Binary.O)
+                                                           let ones = bits.Count(b => b == Binary.I)
+                                                           let all = bits.Length
+                                                           select Tuple.Create(p*zeros/all, p*ones/all)).ToArray();
+            double pZero = weightedOneAndZeros.Sum(t => t.Item1);
+            double pOne = weightedOneAndZeros.Sum(t => t.Item2);
 
-            return Distribution<Binary>.FromProbabilites(new[]{ Tuple.Create(Binary.O, pZero), Tuple.Create(Binary.I, pOne)});
+            return
+                Distribution<Binary>.FromProbabilites(new[]
+                {Tuple.Create(Binary.O, pZero), Tuple.Create(Binary.I, pOne)});
         }
 
         public static HuffmanCoder<T> FromDistribution(Distribution<T> distribution)
         {
-            var symbolCount = EnumHelper<T>.Values.Length;
+            int symbolCount = EnumHelper<T>.Values.Length;
             Throw.If<ArgumentException>(symbolCount == 0,
                 "There is no code for an empty dictionary");
 
@@ -80,10 +82,10 @@ namespace MonadicIT.Source.Lossless
                 select PrefixTree<T>.Leaf(p, s));
 
             // the usual steps of the huffman algorithm
-            var a = queue.DeleteMin();
+            PrefixTree<T> a = queue.DeleteMin();
             while (!queue.IsEmpty)
             {
-                var b = queue.DeleteMin();
+                PrefixTree<T> b = queue.DeleteMin();
                 queue.Add(PrefixTree<T>.Inner(a, b));
                 a = queue.DeleteMin();
             }
@@ -102,7 +104,7 @@ namespace MonadicIT.Source.Lossless
             PrefixTree<T> last = null;
             while (path.Count > 0)
             {
-                var cur = path.Peek();
+                PrefixTree<T> cur = path.Peek();
 
                 if (cur.IsLeaf)
                 {
@@ -154,11 +156,11 @@ namespace MonadicIT.Source.Lossless
             return dict;
         }
 
-        private sealed class HuffmanNodeComparer : IComparer<PrefixTree<T>> 
+        private sealed class HuffmanNodeComparer : IComparer<PrefixTree<T>>
         {
             public int Compare(PrefixTree<T> x, PrefixTree<T> y)
             {
-                var delta = x.Probability - y.Probability;
+                double delta = x.Probability - y.Probability;
                 return delta < 0 ? -1 : delta > 0 ? 1 : 0;
             }
         }

@@ -10,12 +10,6 @@ namespace MonadicIT.Visual.ViewModels
 {
     public class ChannelViewModel : Screen, IChannelProperties
     {
-        public IObservable<IDiscreteChannel<Binary>> Channel { get; private set; }
-
-        public ReactiveProperty<double> ErrorProbability { get; private set; }
-
-        public ReactiveProperty<double> ChannelCapacity { get; private set; }
-
         public ChannelViewModel()
         {
             DisplayName = "Channel model properties";
@@ -27,5 +21,10 @@ namespace MonadicIT.Visual.ViewModels
 
             ChannelCapacity = Channel.Select(x => x.ChannelCapacity).ToReactiveProperty();
         }
+
+        public ReactiveProperty<double> ErrorProbability { get; private set; }
+
+        public ReactiveProperty<double> ChannelCapacity { get; private set; }
+        public IObservable<IDiscreteChannel<Binary>> Channel { get; private set; }
     }
 }

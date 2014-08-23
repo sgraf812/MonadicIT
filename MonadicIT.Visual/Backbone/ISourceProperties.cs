@@ -1,5 +1,4 @@
 ﻿using System;
-using Codeplex.Reactive;
 using MonadicIT.Common;
 
 namespace MonadicIT.Visual.Backbone
@@ -7,6 +6,6 @@ namespace MonadicIT.Visual.Backbone
     public interface ISourceProperties
     {
         IObservable<IDistribution> Distribution { get; }
-        IObservable<int> SymbolRate { get; } 
+        IObservable<int> SymbolRate { get; }
     }
 }

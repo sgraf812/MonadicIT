@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace MonadicIT.Common
 {
@@ -7,8 +6,8 @@ namespace MonadicIT.Common
     {
         public static int BinomialCoefficient(int n, int k)
         {
-            var nOverK = 1;
-            for (var i = 1; i <= k; i++)
+            int nOverK = 1;
+            for (int i = 1; i <= k; i++)
             {
                 nOverK *= n - k + i;
                 nOverK /= i;

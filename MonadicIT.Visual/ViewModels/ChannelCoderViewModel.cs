@@ -16,14 +16,8 @@ namespace MonadicIT.Visual.ViewModels
 {
     public class ChannelCoderViewModel : Screen, IChannelCoderProperties
     {
-        public IObservable<IChannelCoder<Binary>> Coder { get; private set; }
-
-        public SelectorViewModel<IChannelCoderDetailViewModel> Selector { get; private set; }
-
-        public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
-
         public ChannelCoderViewModel(
-            IEnumerable<IChannelCoderDetailViewModel> channelCoderDetailViewModels, 
+            IEnumerable<IChannelCoderDetailViewModel> channelCoderDetailViewModels,
             IChannelProperties channel)
         {
             DisplayName = "Channel coder properties";
@@ -42,8 +36,13 @@ namespace MonadicIT.Visual.ViewModels
                                 Tuple.Create("Code rate", coder.CodeRate),
                                 Tuple.Create("Channel capacity", ch.ChannelCapacity),
                                 Tuple.Create("Residual error rate", coder.ResidualErrorRate(ch)),
-                                Tuple.Create("Channel error rate", ch.ErrorRate()),
+                                Tuple.Create("Channel error rate", ch.ErrorRate())
                             }.AsEnumerable()).ToReactiveProperty();
         }
+
+        public SelectorViewModel<IChannelCoderDetailViewModel> Selector { get; private set; }
+
+        public ReactiveProperty<IEnumerable<Tuple<string, double>>> PlotData { get; private set; }
+        public IObservable<IChannelCoder<Binary>> Coder { get; private set; }
     }
 }

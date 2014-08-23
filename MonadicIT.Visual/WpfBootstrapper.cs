@@ -5,6 +5,7 @@ using Caliburn.Micro;
 using MonadicIT.Common;
 using MonadicIT.Visual.Backbone;
 using MonadicIT.Visual.ViewModels;
+using Decimal = MonadicIT.Common.Decimal;
 
 namespace MonadicIT.Visual
 {
@@ -52,11 +53,11 @@ namespace MonadicIT.Visual
             _container.Handler<IChannelProperties>(c => c.GetInstance<ChannelViewModel>());
             RegisterDistributionViewModelHandler<Binary>();
             RegisterDistributionViewModelHandler<Ternary>();
-            RegisterDistributionViewModelHandler<Common.Decimal>();
+            RegisterDistributionViewModelHandler<Decimal>();
             _container.Singleton<TransmissionSystem>();
         }
 
-        private void RegisterDistributionViewModelHandler<T>() where T : /*Enum, */struct
+        private void RegisterDistributionViewModelHandler<T>() where T : /*Enum, */ struct
         {
             _container.Handler<DistributionViewModel>(
                 _ => new DistributionViewModel(Distribution<T>.Uniform(EnumHelper<T>.Values)));

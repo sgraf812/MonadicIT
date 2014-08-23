@@ -2,21 +2,34 @@
 {
     public enum Binary : byte
     {
-        I, O
+        I,
+        O
     }
 
     public enum Ternary : byte
     {
-        Zero, One, Two
+        Zero,
+        One,
+        Two
     }
 
     public enum Decimal : byte
     {
-        Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine
+        Zero,
+        One,
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine
     }
 
     public enum Bool : byte
     {
-        False, True
+        False,
+        True
     }
 }

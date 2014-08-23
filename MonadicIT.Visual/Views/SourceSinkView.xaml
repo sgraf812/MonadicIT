@@ -15,33 +15,35 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
-            <RowDefinition Height="200"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="200" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Text="Symbol rate: " Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-            <xctk:IntegerUpDown Value="{Binding SymbolRate.Value}" Minimum="0" Maximum="50" Increment="1" VerticalAlignment="Center"
-                            Grid.Row="0" Grid.Column="1" Margin="1,5,1,5" />
+            <xctk:IntegerUpDown Value="{Binding SymbolRate.Value}" Minimum="0" Maximum="50" Increment="1"
+                                VerticalAlignment="Center"
+                                Grid.Row="0" Grid.Column="1" Margin="1,5,1,5" />
             <TextBlock Text="symbols/s" Grid.Column="2" VerticalAlignment="Center" />
 
         </Grid>
 
-        <oxy:PlotView LegendPlacement="Inside" LegendPosition="TopRight" LegendOrientation="Vertical" 
+        <oxy:PlotView LegendPlacement="Inside" LegendPosition="TopRight" LegendOrientation="Vertical"
                       Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
             <oxy:PlotView.Axes>
-                <oxy:CategoryAxis ItemsSource="{Binding PlotData.Value}" LabelField="Item1" IsZoomEnabled="False" IsPanEnabled="False"/>
-                <oxy:LinearAxis AbsoluteMaximum="1.0" Maximum="1.0" Minimum="0.0" AbsoluteMinimum="0.0"/>
+                <oxy:CategoryAxis ItemsSource="{Binding PlotData.Value}" LabelField="Item1" IsZoomEnabled="False"
+                                  IsPanEnabled="False" />
+                <oxy:LinearAxis AbsoluteMaximum="1.0" Maximum="1.0" Minimum="0.0" AbsoluteMinimum="0.0" />
             </oxy:PlotView.Axes>
             <oxy:PlotView.Series>
                 <oxy:ColumnSeries ItemsSource="{Binding PlotData.Value}" ValueField="Item2" />
@@ -51,8 +53,8 @@
         <ContentControl x:Name="Selector" HorizontalAlignment="Stretch"
                         Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" />
 
-        <TextBlock Text="{Binding Path=Distribution.Value.Entropy, StringFormat=Entropy: {0:F3} bit/symbol}" 
-                   Grid.Row="3" Grid.Column="1" Margin="1,5,1,5" 
+        <TextBlock Text="{Binding Path=Distribution.Value.Entropy, StringFormat=Entropy: {0:F3} bit/symbol}"
+                   Grid.Row="3" Grid.Column="1" Margin="1,5,1,5"
                    VerticalAlignment="Center" HorizontalAlignment="Center" />
     </Grid>
 </Window>

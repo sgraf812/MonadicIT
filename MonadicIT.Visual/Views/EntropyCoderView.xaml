@@ -13,10 +13,11 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="{Binding Path=MeanCodeWordLength.Value, StringFormat=Mean code word length: {0:F3} bit/symbol}" 
-                   Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="1,5,1,5" 
-                   VerticalAlignment="Center" HorizontalAlignment="Center" />
-        
+        <TextBlock
+            Text="{Binding Path=MeanCodeWordLength.Value, StringFormat=Mean code word length: {0:F3} bit/symbol}"
+            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="1,5,1,5"
+            VerticalAlignment="Center" HorizontalAlignment="Center" />
+
         <TreeView ItemsSource="{Binding CodeTree.Value}"
                   Grid.Row="1" Grid.Column="0">
             <TreeView.ItemContainerStyle>
@@ -24,25 +25,25 @@
                     <Setter Property="IsExpanded" Value="True" />
                 </Style>
             </TreeView.ItemContainerStyle>
-        <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="Value" />
-                    <TextBlock x:Name="PadLeft" Text="p="/>
-                    <TextBlock x:Name="Probability" Text="{Binding Probability, StringFormat={}{0:0.00}}" />
-                    <TextBlock x:Name="PadRight" />
-                </StackPanel>
-                <HierarchicalDataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding IsLeaf}" Value="True">
-                        <Setter TargetName="Value" Property="Text" Value="{Binding Value}" />
-                        <Setter TargetName="PadLeft" Property="Text" Value=" (p=" />
-                        <Setter TargetName="PadRight" Property="Text" Value=")" />
-                    </DataTrigger>
-                </HierarchicalDataTemplate.Triggers>
-            </HierarchicalDataTemplate>
-        </TreeView.ItemTemplate>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="Value" />
+                        <TextBlock x:Name="PadLeft" Text="p=" />
+                        <TextBlock x:Name="Probability" Text="{Binding Probability, StringFormat={}{0:0.00}}" />
+                        <TextBlock x:Name="PadRight" />
+                    </StackPanel>
+                    <HierarchicalDataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsLeaf}" Value="True">
+                            <Setter TargetName="Value" Property="Text" Value="{Binding Value}" />
+                            <Setter TargetName="PadLeft" Property="Text" Value=" (p=" />
+                            <Setter TargetName="PadRight" Property="Text" Value=")" />
+                        </DataTrigger>
+                    </HierarchicalDataTemplate.Triggers>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
-        
+
         <ItemsControl ItemsSource="{Binding CodeWords.Value}"
                       Grid.Row="1" Grid.Column="1">
             <ItemsControl.ItemTemplate>
@@ -53,7 +54,7 @@
                                 <SolidColorBrush Color="CornflowerBlue" Opacity="{Binding Item3}" />
                             </TextBlock.Background>
                         </TextBlock>
-                        <TextBlock Text="{Binding Item2}" FontFamily="Courier New"/>
+                        <TextBlock Text="{Binding Item2}" FontFamily="Courier New" />
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

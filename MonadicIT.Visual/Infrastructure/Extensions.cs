@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Windows;
 
 namespace MonadicIT.Visual.Infrastructure
@@ -19,6 +17,7 @@ namespace MonadicIT.Visual.Infrastructure
         {
             return element.TransformToVisual(container).Transform(new Point(element.Width/2, 0));
         }
+
         public static Point BottomRelativeTo(this FrameworkElement element, System.Windows.Media.Visual container)
         {
             return element.TransformToVisual(container).Transform(new Point(element.Width/2, element.Height));
@@ -34,10 +33,10 @@ namespace MonadicIT.Visual.Infrastructure
 
         public static IEnumerable<IObservable<T>> ObserveElements<T>(this IObservable<IEnumerable<T>> obs)
         {
-            var i = 0;
+            int i = 0;
             while (true)
             {
-                var idx = i++;
+                int idx = i++;
                 yield return from enumerable in obs
                              let x = enumerable.ElementAtOrDefault(idx)
                              where !Equals(x, default(T))

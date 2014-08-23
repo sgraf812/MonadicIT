@@ -13,33 +13,36 @@ namespace MonadicIT.Visual.ViewModels
         private readonly Type _symbolType;
         private bool _adjustingProbabilities;
 
-        public IList<Occurrence> Occurrences { get; private set; } 
-        public ReactiveProperty<IDistribution> Distribution { get; private set; }
-
-        public override string DisplayName { get { return _symbolType.Name; } }
-
         public DistributionViewModel(IDistribution distribution)
         {
             _symbolType = distribution.SymbolType;
-            var probs = from v in Enum.GetValues(distribution.SymbolType).Cast<object>()
-                        select distribution[v];
+            IEnumerable<double> probs = from v in Enum.GetValues(distribution.SymbolType).Cast<object>()
+                                        select distribution[v];
 
-            var symbols = Enum.GetNames(_symbolType);
+            string[] symbols = Enum.GetNames(_symbolType);
             Occurrences = new List<Occurrence>(symbols.Zip(probs, (s, p) => new Occurrence
             {
                 Symbol = s,
                 Probability = p
             }));
 
-            foreach (var occ in Occurrences)
+            foreach (Occurrence occ in Occurrences)
             {
-                var o = occ;
+                Occurrence o = occ;
                 occ.PropertyChanged += (s, e) => AdjustProbabilities(o);
             }
 
             Distribution = new ReactiveProperty<IDistribution>(distribution);
 
             _adjustingProbabilities = false;
+        }
+
+        public IList<Occurrence> Occurrences { get; private set; }
+        public ReactiveProperty<IDistribution> Distribution { get; private set; }
+
+        public override string DisplayName
+        {
+            get { return _symbolType.Name; }
         }
 
         private void AdjustProbabilities(Occurrence changed)
@@ -49,23 +52,23 @@ namespace MonadicIT.Visual.ViewModels
 
             try
             {
-                var p = changed.Probability;
+                double p = changed.Probability;
                 // sum the probs we have to stretch. 
-                var others = Occurrences.Except(new[] {changed}).ToArray();
-                var rest = others.Sum(t => t.Probability); 
+                Occurrence[] others = Occurrences.Except(new[] {changed}).ToArray();
+                double rest = others.Sum(t => t.Probability);
 
                 p = p.Clamp(0.0, 1.0); // p is a probability
-                var q = 1.0 - p;
-                var toDistribute = q - rest;
+                double q = 1.0 - p;
+                double toDistribute = q - rest;
 
                 // now stretch all probabilities except what was changed by that value
-                foreach (var occ in others)
+                foreach (Occurrence occ in others)
                 {
-                    var share = rest > 0 ? occ.Probability/rest : 1.0/others.Length;
+                    double share = rest > 0 ? occ.Probability/rest : 1.0/others.Length;
                     occ.Probability = (occ.Probability + share*toDistribute).Clamp(0.0, 1.0);
                 }
 
-                var fromProbs = typeof (DistributionViewModel)
+                MethodInfo fromProbs = typeof (DistributionViewModel)
                     .GetMethod("DistributionFromProbabilites", BindingFlags.NonPublic | BindingFlags.Static)
                     .MakeGenericMethod(_symbolType);
                 Distribution.Value = (IDistribution) fromProbs.Invoke(null, new object[] {Occurrences});
@@ -77,10 +80,12 @@ namespace MonadicIT.Visual.ViewModels
         }
 
 // ReSharper disable once UnusedMember.Local
-        private static Distribution<T> DistributionFromProbabilites<T>(IEnumerable<Occurrence> probs) where T : /* Enum,*/ struct
+        private static Distribution<T> DistributionFromProbabilites<T>(IEnumerable<Occurrence> probs)
+            where T : /* Enum,*/ struct
         {
             return Distribution<T>.FromProbabilites(from t in probs
-                                                    select Tuple.Create((T) Enum.Parse(typeof (T), t.Symbol), t.Probability));
+                                                    select
+                                                        Tuple.Create((T) Enum.Parse(typeof (T), t.Symbol), t.Probability));
         }
 
         public class Occurrence : PropertyChangedBase

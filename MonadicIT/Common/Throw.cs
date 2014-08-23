@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 namespace MonadicIT.Common
 {
@@ -9,7 +8,7 @@ namespace MonadicIT.Common
         {
             if (condition)
             {
-                throw (T)Activator.CreateInstance(typeof(T), message);
+                throw (T) Activator.CreateInstance(typeof (T), message);
             }
         }
     }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Reflection;
 using MonadicIT.Channel;
-using Scalesque;
 
 namespace MonadicIT.Common
 {
@@ -15,8 +12,8 @@ namespace MonadicIT.Common
         }
 
         public static Distribution<V> SelectMany<T, U, V>(
-            this Distribution<T> dist, 
-            Func<T, Distribution<U>> transitionDistribution, 
+            this Distribution<T> dist,
+            Func<T, Distribution<U>> transitionDistribution,
             Func<T, U, V> jointSelector)
             where U : /* Enum, */ struct
             where T : /* Enum, */ struct
@@ -28,9 +25,9 @@ namespace MonadicIT.Common
         public static double ErrorRate<T>(this IDiscreteChannel<T> channel)
             where T : /* Enum, */ struct
         {
-            var errorDist = from a in Distribution<T>.Uniform(EnumHelper<T>.Values)
-                            from b in channel.GetTransitionDistribution(a)
-                            select a.Equals(b).ToBool();
+            Distribution<Bool> errorDist = from a in Distribution<T>.Uniform(EnumHelper<T>.Values)
+                                           from b in channel.GetTransitionDistribution(a)
+                                           select a.Equals(b).ToBool();
 
             return errorDist[Bool.False];
         }
@@ -39,7 +36,7 @@ namespace MonadicIT.Common
         {
             var chunk = new List<T>(chunkSize);
 
-            foreach (var x in seq)
+            foreach (T x in seq)
             {
                 chunk.Add(x);
 
@@ -57,9 +54,9 @@ namespace MonadicIT.Common
 
         public static IEnumerable<T> AlternatingTakeAndSkip<T>(this IEnumerable<T> seq, int chunkSize)
         {
-            var take = true;
-            var n = 0;
-            foreach (var x in seq)
+            bool take = true;
+            int n = 0;
+            foreach (T x in seq)
             {
                 n++;
                 if (take)
@@ -77,8 +74,8 @@ namespace MonadicIT.Common
 
         public static IEnumerable<T> PadWith<T>(this IEnumerable<T> seq, T value, int desiredSize)
         {
-            var n = 0;
-            foreach (var x in seq)
+            int n = 0;
+            foreach (T x in seq)
             {
                 n++;
                 yield return x;

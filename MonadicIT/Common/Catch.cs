@@ -16,6 +16,5 @@ namespace MonadicIT.Common
                 return Option.None();
             }
         }
-        
     }
 }

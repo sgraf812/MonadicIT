@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -11,24 +10,27 @@ namespace MonadicIT.Visual.Backbone
     public class TransmissionSystem
     {
         private static readonly TimeSpan TooLongToCare = TimeSpan.FromDays(200000);
-        private readonly IObservable<Transmission> _symbols; 
+        private readonly IObservable<Transmission> _symbols;
 
-        public TimeSpan NodeDelay { get { return TimeSpan.FromMilliseconds(100); } }
-
-        public TransmissionSystem(ISourceProperties source, IEntropyCoderProperties entropyCoder, 
+        public TransmissionSystem(ISourceProperties source, IEntropyCoderProperties entropyCoder,
             IChannelCoderProperties channelCoder, IChannelProperties channel, IEventAggregator events)
         {
             var lastSample = new BehaviorSubject<DateTimeOffset>(DateTimeOffset.Now);
-            var intervals = source.SymbolRate.Select(r => r > 0 ? TimeSpan.FromSeconds(1.0/r) : TooLongToCare);;
-            var tickStreams = from i in intervals
-                              from prev in lastSample.Take(1)
-                              let next = prev + i
-                              let now = DateTimeOffset.Now
-                              select next <= now
-                                  ? Observable.Return(-1L).Concat(Observable.Timer(now + i, i)) // we are already behind our schedule
-                                  : Observable.Timer(next, i); // we can safely schedule the next tick
+            IObservable<TimeSpan> intervals =
+                source.SymbolRate.Select(r => r > 0 ? TimeSpan.FromSeconds(1.0/r) : TooLongToCare);
+            ;
+            IObservable<IObservable<long>> tickStreams = from i in intervals
+                                                         from prev in lastSample.Take(1)
+                                                         let next = prev + i
+                                                         let now = DateTimeOffset.Now
+                                                         select next <= now
+                                                             ? Observable.Return(-1L)
+                                                                 .Concat(Observable.Timer(now + i, i))
+                                                             // we are already behind our schedule
+                                                             : Observable.Timer(next, i);
+                // we can safely schedule the next tick
 
-            var tick = tickStreams.Switch().Do(_ => lastSample.OnNext(DateTimeOffset.Now));
+            IObservable<long> tick = tickStreams.Switch().Do(_ => lastSample.OnNext(DateTimeOffset.Now));
 
             _symbols = from _ in tick
                        from d in source.Distribution.Take(1)
@@ -53,6 +55,11 @@ namespace MonadicIT.Visual.Backbone
                        };
 
             _symbols.Subscribe(events.BeginPublishOnUIThread);
+        }
+
+        public TimeSpan NodeDelay
+        {
+            get { return TimeSpan.FromMilliseconds(100); }
         }
     }
 }

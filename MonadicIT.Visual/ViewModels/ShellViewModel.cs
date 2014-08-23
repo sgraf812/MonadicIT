@@ -1,23 +1,14 @@
 ﻿using Caliburn.Micro;
-using Codeplex.Reactive;
 using MonadicIT.Visual.Backbone;
 
 namespace MonadicIT.Visual.ViewModels
 {
     public sealed class ShellViewModel : Screen
     {
-        private readonly IWindowManager _windowManager;
         private readonly TransmissionSystem _system;
+        private readonly IWindowManager _windowManager;
 
-        public SourceSinkViewModel SourceSink { get; private set; }
-
-        public EntropyCoderViewModel EntropyCoder { get; private set; }
-
-        public ChannelCoderViewModel ChannelCoder { get; private set; }
-
-        public ChannelViewModel Channel { get; private set; }
-
-        public ShellViewModel(IWindowManager windowManager, SourceSinkViewModel ssvm, 
+        public ShellViewModel(IWindowManager windowManager, SourceSinkViewModel ssvm,
             EntropyCoderViewModel ecvm, ChannelCoderViewModel ccvm, ChannelViewModel cvm, TransmissionSystem system)
         {
             DisplayName = "Information Transmission Simulation";
@@ -28,6 +19,14 @@ namespace MonadicIT.Visual.ViewModels
             ChannelCoder = ccvm;
             Channel = cvm;
         }
+
+        public SourceSinkViewModel SourceSink { get; private set; }
+
+        public EntropyCoderViewModel EntropyCoder { get; private set; }
+
+        public ChannelCoderViewModel ChannelCoder { get; private set; }
+
+        public ChannelViewModel Channel { get; private set; }
 
         protected override void OnDeactivate(bool close)
         {

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows;
 
 namespace MonadicIT.Visual.Infrastructure
@@ -24,17 +27,23 @@ namespace MonadicIT.Visual.Infrastructure
         public static IObservable<FrameworkElement> ObserveLayoutUpdates(this FrameworkElement element)
         {
             return (from _ in Observable.FromEventPattern(
-                h => element.LayoutUpdated+= h,
-                h => element.LayoutUpdated-= h)
+                h => element.LayoutUpdated += h,
+                h => element.LayoutUpdated -= h)
                     select element).StartWith(element);
         }
 
-        public static IObservable<FrameworkElement> ObserveSizeChanges(this FrameworkElement element)
+        public static IEnumerable<IObservable<T>> ObserveElements<T>(this IObservable<IEnumerable<T>> obs)
         {
-            return (from _ in Observable.FromEventPattern<SizeChangedEventArgs>(
-                h => element.SizeChanged += new SizeChangedEventHandler(h),
-                h => element.SizeChanged -= new SizeChangedEventHandler(h))
-                    select element).StartWith(element);
+            var i = 0;
+            while (true)
+            {
+                var idx = i++;
+                yield return from enumerable in obs
+                             let x = enumerable.ElementAtOrDefault(idx)
+                             where !Equals(x, default(T))
+                             select x;
+            }
+// ReSharper disable once FunctionNeverReturns
         }
     }
 }

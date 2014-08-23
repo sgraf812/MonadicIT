@@ -75,7 +75,13 @@
         </Grid.ColumnDefinitions>
 
         <Canvas x:Name="BackgroundCanvas" Grid.RowSpan="2" Grid.ColumnSpan="4">
-            <Path x:Name="Path" Stroke="Black" StrokeThickness="1"/>
+            <Path x:Name="SourceToEntropyEncoder" Stroke="Black" StrokeThickness="1"/>
+            <Path x:Name="EntropyEncoderToChannelEncoder" Stroke="Black" StrokeThickness="1"/>
+            <Path x:Name="ChannelEncoderToChannelTop" Stroke="Black" StrokeThickness="1"/>
+            <Path x:Name="ChannelTopToChannelBottom" Stroke="Black" StrokeThickness="1"/>
+            <Path x:Name="ChannelBottomToChannelDecoder" Stroke="Black" StrokeThickness="1"/>
+            <Path x:Name="ChannelDecoderToEntropyDecoder" Stroke="Black" StrokeThickness="1"/>
+            <Path x:Name="EntropyDecoderToSink" Stroke="Black" StrokeThickness="1"/>
         </Canvas>
 
         <ToggleButton DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="SourceSink"
@@ -88,7 +94,7 @@
         <ToggleButton DataContext="{Binding EntropyCoder}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="EntropyCoder"
                       Background="#FFEFFEED" BorderBrush="#FF0DBC3F" BorderThickness="2"
                       Grid.Row="0" Grid.Column="1"
-                      controls:TransmissionLayer.Width="200" controls:TransmissionLayer.TopText="Channel encoder" controls:TransmissionLayer.BottomText="Channel decoder"
+                      controls:TransmissionLayer.Width="200" controls:TransmissionLayer.TopText="Entropy encoder" controls:TransmissionLayer.BottomText="Entropy decoder"
                       cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}">
             <controls:TransmissionLayer.Description>
                 The entropy coder performs redudancy reduction to stream the information with the least bit rate possible. 

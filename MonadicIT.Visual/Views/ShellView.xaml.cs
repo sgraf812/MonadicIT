@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Security;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,8 +21,9 @@ namespace MonadicIT.Visual.Views
 {
     public partial class ShellView : Window, IHandle<Transmission>
     {
-        private const bool IsPathStroked = false;
-        private static readonly IEqualityComparer<IEnumerable<Point>> PointsComparer = new EnumerableComparer<Point>(); 
+        private const bool IsPathStroked = true;
+        private static readonly IEqualityComparer<IEnumerable<Point>> PointsComparer = new EnumerableComparer<Point>();
+        private readonly Path[] _paths;
         private FrameworkElement _source;
         private FrameworkElement _sink;
         private FrameworkElement _eenc;
@@ -31,28 +35,43 @@ namespace MonadicIT.Visual.Views
         public ShellView()
         {
             InitializeComponent();
+            _paths = new[]
+            {
+                SourceToEntropyEncoder, EntropyEncoderToChannelEncoder, ChannelEncoderToChannelTop,
+                ChannelTopToChannelBottom, ChannelBottomToChannelDecoder, ChannelDecoderToEntropyDecoder,
+                EntropyDecoderToSink
+            };
+
             IoC.Get<IEventAggregator>().Subscribe(this);
+
             Loaded += delegate
             {
-                _source = FindNameInTemplate(SourceSink, "Top");
-                _sink = FindNameInTemplate(SourceSink, "Bottom");
-                _eenc = FindNameInTemplate(EntropyCoder, "Top");
-                _edec = FindNameInTemplate(EntropyCoder, "Bottom");
-                _cenc = FindNameInTemplate(ChannelCoder, "Top");
-                _cdec = FindNameInTemplate(ChannelCoder, "Bottom");
-                _channel = (FrameworkElement) FindName("Channel");
-
-                Path.SetBinding(Path.DataProperty, new Binding
-                {
-                    Source = PathsFollowingElements().ToReactiveProperty(),
-                    Path = new PropertyPath("Value"),
-                    Mode = BindingMode.OneWay
-                });
+                // we do it just for side effect of binding the pathgeometry properties
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                PathsFollowingElements().ObserveElements().Zip(_paths, BindPathGeometry).Count();
             };
         }
 
-        private IObservable<PathGeometry> PathsFollowingElements()
+        private static object BindPathGeometry(IObservable<PathGeometry> pg, Path path)
         {
+            path.SetBinding(Path.DataProperty, new Binding
+            {
+                Source = pg.ToReactiveProperty(),
+                Path = new PropertyPath("Value"),
+                Mode = BindingMode.OneWay
+            });
+            return null;
+        }
+
+        private IObservable<PathGeometry[]> PathsFollowingElements()
+        {
+            _source = FindNameInTemplate(SourceSink, "Top");
+            _sink = FindNameInTemplate(SourceSink, "Bottom");
+            _eenc = FindNameInTemplate(EntropyCoder, "Top");
+            _edec = FindNameInTemplate(EntropyCoder, "Bottom");
+            _cenc = FindNameInTemplate(ChannelCoder, "Top");
+            _cdec = FindNameInTemplate(ChannelCoder, "Bottom");
+            _channel = (FrameworkElement)FindName("Channel");
             const double scaleX = 3/5.0;
             const double scaleY = 1.0;
             var points = from _ in RootPanel.ObserveLayoutUpdates()
@@ -76,20 +95,38 @@ namespace MonadicIT.Visual.Views
                    let p2 = p.cht - new Vector(0, diff.Y*scaleY)
                    let p3 = p.chb + new Vector(0, diff.Y*scaleY)
                    let p4 = p.cdec + new Vector(diff.X*scaleX, 0)
-                   select new PathGeometry(new[]
+                   select new[]
                    {
-                       new PathFigure(p.src, new PathSegment[]
-                       {
-                           new LineSegment(p.eenc, IsPathStroked),
-                           new LineSegment(p.cenc, IsPathStroked),
-                           new LineSegment(p.cenc, IsPathStroked),
-                           new BezierSegment(p1, p2, p.cht, IsPathStroked),
-                           new LineSegment(p.chb, IsPathStroked),
-                           new BezierSegment(p3, p4, p.cdec, IsPathStroked),
-                           new LineSegment(p.edec, IsPathStroked),
-                           new LineSegment(p.snk, IsPathStroked),
-                       }, false)
-                   });
+                       LineGeometry(p.src, p.eenc),
+                       LineGeometry(p.eenc, p.cenc),
+                       BezierGeometry(p.cenc, p1, p2, p.cht),
+                       LineGeometry(p.cht, p.chb),
+                       BezierGeometry(p.chb, p3, p4, p.cdec),
+                       LineGeometry(p.cdec, p.edec),
+                       LineGeometry(p.edec, p.snk)
+                   };
+        }
+
+        private static PathGeometry LineGeometry(Point from, Point to)
+        {
+            return new PathGeometry(new[]
+            {
+                new PathFigure(from, new PathSegment[]
+                {
+                    new LineSegment(to, IsPathStroked), 
+                }, false), 
+            });
+        }
+
+        private static PathGeometry BezierGeometry(Point from, Point cp1, Point cp2, Point to)
+        {
+            return new PathGeometry(new[]
+            {
+                new PathFigure(from, new PathSegment[]
+                {
+                    new BezierSegment(cp1, cp2, to, IsPathStroked), 
+                }, false), 
+            });
         }
 
         private Point CenterPosition(FrameworkElement element)
@@ -109,33 +146,39 @@ namespace MonadicIT.Visual.Views
 
         public void Handle(Transmission message)
         {
-            var pg = Path.Data as PathGeometry;
-
-            var animation = new DoubleAnimationUsingPath
+            var duration = new Duration(TimeSpan.FromMilliseconds(500));
+            var begin = TimeSpan.Zero;
+            foreach (var path in _paths)
             {
-                Duration = new Duration(TimeSpan.FromMilliseconds(4000)),
-                AccelerationRatio = 0.5,
-                DecelerationRatio = 0.2,
-                PathGeometry = pg,
-            };
-            var circ = new Ellipse
-            {
-                Width = 10,
-                Height = 10,
-                Fill = new SolidColorBrush(Colors.Black),
-                RenderTransform = new TranslateTransform(-5, -5),
+                var pg = path.Data as PathGeometry;
                 
-            };
+                var animation = new DoubleAnimationUsingPath
+                {
+                    BeginTime = begin,
+                    Duration = duration,
+                    AccelerationRatio = 0.5,
+                    DecelerationRatio = 0.5,
+                    PathGeometry = pg,
+                };
 
-            animation.Source = PathAnimationSource.X;
-            circ.BeginAnimation(Canvas.LeftProperty, animation);
-            animation.Source = PathAnimationSource.Y;
-            circ.BeginAnimation(Canvas.TopProperty, animation);
-            BackgroundCanvas.Children.Add(circ);
-            animation.Completed += delegate
-            {
-                BackgroundCanvas.Children.Remove(circ);
-            };
+                var circ = new Ellipse
+                {
+                    Width = 10,
+                    Height = 10,
+                    Fill = new SolidColorBrush(Colors.Black),
+                    RenderTransform = new TranslateTransform(-5, -5),
+                };
+
+                BackgroundCanvas.Children.Add(circ);
+                animation.Completed += (s, e) => BackgroundCanvas.Children.Remove(circ);
+
+                animation.Source = PathAnimationSource.X;
+                circ.BeginAnimation(Canvas.LeftProperty, animation);
+                animation.Source = PathAnimationSource.Y;
+                circ.BeginAnimation(Canvas.TopProperty, animation);
+
+                begin += duration.TimeSpan;
+            }
         }
 
         private static FrameworkElement FindNameInTemplate(Control element, string name)

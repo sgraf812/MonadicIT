@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Threading;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using MonadicIT.Common;
 
@@ -31,7 +28,7 @@ namespace MonadicIT.Visual.Backbone
                                                              : Observable.Timer(next, i); // we can safely schedule the next tick
 
             IObservable<long> tick = tickStreams.Switch().Do(_ => lastSample.OnNext(DateTimeOffset.Now));
-            
+
             _symbols = from _ in tick
                        from d in source.Distribution.Take(1)
                        from entEnc in entropyCoder.Encoder.Take(1)

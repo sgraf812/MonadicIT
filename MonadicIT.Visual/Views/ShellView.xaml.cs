@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
@@ -22,8 +21,9 @@ namespace MonadicIT.Visual.Views
     {
         private const bool IsPathStroked = true;
         private static readonly IEqualityComparer<IEnumerable<Point>> PointsComparer = new EnumerableComparer<Point>();
+        private static readonly TimeSpan AnimationDuration = TimeSpan.FromMilliseconds(1000);
+        private readonly ObjectPool<Ellipse> _ellipsePool = new ObjectPool<Ellipse>();
         private readonly Path[] _paths;
-        private readonly ObjectPool<Ellipse> _ellipsePool = new ObjectPool<Ellipse>(); 
         private FrameworkElement _cdec;
         private FrameworkElement _cenc;
         private FrameworkElement _channel;
@@ -31,7 +31,6 @@ namespace MonadicIT.Visual.Views
         private FrameworkElement _eenc;
         private FrameworkElement _sink;
         private FrameworkElement _source;
-        private static readonly TimeSpan AnimationDuration = TimeSpan.FromMilliseconds(1000);
 
         public ShellView()
         {
@@ -59,8 +58,8 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateSourceToEntropyEncoder(Transmission transmission)
         {
-            var animation = CreateAnimation(SourceToEntropyEncoder, TimeSpan.Zero, AnimationDuration);
-            var circle = CreateCircle(Colors.Black, 5);
+            DoubleAnimationUsingPath animation = CreateAnimation(SourceToEntropyEncoder, TimeSpan.Zero, AnimationDuration);
+            Ellipse circle = CreateCircle(Colors.Black, 5);
             circle.RenderTransform = new TranslateTransform(-5, -5);
             BeginAnimation(animation, circle, () =>
             {
@@ -71,11 +70,11 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateEntropyEncoderToChannelEncoder(Transmission transmission)
         {
-            var animation = CreateAnimation(EntropyEncoderToChannelEncoder, TimeSpan.Zero, AnimationDuration);
-            var bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 8);
+            DoubleAnimationUsingPath animation = CreateAnimation(EntropyEncoderToChannelEncoder, TimeSpan.Zero, AnimationDuration);
+            Canvas bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 8);
             BeginAnimation(animation, bitPack, () =>
             {
-                foreach (var ellipse in bitPack.Children.OfType<Ellipse>())
+                foreach (Ellipse ellipse in bitPack.Children.OfType<Ellipse>())
                     _ellipsePool.Free(ellipse);
                 bitPack.Children.Clear();
                 AnimateChannelEncoderToChannel(transmission);
@@ -84,11 +83,11 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateChannelEncoderToChannel(Transmission transmission)
         {
-            var animation = CreateAnimation(ChannelEncoderToChannel, TimeSpan.Zero, AnimationDuration);
-            var bitPack = CreateBitPack(transmission.ChannelBits.Select(b => b == Binary.I), 6);
+            DoubleAnimationUsingPath animation = CreateAnimation(ChannelEncoderToChannel, TimeSpan.Zero, AnimationDuration);
+            Canvas bitPack = CreateBitPack(transmission.ChannelBits.Select(b => b == Binary.I), 6);
             BeginAnimation(animation, bitPack, () =>
             {
-                foreach (var ellipse in bitPack.Children.OfType<Ellipse>())
+                foreach (Ellipse ellipse in bitPack.Children.OfType<Ellipse>())
                     _ellipsePool.Free(ellipse);
                 bitPack.Children.Clear();
                 AnimateChannelToChannelDecoder(transmission);
@@ -97,12 +96,12 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateChannelToChannelDecoder(Transmission transmission)
         {
-            var animation = CreateAnimation(ChannelToChannelDecoder, TimeSpan.Zero, AnimationDuration);
-            var errors = transmission.ChannelBits.Zip(transmission.DistortedChannelBits, (a, b) => a != b);
-            var bitPack = CreateBitPack(transmission.DistortedChannelBits.Select(b => b == Binary.I), 6, errors);
+            DoubleAnimationUsingPath animation = CreateAnimation(ChannelToChannelDecoder, TimeSpan.Zero, AnimationDuration);
+            IEnumerable<bool> errors = transmission.ChannelBits.Zip(transmission.DistortedChannelBits, (a, b) => a != b);
+            Canvas bitPack = CreateBitPack(transmission.DistortedChannelBits.Select(b => b == Binary.I), 6, errors);
             BeginAnimation(animation, bitPack, () =>
             {
-                foreach (var ellipse in bitPack.Children.OfType<Ellipse>())
+                foreach (Ellipse ellipse in bitPack.Children.OfType<Ellipse>())
                     _ellipsePool.Free(ellipse);
                 bitPack.Children.Clear();
                 AnimateChannelDecoderToEntropyDecoder(transmission);
@@ -111,12 +110,12 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateChannelDecoderToEntropyDecoder(Transmission transmission)
         {
-            var animation = CreateAnimation(ChannelDecoderToEntropyDecoder, TimeSpan.Zero, AnimationDuration);
-            var errors = transmission.EntropyBits.Zip(transmission.DistortedEntropyBits, (a, b) => a != b);
-            var bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 8, errors);
+            DoubleAnimationUsingPath animation = CreateAnimation(ChannelDecoderToEntropyDecoder, TimeSpan.Zero, AnimationDuration);
+            IEnumerable<bool> errors = transmission.EntropyBits.Zip(transmission.DistortedEntropyBits, (a, b) => a != b);
+            Canvas bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 8, errors);
             BeginAnimation(animation, bitPack, () =>
             {
-                foreach (var ellipse in bitPack.Children.OfType<Ellipse>())
+                foreach (Ellipse ellipse in bitPack.Children.OfType<Ellipse>())
                     _ellipsePool.Free(ellipse);
                 bitPack.Children.Clear();
                 AnimateEntropyDecoderToSink(transmission);
@@ -125,10 +124,10 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateEntropyDecoderToSink(Transmission transmission)
         {
-            var animation = CreateAnimation(EntropyDecoderToSink, TimeSpan.Zero, AnimationDuration);
-            var inner = CreateCircle(Colors.Black, 3);
-            var equal = transmission.DistortedSymbol.Map(s => transmission.Symbol.Equals(s)).GetOrElse(false);
-            var outer = CreateCircle(equal ? Colors.Black : Colors.Red, 5);
+            DoubleAnimationUsingPath animation = CreateAnimation(EntropyDecoderToSink, TimeSpan.Zero, AnimationDuration);
+            Ellipse inner = CreateCircle(Colors.Black, 3);
+            bool equal = transmission.DistortedSymbol.Map(s => transmission.Symbol.Equals(s)).GetOrElse(false);
+            Ellipse outer = CreateCircle(equal ? Colors.Black : Colors.Red, 5);
             var canvas = new Canvas();
             canvas.Children.Add(outer);
             canvas.Children.Add(inner);
@@ -139,7 +138,7 @@ namespace MonadicIT.Visual.Views
             canvas.RenderTransform = new TranslateTransform(-5, -5);
             BeginAnimation(animation, canvas, () =>
             {
-                foreach (var ellipse in canvas.Children.OfType<Ellipse>())
+                foreach (Ellipse ellipse in canvas.Children.OfType<Ellipse>())
                     _ellipsePool.Free(ellipse);
                 canvas.Children.Clear();
             });
@@ -147,13 +146,13 @@ namespace MonadicIT.Visual.Views
 
         private Canvas CreateBitPack(IEnumerable<bool> bits, double bitWidth, IEnumerable<bool> errors = null)
         {
-            var bs = bits.ToArray();
+            bool[] bs = bits.ToArray();
             errors = errors ?? Enumerable.Repeat(false, bs.Length);
 
             if (bs.Length == 0) return new Canvas();
 
-            var stride = (int)Math.Ceiling(Math.Sqrt(bs.Length));
-            var colCount = (bs.Length-1)/stride + 1;
+            var stride = (int) Math.Ceiling(Math.Sqrt(bs.Length));
+            int colCount = (bs.Length - 1)/stride + 1;
             var slots = bs.Zip(errors, Tuple.Create).InChunksOf(stride).SelectMany((line, i) => line.Select((t, j) => new
             {
                 Bit = t.Item1,
@@ -165,14 +164,14 @@ namespace MonadicIT.Visual.Views
             var canvas = new Canvas();
             foreach (var slot in slots)
             {
-                var fill = slot.Bit ? Colors.Yellow : Colors.Black;
-                var border = slot.IsFlipped ? Colors.Red : Colors.Black;
-                var outer = CreateCircle(border, bitWidth/2);
-                var inner = CreateCircle(fill, bitWidth / 2 - 2);
+                Color fill = slot.Bit ? Colors.Yellow : Colors.Black;
+                Color border = slot.IsFlipped ? Colors.Red : Colors.Black;
+                Ellipse outer = CreateCircle(border, bitWidth/2);
+                Ellipse inner = CreateCircle(fill, bitWidth/2 - 2);
                 canvas.Children.Add(outer);
                 canvas.Children.Add(inner);
-                inner.SetValue(Canvas.LeftProperty, slot.Column*bitWidth+2);
-                inner.SetValue(Canvas.TopProperty, slot.Row*bitWidth+2);
+                inner.SetValue(Canvas.LeftProperty, slot.Column*bitWidth + 2);
+                inner.SetValue(Canvas.TopProperty, slot.Row*bitWidth + 2);
                 outer.SetValue(Canvas.LeftProperty, slot.Column*bitWidth);
                 outer.SetValue(Canvas.TopProperty, slot.Row*bitWidth);
             }
@@ -209,7 +208,7 @@ namespace MonadicIT.Visual.Views
 
         private Ellipse CreateCircle(Color fill, double radius)
         {
-            var circ = new Ellipse();//_ellipsePool.Allocate();
+            var circ = new Ellipse(); //_ellipsePool.Allocate();
             circ.Width = radius*2;
             circ.Height = radius*2;
             circ.Fill = new SolidColorBrush(fill);
@@ -259,7 +258,7 @@ namespace MonadicIT.Visual.Views
                    let diff = p.chan - p.cenc
                    let p1 = p.cenc + new Vector(diff.X*scaleX, 0)
                    let p2 = p.chan - new Vector(0, diff.Y*scaleY)
-                   let p3 = p.chan+ new Vector(0, diff.Y*scaleY)
+                   let p3 = p.chan + new Vector(0, diff.Y*scaleY)
                    let p4 = p.cdec + new Vector(diff.X*scaleX, 0)
                    select new[]
                    {
@@ -297,16 +296,6 @@ namespace MonadicIT.Visual.Views
         private Point CenterPosition(FrameworkElement element)
         {
             return element.CenterRelativeTo(BackgroundCanvas);
-        }
-
-        private Point TopPosition(FrameworkElement element)
-        {
-            return element.TopRelativeTo(BackgroundCanvas);
-        }
-
-        private Point BottomPosition(FrameworkElement element)
-        {
-            return element.BottomRelativeTo(BackgroundCanvas);
         }
 
         private static FrameworkElement FindNameInTemplate(Control element, string name)

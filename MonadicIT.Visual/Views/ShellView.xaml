@@ -108,13 +108,13 @@
         </Grid.ColumnDefinitions>
 
         <Canvas x:Name="BackgroundCanvas" Grid.RowSpan="2" Grid.ColumnSpan="4">
-        <Canvas.Resources>
-            <Style TargetType="{x:Type Path}">
-                <Setter Property="Stroke" Value="Black" />
-                <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="StrokeDashArray" Value="1.5,3" />
-            </Style>
-        </Canvas.Resources>
+            <Canvas.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="Stroke" Value="Black" />
+                    <Setter Property="StrokeThickness" Value="1" />
+                    <Setter Property="StrokeDashArray" Value="1.5,3" />
+                </Style>
+            </Canvas.Resources>
             <Path x:Name="SourceToEntropyEncoder" />
             <Path x:Name="EntropyEncoderToChannelEncoder" />
             <Path x:Name="ChannelEncoderToChannel" />

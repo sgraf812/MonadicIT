@@ -19,7 +19,7 @@ namespace MonadicIT.Visual.Infrastructure
 
         public void Free(T obj)
         {
-            _pool.Add(obj);
+           // _pool.Add(obj);
         }
     }
 }

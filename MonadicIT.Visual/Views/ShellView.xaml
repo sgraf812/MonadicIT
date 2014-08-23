@@ -108,13 +108,20 @@
         </Grid.ColumnDefinitions>
 
         <Canvas x:Name="BackgroundCanvas" Grid.RowSpan="2" Grid.ColumnSpan="4">
-            <Path x:Name="SourceToEntropyEncoder" Stroke="Black" StrokeThickness="1" />
-            <Path x:Name="EntropyEncoderToChannelEncoder" Stroke="Black" StrokeThickness="1" />
-            <Path x:Name="ChannelEncoderToChannelTop" Stroke="Black" StrokeThickness="1" />
-            <Path x:Name="ChannelTopToChannelBottom" Stroke="Black" StrokeThickness="1" />
-            <Path x:Name="ChannelBottomToChannelDecoder" Stroke="Black" StrokeThickness="1" />
-            <Path x:Name="ChannelDecoderToEntropyDecoder" Stroke="Black" StrokeThickness="1" />
-            <Path x:Name="EntropyDecoderToSink" Stroke="Black" StrokeThickness="1" />
+        <Canvas.Resources>
+            <Style TargetType="{x:Type Path}">
+                <Setter Property="Stroke" Value="Black" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="StrokeDashArray" Value="1.5,3" />
+            </Style>
+        </Canvas.Resources>
+            <Path x:Name="SourceToEntropyEncoder" />
+            <Path x:Name="EntropyEncoderToChannelEncoder" />
+            <Path x:Name="ChannelEncoderToChannelTop" />
+            <Path x:Name="ChannelTopToChannelBottom" />
+            <Path x:Name="ChannelBottomToChannelDecoder" />
+            <Path x:Name="ChannelDecoderToEntropyDecoder" />
+            <Path x:Name="EntropyDecoderToSink" />
         </Canvas>
 
         <ToggleButton DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}"

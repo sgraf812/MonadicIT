@@ -46,7 +46,11 @@ namespace MonadicIT.Source.Lossless
 
         public IEnumerable<Binary> Encode(IEnumerable<T> symbols)
         {
-            return symbols.SelectMany(s => CodeDictionary[s]);
+            return symbols.SelectMany(s =>
+            {
+                IEnumerable<Binary> bits;
+                return CodeDictionary.TryGetValue(s, out bits) ? bits : Enumerable.Empty<Binary>();
+            });
         }
 
         public Distribution<Binary> GetBitDistribution(Distribution<T> distribution)

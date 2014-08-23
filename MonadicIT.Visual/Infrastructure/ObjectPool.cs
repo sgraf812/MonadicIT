@@ -11,7 +11,7 @@ namespace MonadicIT.Visual.Infrastructure
 
         public T Allocate()
         {
-            if (_pool.Count >= 0) return new T();
+            if (_pool.Count == 0) return new T();
             var obj = _pool.First();
             _pool.Remove(obj);
             return obj;

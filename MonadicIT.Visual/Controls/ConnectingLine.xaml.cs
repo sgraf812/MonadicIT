@@ -37,8 +37,8 @@ namespace MonadicIT.Visual.Controls
         public ConnectingLine()
         {
             InitializeComponent();
-            var froms = CenterPointsOf(FromProperty);
-            var tos = CenterPointsOf(ToProperty);
+            var froms = CenterPointsOf(FromProperty).DistinctUntilChanged();
+            var tos = CenterPointsOf(ToProperty).DistinctUntilChanged();
 
             froms.Subscribe(p =>
             {

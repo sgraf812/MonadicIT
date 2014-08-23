@@ -74,7 +74,9 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Canvas x:Name="Canv" Grid.RowSpan="2" Grid.ColumnSpan="4" />
+        <Canvas x:Name="BackgroundCanvas" Grid.RowSpan="2" Grid.ColumnSpan="4">
+            <Path x:Name="Path" Stroke="Black" StrokeThickness="1"/>
+        </Canvas>
 
         <ToggleButton DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="SourceSink"
                       Background="#FFEFF6FF" BorderBrush="#FF3F89FF" BorderThickness="2"

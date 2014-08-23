@@ -1,22 +1,25 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Caliburn.Micro;
+using Codeplex.Reactive;
 using MonadicIT.Visual.Backbone;
-using MonadicIT.Visual.Controls;
 using MonadicIT.Visual.Infrastructure;
-using Action = System.Action;
 
 namespace MonadicIT.Visual.Views
 {
     public partial class ShellView : Window, IHandle<Transmission>
     {
-        private const bool IsPathStroked = true;
+        private const bool IsPathStroked = false;
+        private static readonly IEqualityComparer<IEnumerable<Point>> PointsComparer = new EnumerableComparer<Point>(); 
         private FrameworkElement _source;
         private FrameworkElement _sink;
         private FrameworkElement _eenc;
@@ -24,14 +27,6 @@ namespace MonadicIT.Visual.Views
         private FrameworkElement _cenc;
         private FrameworkElement _cdec;
         private FrameworkElement _channel;
-        private LineSegment _toEenc;
-        private LineSegment _toCenc;
-        private BezierSegment _toChannelTop;
-        private LineSegment _toChannelBot;
-        private BezierSegment _toCdec;
-        private LineSegment _toEdec;
-        private LineSegment _toSink;
-        private PathGeometry _pathGeometry;
 
         public ShellView()
         {
@@ -46,78 +41,75 @@ namespace MonadicIT.Visual.Views
                 _cenc = FindNameInTemplate(ChannelCoder, "Top");
                 _cdec = FindNameInTemplate(ChannelCoder, "Bottom");
                 _channel = (FrameworkElement) FindName("Channel");
-                _toEenc = new LineSegment { IsStroked = IsPathStroked };
-                _toCenc = new LineSegment { IsStroked = IsPathStroked };
-                _toChannelTop = new BezierSegment {IsStroked = IsPathStroked};
-                _toChannelBot = new LineSegment { IsStroked = IsPathStroked };
-                _toCdec = new BezierSegment { IsStroked = IsPathStroked };
-                _toEdec = new LineSegment { IsStroked = IsPathStroked };
-                _toSink = new LineSegment { IsStroked = IsPathStroked };
-                _pathGeometry = new PathGeometry(new[]
+
+                Path.SetBinding(Path.DataProperty, new Binding
                 {
-                    new PathFigure
-                    {
-                        Segments = new PathSegmentCollection
-                        {
-                            _toEenc,
-                            _toCenc,
-                            _toChannelTop,
-                            _toChannelBot,
-                            _toCdec,
-                            _toEdec,
-                            _toSink
-                        }
-                    }
+                    Source = PathsFollowingElements().ToReactiveProperty(),
+                    Path = new PropertyPath("Value"),
+                    Mode = BindingMode.OneWay
                 });
+            };
+        }
 
-                var cenc = _cenc.CenterRelativeTo(RootPanel);
-                var chanTop = _channel.TopRelativeTo(RootPanel);
-                var chanBot = _channel.BottomRelativeTo(RootPanel);
-                var cdec = _cdec.CenterRelativeTo(RootPanel);
-                var diff = chanTop - cenc;
-                const double scaleX = 3/5.0;
-                const double scaleY = 1.0;
-                var p1 = cenc + new Vector(diff.X*scaleX, 0);
-                var p2 = chanTop - new Vector(0, diff.Y*scaleY);
-                var p3 = chanBot + new Vector(0, diff.Y*scaleY);
-                var p4 = cdec + new Vector(diff.X * scaleX, 0);
+        private IObservable<PathGeometry> PathsFollowingElements()
+        {
+            const double scaleX = 3/5.0;
+            const double scaleY = 1.0;
+            var points = from _ in RootPanel.ObserveLayoutUpdates()
+                         let src = CenterPosition(_source)
+                         let eenc = CenterPosition(_eenc)
+                         let cenc = CenterPosition(_cenc)
+                         let cht = TopPosition(_channel)
+                         let chb = BottomPosition(_channel)
+                         let cdec = CenterPosition(_cdec)
+                         let edec = CenterPosition(_edec)
+                         let snk = CenterPosition(_sink)
+                         select new {src, eenc, cenc, cht, chb, cdec, edec, snk};
 
-            var path = new PathGeometry
+            var distinct = points.DistinctUntilChanged(x => new[]
             {
-                Figures = new PathFigureCollection
-                {
-                    new PathFigure
-                    {
-                        StartPoint = _source.CenterRelativeTo(RootPanel),
-                        Segments = new PathSegmentCollection
-                        {
-                            new LineSegment(_eenc.CenterRelativeTo(RootPanel), true),
-                            new LineSegment(_cenc.CenterRelativeTo(RootPanel), true),
-                            new BezierSegment(p1, p2, chanTop, true),
-                            new LineSegment(chanBot, true),
-                        }
-                    },
-                    new PathFigure
-                    {
-                        StartPoint = chanBot,
-                        Segments = new PathSegmentCollection{
-                        new BezierSegment(p3, p4, cdec, true),
-                            //new ArcSegment(_cdec.CenterRelativeTo(RootPanel), s, 0, false, SweepDirection.Clockwise, true),
-                            new LineSegment(_edec.CenterRelativeTo(RootPanel), true),
-                            new LineSegment(_sink.CenterRelativeTo(RootPanel), true),}
-                    }
-                }
-            };
+                x.src, x.eenc, x.cenc, x.cht, x.chb, x.cdec, x.edec, x.snk
+            }, PointsComparer);
+            return from p in distinct
+                   let diff = p.cht - p.cenc
+                   let p1 = p.cenc + new Vector(diff.X*scaleX, 0)
+                   let p2 = p.cht - new Vector(0, diff.Y*scaleY)
+                   let p3 = p.chb + new Vector(0, diff.Y*scaleY)
+                   let p4 = p.cdec + new Vector(diff.X*scaleX, 0)
+                   select new PathGeometry(new[]
+                   {
+                       new PathFigure(p.src, new PathSegment[]
+                       {
+                           new LineSegment(p.eenc, IsPathStroked),
+                           new LineSegment(p.cenc, IsPathStroked),
+                           new LineSegment(p.cenc, IsPathStroked),
+                           new BezierSegment(p1, p2, p.cht, IsPathStroked),
+                           new LineSegment(p.chb, IsPathStroked),
+                           new BezierSegment(p3, p4, p.cdec, IsPathStroked),
+                           new LineSegment(p.edec, IsPathStroked),
+                           new LineSegment(p.snk, IsPathStroked),
+                       }, false)
+                   });
+        }
 
-            var p = new Path { Data = path, Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 1 };
-            Grid.SetColumnSpan(p, RootPanel.ColumnDefinitions.Count);
-                RootPanel.Children.Insert(0, p);
-            };
+        private Point CenterPosition(FrameworkElement element)
+        {
+            return element.CenterRelativeTo(BackgroundCanvas);
+        }
+
+        private Point TopPosition(FrameworkElement element)
+        {
+            return element.TopRelativeTo(BackgroundCanvas);
+        }
+
+        private Point BottomPosition(FrameworkElement element)
+        {
+            return element.BottomRelativeTo(BackgroundCanvas);
         }
 
         public void Handle(Transmission message)
         {
-            var pg = (RootPanel.Children[0] as Path).Data as PathGeometry;
+            var pg = Path.Data as PathGeometry;
 
             var animation = new DoubleAnimationUsingPath
             {
@@ -139,16 +131,29 @@ namespace MonadicIT.Visual.Views
             circ.BeginAnimation(Canvas.LeftProperty, animation);
             animation.Source = PathAnimationSource.Y;
             circ.BeginAnimation(Canvas.TopProperty, animation);
-            Canv.Children.Add(circ);
+            BackgroundCanvas.Children.Add(circ);
             animation.Completed += delegate
             {
-                Canv.Children.Remove(circ);
+                BackgroundCanvas.Children.Remove(circ);
             };
         }
 
         private static FrameworkElement FindNameInTemplate(Control element, string name)
         {
             return (FrameworkElement) element.Template.FindName(name, element);
+        }
+
+        private class EnumerableComparer<T> : IEqualityComparer<IEnumerable<T>>
+        {
+            public bool Equals(IEnumerable<T> x, IEnumerable<T> y)
+            {
+                return x.SequenceEqual(y);
+            }
+
+            public int GetHashCode(IEnumerable<T> arr)
+            {
+                return arr.Aggregate(0, (current, t) => current ^ t.GetHashCode());
+            }
         }
     }
 }

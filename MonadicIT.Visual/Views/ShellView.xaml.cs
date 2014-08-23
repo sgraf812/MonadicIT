@@ -38,9 +38,8 @@ namespace MonadicIT.Visual.Views
             InitializeComponent();
             _paths = new[]
             {
-                SourceToEntropyEncoder, EntropyEncoderToChannelEncoder, ChannelEncoderToChannelTop,
-                ChannelTopToChannelBottom, ChannelBottomToChannelDecoder, ChannelDecoderToEntropyDecoder,
-                EntropyDecoderToSink
+                SourceToEntropyEncoder, EntropyEncoderToChannelEncoder, ChannelEncoderToChannel,
+                ChannelToChannelDecoder, ChannelDecoderToEntropyDecoder, EntropyDecoderToSink
             };
 
             IoC.Get<IEventAggregator>().Subscribe(this);
@@ -79,26 +78,26 @@ namespace MonadicIT.Visual.Views
                 foreach (var ellipse in bitPack.Children.OfType<Ellipse>())
                     _ellipsePool.Free(ellipse);
                 bitPack.Children.Clear();
-                AnimateChannelEncoderToChannelTop(transmission);
+                AnimateChannelEncoderToChannel(transmission);
             });
         }
 
-        private void AnimateChannelEncoderToChannelTop(Transmission transmission)
+        private void AnimateChannelEncoderToChannel(Transmission transmission)
         {
-            var animation = CreateAnimation(ChannelEncoderToChannelTop, TimeSpan.Zero, AnimationDuration);
+            var animation = CreateAnimation(ChannelEncoderToChannel, TimeSpan.Zero, AnimationDuration);
             var bitPack = CreateBitPack(transmission.ChannelBits.Select(b => b == Binary.I), 6);
             BeginAnimation(animation, bitPack, () =>
             {
                 foreach (var ellipse in bitPack.Children.OfType<Ellipse>())
                     _ellipsePool.Free(ellipse);
                 bitPack.Children.Clear();
-                AnimateChannelBottomToChannelDecoder(transmission);
+                AnimateChannelToChannelDecoder(transmission);
             });
         }
 
-        private void AnimateChannelBottomToChannelDecoder(Transmission transmission)
+        private void AnimateChannelToChannelDecoder(Transmission transmission)
         {
-            var animation = CreateAnimation(ChannelBottomToChannelDecoder, TimeSpan.Zero, AnimationDuration);
+            var animation = CreateAnimation(ChannelToChannelDecoder, TimeSpan.Zero, AnimationDuration);
             var errors = transmission.ChannelBits.Zip(transmission.DistortedChannelBits, (a, b) => a != b);
             var bitPack = CreateBitPack(transmission.DistortedChannelBits.Select(b => b == Binary.I), 6, errors);
             BeginAnimation(animation, bitPack, () =>
@@ -240,36 +239,34 @@ namespace MonadicIT.Visual.Views
             _cenc = FindNameInTemplate(ChannelCoder, "Top");
             _cdec = FindNameInTemplate(ChannelCoder, "Bottom");
             _channel = FindNameInTemplate(Channel, "Mid");
-            const double scaleX = 3/5.0;
+            const double scaleX = 5/5.0;
             const double scaleY = 1.0;
             var points = from _ in LayoutRoot.ObserveLayoutUpdates()
                          let src = CenterPosition(_source)
                          let eenc = CenterPosition(_eenc)
                          let cenc = CenterPosition(_cenc)
-                         let cht = TopPosition(_channel)
-                         let chb = BottomPosition(_channel)
+                         let chan = CenterPosition(_channel)
                          let cdec = CenterPosition(_cdec)
                          let edec = CenterPosition(_edec)
                          let snk = CenterPosition(_sink)
-                         select new {src, eenc, cenc, cht, chb, cdec, edec, snk};
+                         select new {src, eenc, cenc, chan, cdec, edec, snk};
 
             var distinct = points.DistinctUntilChanged(x => new[]
             {
-                x.src, x.eenc, x.cenc, x.cht, x.chb, x.cdec, x.edec, x.snk
+                x.src, x.eenc, x.cenc, x.chan, x.cdec, x.edec, x.snk
             }, PointsComparer);
             return from p in distinct
-                   let diff = p.cht - p.cenc
+                   let diff = p.chan - p.cenc
                    let p1 = p.cenc + new Vector(diff.X*scaleX, 0)
-                   let p2 = p.cht - new Vector(0, diff.Y*scaleY)
-                   let p3 = p.chb + new Vector(0, diff.Y*scaleY)
+                   let p2 = p.chan - new Vector(0, diff.Y*scaleY)
+                   let p3 = p.chan+ new Vector(0, diff.Y*scaleY)
                    let p4 = p.cdec + new Vector(diff.X*scaleX, 0)
                    select new[]
                    {
                        LineGeometry(p.src, p.eenc),
                        LineGeometry(p.eenc, p.cenc),
-                       BezierGeometry(p.cenc, p1, p2, p.cht),
-                       LineGeometry(p.cht, p.chb),
-                       BezierGeometry(p.chb, p3, p4, p.cdec),
+                       BezierGeometry(p.cenc, p1, p2, p.chan),
+                       BezierGeometry(p.chan, p3, p4, p.cdec),
                        LineGeometry(p.cdec, p.edec),
                        LineGeometry(p.edec, p.snk)
                    };

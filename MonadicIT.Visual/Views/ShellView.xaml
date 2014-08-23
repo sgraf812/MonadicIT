@@ -117,9 +117,8 @@
         </Canvas.Resources>
             <Path x:Name="SourceToEntropyEncoder" />
             <Path x:Name="EntropyEncoderToChannelEncoder" />
-            <Path x:Name="ChannelEncoderToChannelTop" />
-            <Path x:Name="ChannelTopToChannelBottom" />
-            <Path x:Name="ChannelBottomToChannelDecoder" />
+            <Path x:Name="ChannelEncoderToChannel" />
+            <Path x:Name="ChannelToChannelDecoder" />
             <Path x:Name="ChannelDecoderToEntropyDecoder" />
             <Path x:Name="EntropyDecoderToSink" />
         </Canvas>

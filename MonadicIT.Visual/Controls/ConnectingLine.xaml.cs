@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,9 +17,6 @@ namespace MonadicIT.Visual.Controls
             "From", typeof(FrameworkElement), typeof(ConnectingLine), new PropertyMetadata(default(FrameworkElement)));
         public static readonly DependencyProperty ToProperty = DependencyProperty.Register(
             "To", typeof(FrameworkElement), typeof(ConnectingLine), new PropertyMetadata(default(FrameworkElement)));
-
-        private readonly BehaviorSubject<FrameworkElement> _toChanged;
-        private readonly BehaviorSubject<FrameworkElement> _fromChanged;  
 
         public FrameworkElement From
         {

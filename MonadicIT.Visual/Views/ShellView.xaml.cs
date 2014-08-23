@@ -50,6 +50,8 @@ namespace MonadicIT.Visual.Views
                 // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                 PathsFollowingElements().ObserveElements().Zip(_paths, BindPathGeometry).Count();
             };
+
+            SizeChanged += (s, e) => Trace.WriteLine(e.NewSize);
         }
 
         private static object BindPathGeometry(IObservable<PathGeometry> pg, Path path)
@@ -71,10 +73,10 @@ namespace MonadicIT.Visual.Views
             _edec = FindNameInTemplate(EntropyCoder, "Bottom");
             _cenc = FindNameInTemplate(ChannelCoder, "Top");
             _cdec = FindNameInTemplate(ChannelCoder, "Bottom");
-            _channel = (FrameworkElement)FindName("Channel");
+            _channel = FindNameInTemplate(Channel, "Mid");
             const double scaleX = 3/5.0;
             const double scaleY = 1.0;
-            var points = from _ in RootPanel.ObserveLayoutUpdates()
+            var points = from _ in LayoutRoot.ObserveLayoutUpdates()
                          let src = CenterPosition(_source)
                          let eenc = CenterPosition(_eenc)
                          let cenc = CenterPosition(_cenc)
@@ -156,8 +158,8 @@ namespace MonadicIT.Visual.Views
                 {
                     BeginTime = begin,
                     Duration = duration,
-                    AccelerationRatio = 0.5,
-                    DecelerationRatio = 0.5,
+                   // AccelerationRatio = 0.5,
+                    //DecelerationRatio = 0.5,
                     PathGeometry = pg,
                 };
 
@@ -167,6 +169,7 @@ namespace MonadicIT.Visual.Views
                     Height = 10,
                     Fill = new SolidColorBrush(Colors.Black),
                     RenderTransform = new TranslateTransform(-5, -5),
+                    ToolTip = message.Symbol
                 };
 
                 BackgroundCanvas.Children.Add(circ);

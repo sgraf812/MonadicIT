@@ -34,7 +34,7 @@ namespace MonadicIT.Visual
 
         protected override void Configure()
         {
-            LogManager.GetLog = t => new DebugLog(t);
+            //LogManager.GetLog = t => new DebugLog(t);
             MessageBinder.SpecialValues.Add("null", _ => null);
             _container = new SimpleContainer();
             _container.Singleton<IWindowManager, WindowManager>();

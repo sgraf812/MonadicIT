@@ -7,7 +7,7 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:viewModels="clr-namespace:MonadicIT.Visual.ViewModels"
         xmlns:controls="clr-namespace:MonadicIT.Visual.Controls"
-        Title="ShellView" Height="600" Width="1000"
+        Title="ShellView" Height="600" Width="1000" MinHeight="500" MinWidth="800"
         d:DataContext="{d:DesignInstance Type=viewModels:ShellViewModel}">
     <Window.Resources>
         <Style x:Key="InformationBorderStyle" TargetType="{x:Type Border}">
@@ -17,96 +17,135 @@
             <Setter Property="BorderBrush" Value="#6C6C6C" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
-        <ControlTemplate x:Key="TransmissionLayer" TargetType="{x:Type ToggleButton}">
-            <ControlTemplate.Resources>
-                <Style TargetType="{x:Type Line}">
-                    <Setter Property="Stroke" Value="DimGray" />
-                    <Setter Property="StrokeDashArray" Value="5" />
-                    <Setter Property="StrokeThickness" Value="1" />
-                </Style>
-                <Style x:Key="BorderButtonStyle" TargetType="{x:Type Border}">
-                    <Setter Property="Height" Value="150" />
-                    <Setter Property="Width" Value="{Binding Path=(controls:TransmissionLayer.Width), RelativeSource={RelativeSource TemplatedParent}}" />
-                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
-                    <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                    <Setter Property="BorderThickness" Value="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
-                    <Setter Property="CornerRadius" Value="10" />
-                    <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, RelativeSource={RelativeSource TemplatedParent}}" />
-                </Style>
-                <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                </Style>
-            </ControlTemplate.Resources>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                
-                <controls:ConnectingLine From="{Binding ElementName=Top}" To="{Binding ElementName=Bottom}" Grid.RowSpan="3" IsHitTestVisible="False" />
+        <Style x:Key="TransmissionLayerStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <ControlTemplate.Resources>
+                            <Style TargetType="{x:Type Line}">
+                                <Setter Property="Stroke" Value="DimGray" />
+                                <Setter Property="StrokeDashArray" Value="5" />
+                                <Setter Property="StrokeThickness" Value="1" />
+                            </Style>
+                            <Style x:Key="BorderButtonStyle" TargetType="{x:Type Border}">
+                                <Setter Property="Height" Value="150" />
+                                <Setter Property="Width"
+                                        Value="{Binding Path=(controls:TransmissionLayer.Width), RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Setter Property="Background"
+                                        Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Setter Property="BorderBrush"
+                                        Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Setter Property="BorderThickness"
+                                        Value="{Binding BorderThickness, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Setter Property="CornerRadius" Value="10" />
+                                <Setter Property="HorizontalAlignment"
+                                        Value="{Binding HorizontalAlignment, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Style>
+                            <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </ControlTemplate.Resources>
 
-                <Border Grid.Row="1" Style="{StaticResource InformationBorderStyle}"
-                        Width="{Binding Path=(controls:TransmissionLayer.Width), RelativeSource={RelativeSource TemplatedParent}}">
-                    <TextBlock Text="{Binding (controls:TransmissionLayer.Description), RelativeSource={RelativeSource TemplatedParent}}"
-                               TextWrapping="Wrap" TextAlignment="Justify" Margin="10"/>
-                </Border>
-                
-                <Border x:Name="Top" Grid.Row="0" Style="{StaticResource BorderButtonStyle}">
-                    <TextBlock Text="{Binding (controls:TransmissionLayer.TopText), RelativeSource={RelativeSource TemplatedParent}}" 
-                               Style="{StaticResource TextBlockStyle}" />
-                </Border>
+                        <Border x:Name="LayoutRoot" Background="Transparent" Padding="{TemplateBinding Padding}">
+                            <Grid x:Name="InnerGrid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
 
-                <Border x:Name="Bottom" Grid.Row="2" Style="{StaticResource BorderButtonStyle}">
-                    <TextBlock Text="{Binding (controls:TransmissionLayer.BottomText), RelativeSource={RelativeSource TemplatedParent}}" 
-                               Style="{StaticResource TextBlockStyle}" />
-                </Border>
-            </Grid>
-        </ControlTemplate>
+                                <controls:ConnectingLine From="{Binding ElementName=Top}"
+                                                         To="{Binding ElementName=Bottom}"
+                                                         Grid.RowSpan="3" IsHitTestVisible="False" />
+
+                                <Border Grid.Row="1" Style="{StaticResource InformationBorderStyle}"
+                                        IsHitTestVisible="False"
+                                        Width="{Binding (controls:TransmissionLayer.Width), RelativeSource={RelativeSource TemplatedParent}}">
+                                    <TextBlock
+                                        Text="{Binding (controls:TransmissionLayer.Description), RelativeSource={RelativeSource TemplatedParent}}"
+                                        TextWrapping="Wrap" TextAlignment="Justify" Margin="10" />
+                                </Border>
+
+                                <Border x:Name="Top" Grid.Row="0" Style="{StaticResource BorderButtonStyle}">
+                                    <TextBlock
+                                        Text="{Binding (controls:TransmissionLayer.TopText), RelativeSource={RelativeSource TemplatedParent}}"
+                                        Style="{StaticResource TextBlockStyle}" />
+                                </Border>
+
+                                <Border x:Name="Bottom" Grid.Row="2" Style="{StaticResource BorderButtonStyle}">
+                                    <TextBlock
+                                        Text="{Binding (controls:TransmissionLayer.BottomText), RelativeSource={RelativeSource TemplatedParent}}"
+                                        Style="{StaticResource TextBlockStyle}" />
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" TargetName="LayoutRoot" Value="#40CBCBCB" />
+                                <Setter Property="BorderBrush" TargetName="LayoutRoot" Value="#40818181" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="LayoutRoot" Value="#409B9B9B" />
+                                <Setter Property="BorderBrush" TargetName="LayoutRoot" Value="#405C5C5C" />
+                                <Setter Property="BorderThickness" TargetName="LayoutRoot" Value="2" />
+                                <Setter Property="Margin" TargetName="InnerGrid" Value="-2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </Window.Resources>
-    <Grid x:Name="RootPanel">
+    <Grid x:Name="LayoutRoot">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <Canvas x:Name="BackgroundCanvas" Grid.RowSpan="2" Grid.ColumnSpan="4">
-            <Path x:Name="SourceToEntropyEncoder" Stroke="Black" StrokeThickness="1"/>
-            <Path x:Name="EntropyEncoderToChannelEncoder" Stroke="Black" StrokeThickness="1"/>
-            <Path x:Name="ChannelEncoderToChannelTop" Stroke="Black" StrokeThickness="1"/>
-            <Path x:Name="ChannelTopToChannelBottom" Stroke="Black" StrokeThickness="1"/>
-            <Path x:Name="ChannelBottomToChannelDecoder" Stroke="Black" StrokeThickness="1"/>
-            <Path x:Name="ChannelDecoderToEntropyDecoder" Stroke="Black" StrokeThickness="1"/>
-            <Path x:Name="EntropyDecoderToSink" Stroke="Black" StrokeThickness="1"/>
+            <Path x:Name="SourceToEntropyEncoder" Stroke="Black" StrokeThickness="1" />
+            <Path x:Name="EntropyEncoderToChannelEncoder" Stroke="Black" StrokeThickness="1" />
+            <Path x:Name="ChannelEncoderToChannelTop" Stroke="Black" StrokeThickness="1" />
+            <Path x:Name="ChannelTopToChannelBottom" Stroke="Black" StrokeThickness="1" />
+            <Path x:Name="ChannelBottomToChannelDecoder" Stroke="Black" StrokeThickness="1" />
+            <Path x:Name="ChannelDecoderToEntropyDecoder" Stroke="Black" StrokeThickness="1" />
+            <Path x:Name="EntropyDecoderToSink" Stroke="Black" StrokeThickness="1" />
         </Canvas>
 
-        <ToggleButton DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="SourceSink"
+        <ToggleButton DataContext="{Binding SourceSink}" IsChecked="{Binding IsActive, Mode=OneWay}"
+                      x:Name="SourceSink"
                       Background="#FFEFF6FF" BorderBrush="#FF3F89FF" BorderThickness="2"
-                      Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="5,0,5,0" Width="100"
-                      controls:TransmissionLayer.Width="100" controls:TransmissionLayer.TopText="Source" controls:TransmissionLayer.BottomText="Sink"
+                      Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Padding="5,0,5,0"
+                      controls:TransmissionLayer.Width="100" controls:TransmissionLayer.TopText="Source"
+                      controls:TransmissionLayer.BottomText="Sink"
                       controls:TransmissionLayer.Description="Responsible for emitting symbols carrying information. Adjust their distribution here."
-                      cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}" />
+                      cal:Message.Attach="ToggleWindow($dataContext)" Style="{StaticResource TransmissionLayerStyle}" />
 
-        <ToggleButton DataContext="{Binding EntropyCoder}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="EntropyCoder"
+        <ToggleButton DataContext="{Binding EntropyCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
+                      x:Name="EntropyCoder"
                       Background="#FFEFFEED" BorderBrush="#FF0DBC3F" BorderThickness="2"
                       Grid.Row="0" Grid.Column="1"
-                      controls:TransmissionLayer.Width="200" controls:TransmissionLayer.TopText="Entropy encoder" controls:TransmissionLayer.BottomText="Entropy decoder"
-                      cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}">
+                      controls:TransmissionLayer.Width="200" controls:TransmissionLayer.TopText="Entropy encoder"
+                      controls:TransmissionLayer.BottomText="Entropy decoder"
+                      cal:Message.Attach="ToggleWindow($dataContext)" Style="{StaticResource TransmissionLayerStyle}">
             <controls:TransmissionLayer.Description>
-                The entropy coder performs redudancy reduction to stream the information with the least bit rate possible. 
+                The entropy coder performs redudancy reduction to stream the information with the least bit rate possible.
                 Click to examine the code tree of the employed huffman code.
             </controls:TransmissionLayer.Description>
         </ToggleButton>
 
-        <ToggleButton DataContext="{Binding ChannelCoder}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="ChannelCoder"
-                      Background="#FEF2ED" BorderBrush="#BC4E0D" BorderThickness="2" 
+        <ToggleButton DataContext="{Binding ChannelCoder}" IsChecked="{Binding IsActive, Mode=OneWay}"
+                      x:Name="ChannelCoder"
+                      Background="#FEF2ED" BorderBrush="#BC4E0D" BorderThickness="2"
                       Grid.Row="0" Grid.Column="2"
-                      controls:TransmissionLayer.Width="200" controls:TransmissionLayer.TopText="Channel encoder" controls:TransmissionLayer.BottomText="Channel decoder"
-                      cal:Message.Attach="ToggleWindow($dataContext)" Template="{StaticResource TransmissionLayer}">
+                      controls:TransmissionLayer.Width="200" controls:TransmissionLayer.TopText="Channel encoder"
+                      controls:TransmissionLayer.BottomText="Channel decoder"
+                      cal:Message.Attach="ToggleWindow($dataContext)" Style="{StaticResource TransmissionLayerStyle}">
             <controls:TransmissionLayer.Description>
                 The channel code adds redundancy in the form of parity bits to the signal to minimize the impact of channel distortion.
                 Click to choose between the available channel codings and see their respective code rate and residual error.
@@ -114,26 +153,47 @@
         </ToggleButton>
 
         <ToggleButton DataContext="{Binding Channel}" IsChecked="{Binding IsActive, Mode=OneWay}" x:Name="Channel"
-                      Grid.Row="0" Grid.Column="3" 
-                      HorizontalAlignment="Right" Margin="5"
-                      Width="100" Height="150"
+                      Grid.Row="0" Grid.Column="3" Padding="5"
+                      HorizontalAlignment="Right"
                       cal:Message.Attach="ToggleWindow($dataContext)">
             <ToggleButton.Template>
-                <ControlTemplate>
-                    <Border Width="100" Height="150" 
-                            Background="#F5EBFF" BorderBrush="#9B3FFF" BorderThickness="2" CornerRadius="10">
-                        <TextBlock Text="Channel" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border Padding="{TemplateBinding Padding}" x:Name="LayoutRoot" Background="Transparent">
+                        <Grid x:Name="InnerGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Width="100" Height="150" Grid.Column="0" x:Name="Mid" Margin="0,0,5,0"
+                                    Background="#F5EBFF" BorderBrush="#9B3FFF" BorderThickness="2" CornerRadius="10">
+                                <TextBlock Text="Channel" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource InformationBorderStyle}" Margin="5,0,0,0"
+                                    Width="140" IsHitTestVisible="False">
+                                <TextBlock TextWrapping="Wrap" TextAlignment="Justify" Margin="10">
+                                    The channel model determines the transition probability for sent bits to received bits.
+                                    For a symmetric channel, this corresponds to the error rate.
+                                </TextBlock>
+                            </Border>
+                        </Grid>
                     </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" TargetName="LayoutRoot" Value="#40CBCBCB" />
+                            <Setter Property="BorderBrush" TargetName="LayoutRoot" Value="#40818181" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" TargetName="LayoutRoot" Value="#409B9B9B" />
+                            <Setter Property="BorderBrush" TargetName="LayoutRoot" Value="#405C5C5C" />
+                            <Setter Property="BorderThickness" TargetName="LayoutRoot" Value="2" />
+                            <Setter Property="Margin" TargetName="InnerGrid" Value="-2" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </ToggleButton.Template>
         </ToggleButton>
-
-        <Border Grid.Column="4" Style="{StaticResource InformationBorderStyle}"
-                Width="150">
-            <TextBlock TextWrapping="Wrap" TextAlignment="Justify" Margin="10">
-                The channel model determines the transition probability for sent bits to received bits. 
-                For a symmetric channel, this corresponds to the error rate.
-            </TextBlock>
-        </Border>
     </Grid>
 </Window>

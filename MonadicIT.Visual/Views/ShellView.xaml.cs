@@ -22,7 +22,6 @@ namespace MonadicIT.Visual.Views
         private const bool IsPathStroked = true;
         private static readonly IEqualityComparer<IEnumerable<Point>> PointsComparer = new EnumerableComparer<Point>();
         private static readonly TimeSpan AnimationDuration = TimeSpan.FromMilliseconds(1000);
-        private readonly ObjectPool<Ellipse> _ellipsePool = new ObjectPool<Ellipse>();
         private readonly Path[] _paths;
         private FrameworkElement _cdec;
         private FrameworkElement _cenc;
@@ -61,65 +60,37 @@ namespace MonadicIT.Visual.Views
             DoubleAnimationUsingPath animation = CreateAnimation(SourceToEntropyEncoder, TimeSpan.Zero, AnimationDuration);
             Ellipse circle = CreateCircle(Colors.Black, 5);
             circle.RenderTransform = new TranslateTransform(-5, -5);
-            BeginAnimation(animation, circle, () =>
-            {
-                _ellipsePool.Free(circle);
-                AnimateEntropyEncoderToChannelEncoder(transmission);
-            });
+            BeginAnimation(animation, circle, () => AnimateEntropyEncoderToChannelEncoder(transmission));
         }
 
         private void AnimateEntropyEncoderToChannelEncoder(Transmission transmission)
         {
             DoubleAnimationUsingPath animation = CreateAnimation(EntropyEncoderToChannelEncoder, TimeSpan.Zero, AnimationDuration);
-            Canvas bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 8);
-            BeginAnimation(animation, bitPack, () =>
-            {
-                foreach (Ellipse ellipse in bitPack.Children.OfType<Ellipse>())
-                    _ellipsePool.Free(ellipse);
-                bitPack.Children.Clear();
-                AnimateChannelEncoderToChannel(transmission);
-            });
+            Canvas bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 10);
+            BeginAnimation(animation, bitPack, () => AnimateChannelEncoderToChannel(transmission));
         }
 
         private void AnimateChannelEncoderToChannel(Transmission transmission)
         {
             DoubleAnimationUsingPath animation = CreateAnimation(ChannelEncoderToChannel, TimeSpan.Zero, AnimationDuration);
-            Canvas bitPack = CreateBitPack(transmission.ChannelBits.Select(b => b == Binary.I), 6);
-            BeginAnimation(animation, bitPack, () =>
-            {
-                foreach (Ellipse ellipse in bitPack.Children.OfType<Ellipse>())
-                    _ellipsePool.Free(ellipse);
-                bitPack.Children.Clear();
-                AnimateChannelToChannelDecoder(transmission);
-            });
+            Canvas bitPack = CreateBitPack(transmission.ChannelBits.Select(b => b == Binary.I), 10);
+            BeginAnimation(animation, bitPack, () => AnimateChannelToChannelDecoder(transmission));
         }
 
         private void AnimateChannelToChannelDecoder(Transmission transmission)
         {
             DoubleAnimationUsingPath animation = CreateAnimation(ChannelToChannelDecoder, TimeSpan.Zero, AnimationDuration);
             IEnumerable<bool> errors = transmission.ChannelBits.Zip(transmission.DistortedChannelBits, (a, b) => a != b);
-            Canvas bitPack = CreateBitPack(transmission.DistortedChannelBits.Select(b => b == Binary.I), 6, errors);
-            BeginAnimation(animation, bitPack, () =>
-            {
-                foreach (Ellipse ellipse in bitPack.Children.OfType<Ellipse>())
-                    _ellipsePool.Free(ellipse);
-                bitPack.Children.Clear();
-                AnimateChannelDecoderToEntropyDecoder(transmission);
-            });
+            Canvas bitPack = CreateBitPack(transmission.DistortedChannelBits.Select(b => b == Binary.I), 10, errors);
+            BeginAnimation(animation, bitPack, () => AnimateChannelDecoderToEntropyDecoder(transmission));
         }
 
         private void AnimateChannelDecoderToEntropyDecoder(Transmission transmission)
         {
             DoubleAnimationUsingPath animation = CreateAnimation(ChannelDecoderToEntropyDecoder, TimeSpan.Zero, AnimationDuration);
             IEnumerable<bool> errors = transmission.EntropyBits.Zip(transmission.DistortedEntropyBits, (a, b) => a != b);
-            Canvas bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 8, errors);
-            BeginAnimation(animation, bitPack, () =>
-            {
-                foreach (Ellipse ellipse in bitPack.Children.OfType<Ellipse>())
-                    _ellipsePool.Free(ellipse);
-                bitPack.Children.Clear();
-                AnimateEntropyDecoderToSink(transmission);
-            });
+            Canvas bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 10, errors);
+            BeginAnimation(animation, bitPack, () => AnimateEntropyDecoderToSink(transmission));
         }
 
         private void AnimateEntropyDecoderToSink(Transmission transmission)
@@ -136,12 +107,7 @@ namespace MonadicIT.Visual.Views
             outer.SetValue(Canvas.LeftProperty, 0.0);
             outer.SetValue(Canvas.TopProperty, 0.0);
             canvas.RenderTransform = new TranslateTransform(-5, -5);
-            BeginAnimation(animation, canvas, () =>
-            {
-                foreach (Ellipse ellipse in canvas.Children.OfType<Ellipse>())
-                    _ellipsePool.Free(ellipse);
-                canvas.Children.Clear();
-            });
+            BeginAnimation(animation, canvas);
         }
 
         private Canvas CreateBitPack(IEnumerable<bool> bits, double bitWidth, IEnumerable<bool> errors = null)
@@ -206,16 +172,14 @@ namespace MonadicIT.Visual.Views
             };
         }
 
-        private Ellipse CreateCircle(Color fill, double radius)
+        private static Ellipse CreateCircle(Color fill, double radius)
         {
-            var circ = new Ellipse(); //_ellipsePool.Allocate();
-            circ.Width = radius*2;
-            circ.Height = radius*2;
-            circ.Fill = new SolidColorBrush(fill);
-            circ.RenderTransform = new TranslateTransform();
-            circ.ApplyAnimationClock(Canvas.LeftProperty, null);
-            circ.ApplyAnimationClock(Canvas.TopProperty, null);
-            return circ;
+            return new Ellipse
+            {
+                Width = radius*2,
+                Height = radius*2,
+                Fill = new SolidColorBrush(fill),
+            };
         }
 
         private static object BindPathGeometry(IObservable<PathGeometry> pg, Path path)

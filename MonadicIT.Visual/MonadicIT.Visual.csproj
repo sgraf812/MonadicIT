@@ -144,7 +144,6 @@
     </Compile>
     <Compile Include="Controls\TransmissionLayer.cs" />
     <Compile Include="Infrastructure\Extensions.cs" />
-    <Compile Include="Infrastructure\ObjectPool.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SourceSinkControl.xaml.cs">
       <DependentUpon>SourceSinkControl.xaml</DependentUpon>

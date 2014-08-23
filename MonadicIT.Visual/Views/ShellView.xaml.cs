@@ -21,6 +21,7 @@ namespace MonadicIT.Visual.Views
         private const bool IsPathStroked = true;
         private static readonly IEqualityComparer<IEnumerable<Point>> PointsComparer = new EnumerableComparer<Point>();
         private readonly Path[] _paths;
+        private readonly ObjectPool<Ellipse> _ellipsePool = new ObjectPool<Ellipse>(); 
         private FrameworkElement _cdec;
         private FrameworkElement _cenc;
         private FrameworkElement _channel;
@@ -47,46 +48,46 @@ namespace MonadicIT.Visual.Views
                 // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                 PathsFollowingElements().ObserveElements().Zip(_paths, BindPathGeometry).Count();
             };
-
-            SizeChanged += (s, e) => Trace.WriteLine(e.NewSize);
         }
 
         public void Handle(Transmission message)
         {
-            var duration = new Duration(TimeSpan.FromMilliseconds(500));
-            TimeSpan begin = TimeSpan.Zero;
-            foreach (Path path in _paths)
+            AnimateEllipse(0, TimeSpan.FromMilliseconds(500), message);
+        }
+
+        private void AnimateEllipse(int pathIndex, TimeSpan duration, Transmission message)
+        {
+            if (pathIndex >= _paths.Length) return;
+
+            var path = _paths[pathIndex];
+            var pg = path.Data as PathGeometry;
+
+            var animation = new DoubleAnimationUsingPath
             {
-                var pg = path.Data as PathGeometry;
+                Duration = new Duration(duration),
+                PathGeometry = pg,
+            };
 
-                var animation = new DoubleAnimationUsingPath
-                {
-                    BeginTime = begin,
-                    Duration = duration,
-                    // AccelerationRatio = 0.5,
-                    //DecelerationRatio = 0.5,
-                    PathGeometry = pg,
-                };
+            var circ = _ellipsePool.Allocate();
+            circ.Width = 10;
+            circ.Height = 10;
+            circ.Fill = new SolidColorBrush(Colors.Black);
+            circ.RenderTransform = new TranslateTransform(-5, -5);
+            circ.ToolTip = message.Symbol;
 
-                var circ = new Ellipse
-                {
-                    Width = 10,
-                    Height = 10,
-                    Fill = new SolidColorBrush(Colors.Black),
-                    RenderTransform = new TranslateTransform(-5, -5),
-                    ToolTip = message.Symbol
-                };
+            BackgroundCanvas.Children.Add(circ);
 
-                BackgroundCanvas.Children.Add(circ);
-                animation.Completed += (s, e) => BackgroundCanvas.Children.Remove(circ);
+            animation.Source = PathAnimationSource.X;
+            circ.BeginAnimation(Canvas.LeftProperty, animation);
 
-                animation.Source = PathAnimationSource.X;
-                circ.BeginAnimation(Canvas.LeftProperty, animation);
-                animation.Source = PathAnimationSource.Y;
-                circ.BeginAnimation(Canvas.TopProperty, animation);
-
-                begin += duration.TimeSpan;
-            }
+            animation.Completed += delegate
+            {
+                BackgroundCanvas.Children.Remove(circ);
+                _ellipsePool.Free(circ);
+                AnimateEllipse(pathIndex + 1, duration, message);
+            };
+            animation.Source = PathAnimationSource.Y;
+            circ.BeginAnimation(Canvas.TopProperty, animation);
         }
 
         private static object BindPathGeometry(IObservable<PathGeometry> pg, Path path)

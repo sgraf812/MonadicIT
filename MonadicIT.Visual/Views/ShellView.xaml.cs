@@ -89,7 +89,7 @@ namespace MonadicIT.Visual.Views
         {
             DoubleAnimationUsingPath animation = CreateAnimation(ChannelDecoderToEntropyDecoder, TimeSpan.Zero, AnimationDuration);
             IEnumerable<bool> errors = transmission.EntropyBits.Zip(transmission.DistortedEntropyBits, (a, b) => a != b);
-            Canvas bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 10, errors);
+            Canvas bitPack = CreateBitPack(transmission.DistortedEntropyBits.Select(b => b == Binary.I), 10, errors);
             BeginAnimation(animation, bitPack, () => AnimateEntropyDecoderToSink(transmission));
         }
 
@@ -115,7 +115,8 @@ namespace MonadicIT.Visual.Views
             bool[] bs = bits.ToArray();
             errors = errors ?? Enumerable.Repeat(false, bs.Length);
 
-            if (bs.Length == 0) return new Canvas();
+            var canvas = new Canvas();
+            if (bs.Length == 0) return canvas;
 
             var stride = (int) Math.Ceiling(Math.Sqrt(bs.Length));
             int colCount = (bs.Length - 1)/stride + 1;
@@ -127,7 +128,6 @@ namespace MonadicIT.Visual.Views
                 Column = i
             }));
 
-            var canvas = new Canvas();
             foreach (var slot in slots)
             {
                 Color fill = slot.Bit ? Colors.Yellow : Colors.Black;

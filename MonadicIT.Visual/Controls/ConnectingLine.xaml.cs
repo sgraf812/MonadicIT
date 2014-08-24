@@ -52,7 +52,7 @@ namespace MonadicIT.Visual.Controls
         private IObservable<Point> CenterPointsOf(DependencyProperty property)
         {
             DependencyPropertyDescriptor desc = DependencyPropertyDescriptor.FromProperty(property, GetType());
-            IObservable<EventPattern<object>> changeNotifications = Observable.FromEventPattern(
+            IObservable<EventPattern<EventArgs>> changeNotifications = Observable.FromEventPattern(
                 h => desc.AddValueChanged(this, h),
                 h => desc.RemoveValueChanged(this, h));
             return from e in (from _ in changeNotifications

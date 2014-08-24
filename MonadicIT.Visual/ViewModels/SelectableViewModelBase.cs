@@ -14,7 +14,7 @@ namespace MonadicIT.Visual.ViewModels
             {
                 if (value.Equals(_isSelected)) return;
                 _isSelected = value;
-                NotifyOfPropertyChange();
+                NotifyOfPropertyChange("IsSelected");
             }
         }
     }

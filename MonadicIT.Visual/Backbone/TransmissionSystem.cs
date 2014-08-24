@@ -36,10 +36,10 @@ namespace MonadicIT.Visual.Backbone
                        from chanCoder in channelCoder.Coder.Take(1)
                        from chan in channel.Channel.Take(1)
                        let symbol = d.Sample()
-                       let entBits = entEnc(new[] {symbol})
-                       let chanBits = chanCoder.Encode(entBits)
-                       let distChanBits = chanBits.Select(b => chan.GetTransitionDistribution(b).Sample())
-                       let distEntBits = chanCoder.Decode(distChanBits).Take(entBits.Count())
+                       let entBits = entEnc(new[] {symbol}).ToArray()
+                       let chanBits = chanCoder.Encode(entBits).ToArray()
+                       let distChanBits = chanBits.Select(b => chan.GetTransitionDistribution(b).Sample()).ToArray()
+                       let distEntBits = chanCoder.Decode(distChanBits).Take(entBits.Count()).ToArray()
                        let distSymbol = Catch.ToOption(() => entDec(distEntBits).First())
                        select new Transmission
                        {

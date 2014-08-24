@@ -31,7 +31,7 @@ namespace MonadicIT.Channel
             foreach (var block in bits.InChunksOf(ParityBits))
             {
                 // fill up the last chunk with 0s
-                IReadOnlyList<Binary> paddedBlock = block.Count < ParityBits
+                IList<Binary> paddedBlock = block.Count < ParityBits
                     ? block.Concat(Binary.O.Repeat()).Take(ParityBits).ToArray()
                     : block;
 

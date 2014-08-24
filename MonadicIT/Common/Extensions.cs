@@ -32,7 +32,7 @@ namespace MonadicIT.Common
             return errorDist[Bool.False];
         }
 
-        public static IEnumerable<IReadOnlyList<T>> InChunksOf<T>(this IEnumerable<T> seq, int chunkSize)
+        public static IEnumerable<IList<T>> InChunksOf<T>(this IEnumerable<T> seq, int chunkSize)
         {
             var chunk = new List<T>(chunkSize);
 

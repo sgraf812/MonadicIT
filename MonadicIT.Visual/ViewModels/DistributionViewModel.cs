@@ -101,7 +101,7 @@ namespace MonadicIT.Visual.ViewModels
                 {
                     if (value.Equals(_probability)) return;
                     _probability = value;
-                    NotifyOfPropertyChange();
+                    NotifyOfPropertyChange("Probability");
                 }
             }
         }

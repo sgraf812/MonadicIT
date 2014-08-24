@@ -59,7 +59,7 @@ namespace MonadicIT.Visual.ViewModels
             CodeTree = (from cd in coderAndDistribution
                         let coder = cd.Item1
                         let p = coder.GetType().GetProperty("CodeTree", BindingFlags.Public | BindingFlags.Instance)
-                        select ((IPrefixTree) p.GetValue(coder)).SingleValue()).ToReactiveProperty();
+                        select ((IPrefixTree) p.GetValue(coder, new object[0])).SingleValue()).ToReactiveProperty();
 
             CodeWords = (from cd in coderAndDistribution
                          let coder = cd.Item1

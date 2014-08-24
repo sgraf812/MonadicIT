@@ -24,7 +24,7 @@
         <TextBlock Text="{Binding BlockLength.Value}" Grid.Row="1" Grid.Column="1" Margin="2" />
 
         <Slider Value="{Binding ParityBits.Value}" Minimum="2" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True"
-                Margin="2" VerticalAlignment="Center" LargeChange="2" SmallChange="1" 
+                Margin="2" VerticalAlignment="Center" LargeChange="2" SmallChange="1"
                 Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" />
     </Grid>
 </UserControl>

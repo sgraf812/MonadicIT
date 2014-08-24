@@ -5,6 +5,7 @@ namespace MonadicIT.Visual.ViewModels
 {
     public sealed class ShellViewModel : Screen
     {
+// ReSharper disable once NotAccessedField.Local
         private readonly TransmissionSystem _system;
         private readonly IWindowManager _windowManager;
 

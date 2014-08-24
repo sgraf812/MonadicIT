@@ -75,9 +75,9 @@ namespace MonadicIT.Channel
         {
             foreach (var codeBlock in code.InChunksOf(BlockLength))
             {
-                int M = BlockLength - ParityBits;
+                int codeBits = BlockLength - ParityBits;
                 int bitToFix = 0; // one-based index into the array, so 0 actually means that there was no error
-                for (int i = 0; i < M; i++)
+                for (int i = 0; i < codeBits; i++)
                 {
                     // compute parities the same way as in the encoder
                     // parity bits should all be zero if no transmission error was detected.

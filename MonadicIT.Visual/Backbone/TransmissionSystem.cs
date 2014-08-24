@@ -10,6 +10,7 @@ namespace MonadicIT.Visual.Backbone
     public class TransmissionSystem
     {
         private static readonly TimeSpan TooLongToCare = TimeSpan.FromDays(200000);
+// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly IObservable<Transmission> _symbols;
 
         public TransmissionSystem(ISourceProperties source, IEntropyCoderProperties entropyCoder,
@@ -18,7 +19,7 @@ namespace MonadicIT.Visual.Backbone
             var lastSample = new BehaviorSubject<DateTimeOffset>(DateTimeOffset.Now);
             IObservable<TimeSpan> intervals =
                 source.SymbolRate.Select(r => r > 0 ? TimeSpan.FromSeconds(1.0/r) : TooLongToCare);
-            ;
+
             IObservable<IObservable<long>> tickStreams = from i in intervals
                                                          from prev in lastSample.Take(1)
                                                          let next = prev + i

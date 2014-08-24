@@ -94,6 +94,7 @@ namespace MonadicIT.Common
             {
                 yield return value;
             }
+// ReSharper disable once FunctionNeverReturns
         }
 
         public static IEnumerable<T> SingleValue<T>(this T value)

@@ -8,13 +8,9 @@ using MonadicIT.Channel;
 using MonadicIT.Common;
 using MonadicIT.Visual.Backbone;
 
-namespace MonadicIT.Visual.Backbone
-{
-}
-
 namespace MonadicIT.Visual.ViewModels
 {
-    public class ChannelCoderViewModel : Screen, IChannelCoderProperties
+    public sealed class ChannelCoderViewModel : Screen, IChannelCoderProperties
     {
         public ChannelCoderViewModel(
             IEnumerable<IChannelCoderDetailViewModel> channelCoderDetailViewModels,

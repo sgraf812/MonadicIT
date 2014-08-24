@@ -6,6 +6,7 @@ namespace MonadicIT.Common
 {
     public class Distribution<T> : IDistribution where T : /* Enum, */ struct
     {
+// ReSharper disable once StaticFieldInGenericType
         private static readonly Random Rng = new Random();
         private readonly Tuple<T, double>[] _probs;
 

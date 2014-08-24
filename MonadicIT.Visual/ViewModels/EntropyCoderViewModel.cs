@@ -11,7 +11,7 @@ using MonadicIT.Visual.Backbone;
 
 namespace MonadicIT.Visual.ViewModels
 {
-    public class EntropyCoderViewModel : Screen, IEntropyCoderProperties
+    public sealed class EntropyCoderViewModel : Screen, IEntropyCoderProperties
     {
         public EntropyCoderViewModel(ISourceProperties source)
         {

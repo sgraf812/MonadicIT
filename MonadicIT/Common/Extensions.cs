@@ -19,7 +19,7 @@ namespace MonadicIT.Common
             where T : /* Enum, */ struct
             where V : /* Enum, */ struct
         {
-            return dist.JointDistribution(transitionDistribution, jointSelector);
+            return dist.MarginalDistribution(transitionDistribution, jointSelector);
         }
 
         public static double ErrorRate<T>(this IDiscreteChannel<T> channel)

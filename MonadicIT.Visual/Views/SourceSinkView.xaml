@@ -32,7 +32,7 @@
             <xctk:IntegerUpDown Value="{Binding SymbolRate.Value}" Minimum="0" Maximum="20" Increment="1"
                                 VerticalAlignment="Center"
                                 Grid.Row="0" Grid.Column="1" Margin="1,5,1,5" />
-            <TextBlock Text="symbols/s" Grid.Column="2" VerticalAlignment="Center" />
+            <TextBlock Text="symbol/s" Grid.Column="2" VerticalAlignment="Center" />
 
         </Grid>
 

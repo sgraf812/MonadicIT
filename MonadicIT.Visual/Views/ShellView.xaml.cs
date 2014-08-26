@@ -12,7 +12,7 @@ using Caliburn.Micro;
 using Codeplex.Reactive;
 using MonadicIT.Common;
 using MonadicIT.Visual.Backbone;
-using MonadicIT.Visual.Infrastructure;
+using MonadicIT.Visual.Common;
 using Action = System.Action;
 
 namespace MonadicIT.Visual.Views

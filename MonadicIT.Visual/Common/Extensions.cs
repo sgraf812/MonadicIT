@@ -4,23 +4,13 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 
-namespace MonadicIT.Visual.Infrastructure
+namespace MonadicIT.Visual.Common
 {
     public static class Extensions
     {
         public static Point CenterRelativeTo(this FrameworkElement element, System.Windows.Media.Visual container)
         {
             return element.TransformToVisual(container).Transform(new Point(element.Width/2, element.Height/2));
-        }
-
-        public static Point TopRelativeTo(this FrameworkElement element, System.Windows.Media.Visual container)
-        {
-            return element.TransformToVisual(container).Transform(new Point(element.Width/2, 0));
-        }
-
-        public static Point BottomRelativeTo(this FrameworkElement element, System.Windows.Media.Visual container)
-        {
-            return element.TransformToVisual(container).Transform(new Point(element.Width/2, element.Height));
         }
 
         public static IObservable<FrameworkElement> ObserveLayoutUpdates(this FrameworkElement element)

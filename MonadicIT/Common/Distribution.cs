@@ -8,16 +8,16 @@ namespace MonadicIT.Common
     {
 // ReSharper disable once StaticFieldInGenericType
         private static readonly Random Rng = new Random();
-        private readonly Tuple<T, double>[] _probs;
+        private readonly SymbolProbability[] _probs;
 
-        private Distribution(Tuple<T, double>[] probs)
+        private Distribution(SymbolProbability[] probs)
         {
             _probs = probs;
         }
 
         public double this[T symbol]
         {
-            get { return _probs.First(p => p.Item1.Equals(symbol)).Item2; }
+            get { return _probs.First(p => p.Symbol.Equals(symbol)).Probability; }
         }
 
         public double Entropy
@@ -25,7 +25,7 @@ namespace MonadicIT.Common
             get
             {
                 return (from prob in _probs
-                        let p = prob.Item2
+                        let p = prob.Probability
                         where p > 0
                         select -p*Math.Log(p, 2)).Sum();
             }
@@ -52,59 +52,52 @@ namespace MonadicIT.Common
             double accum = 0.0;
             foreach (var t in _probs)
             {
-                double p = t.Item2;
+                double p = t.Probability;
                 accum += p;
                 if (accum >= rnd)
                 {
-                    return t.Item1;
+                    return t.Symbol;
                 }
             }
             // can not reach this point
             return default(T);
         }
 
-        public Distribution<U> JointDistribution<U>(Func<T, Distribution<U>> transitionDistribution)
-            where U : /* Enum, */ struct
-        {
-            IEnumerable<Tuple<U, double>> probs =
-                from t in _probs
-                from u in transitionDistribution(t.Item1)._probs
-                group new {t, u} by u.Item1
-                into g
-                select Tuple.Create(g.Key, g.Sum(x => x.t.Item2*x.u.Item2));
-
-            return Distribution<U>.FromProbabilites(probs);
-        }
-
-        public Distribution<V> JointDistribution<U, V>(Func<T, Distribution<U>> transitionDistribution,
+        public Distribution<V> MarginalDistribution<U, V>(Func<T, Distribution<U>> transitionDistribution,
             Func<T, U, V> jointSelector)
             where U : /* Enum, */ struct
             where V : /* Enum, */ struct
         {
             IEnumerable<Tuple<V, double>> probs =
                 from t in _probs
-                from u in transitionDistribution(t.Item1)._probs
-                group new {t, u} by jointSelector(t.Item1, u.Item1)
-                into g
-                select Tuple.Create(g.Key, g.Sum(x => x.t.Item2*x.u.Item2));
+                from u in transitionDistribution(t.Symbol)._probs
+                select Tuple.Create(jointSelector(t.Symbol, u.Symbol), t.Probability*u.Probability);
 
-            return Distribution<V>.FromProbabilites(probs);
+            IEnumerable<Tuple<V, double>> normalizedProbs =
+                from v in probs
+                group v.Item2 by v.Item1
+                into g
+                select Tuple.Create(g.Key, g.Sum());
+
+            return Distribution<V>.FromProbabilites(normalizedProbs);
         }
 
         public static Distribution<T> FromProbabilites(IEnumerable<Tuple<T, double>> probabilities)
         {
             EnumHelper<T>.ThrowUnlessEnum();
 
-            Tuple<T, double>[] probs = probabilities.ToArray();
+            SymbolProbability[] probs = probabilities
+                .Select(p => new SymbolProbability {Symbol = p.Item1, Probability = p.Item2})
+                .ToArray();
 
-            Throw.If<ArgumentException>(Math.Abs(probs.Sum(p => p.Item2) - 1.0) > 0.0001,
+            Throw.If<ArgumentException>(Math.Abs(probs.Sum(p => p.Probability) - 1.0) > 0.0001,
                 "The probabilites must sum up to 1.");
 
             IEnumerable<T> mentionedSymbols = from p in probs
-                                              select p.Item1;
+                                              select p.Symbol;
             IEnumerable<T> notMentioned = EnumHelper<T>.Values.Except(mentionedSymbols);
-            IEnumerable<Tuple<T, double>> allSymbols = probs.Concat(from s in notMentioned
-                                                                    select Tuple.Create(s, 0.0));
+            IEnumerable<SymbolProbability> allSymbols = probs.Concat(from s in notMentioned
+                                                                     select new SymbolProbability {Symbol = s, Probability = 0.0});
 
             return new Distribution<T>(allSymbols.ToArray());
         }
@@ -121,6 +114,12 @@ namespace MonadicIT.Common
         public static Distribution<T> Certainly(T value)
         {
             return FromProbabilites(new[] {Tuple.Create(value, 1.0)});
+        }
+
+        private struct SymbolProbability
+        {
+            public T Symbol { get; set; }
+            public double Probability { get; set; }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using MonadicIT.Visual.Infrastructure;
+using MonadicIT.Visual.Common;
 
 namespace MonadicIT.Visual.Controls
 {

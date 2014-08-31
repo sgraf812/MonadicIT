@@ -16,4 +16,4 @@ But, you know, I got only a finite amount of time to spare :)
 License
 =======
 
-The source code is licensed under the BSD license.
+The source code is licensed under the MIT license.

@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonadicIT.Visual", "MonadicIT.Visual\MonadicIT.Visual.csproj", "{DEC7BF06-DA76-4C64-B344-EE66BEBB9680}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonadicIT", "MonadicIT\MonadicIT.csproj", "{98CD9C93-4C8B-4037-9574-7D51C2D65F6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1E2A71E6-C490-4B71-BB44-60F820C73B87}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonadicIT.Visual", "MonadicIT.Visual\MonadicIT.Visual.csproj", "{DEC7BF06-DA76-4C64-B344-EE66BEBB9680}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4CD45462-E5F1-4539-B84E-0D9148835E4D}"
 EndProject

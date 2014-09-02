@@ -25,8 +25,11 @@ namespace MonadicIT.Visual.Backbone
                                                          let next = prev + i
                                                          let now = DateTimeOffset.Now
                                                          select next <= now
-                                                             ? Observable.Return(-1L).Concat(Observable.Timer(now + i, i)) // we are already behind our schedule
-                                                             : Observable.Timer(next, i); // we can safely schedule the next tick
+                                                             ? Observable.Return(-1L)
+                                                                 .Concat(Observable.Timer(now + i, i))
+                                                             // we are already behind our schedule
+                                                             : Observable.Timer(next, i);
+                // we can safely schedule the next tick
 
             IObservable<long> tick = tickStreams.Switch().Do(_ => lastSample.OnNext(DateTimeOffset.Now));
 

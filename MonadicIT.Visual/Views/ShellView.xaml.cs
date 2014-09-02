@@ -57,7 +57,8 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateSourceToEntropyEncoder(Transmission transmission)
         {
-            DoubleAnimationUsingPath animation = CreateAnimation(SourceToEntropyEncoder, TimeSpan.Zero, AnimationDuration);
+            DoubleAnimationUsingPath animation = CreateAnimation(SourceToEntropyEncoder, TimeSpan.Zero,
+                AnimationDuration);
             Ellipse circle = CreateCircle(Colors.Black, 5);
             circle.RenderTransform = new TranslateTransform(-5, -5);
             BeginAnimation(animation, circle, () => AnimateEntropyEncoderToChannelEncoder(transmission));
@@ -65,21 +66,24 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateEntropyEncoderToChannelEncoder(Transmission transmission)
         {
-            DoubleAnimationUsingPath animation = CreateAnimation(EntropyEncoderToChannelEncoder, TimeSpan.Zero, AnimationDuration);
+            DoubleAnimationUsingPath animation = CreateAnimation(EntropyEncoderToChannelEncoder, TimeSpan.Zero,
+                AnimationDuration);
             Canvas bitPack = CreateBitPack(transmission.EntropyBits.Select(b => b == Binary.I), 10);
             BeginAnimation(animation, bitPack, () => AnimateChannelEncoderToChannel(transmission));
         }
 
         private void AnimateChannelEncoderToChannel(Transmission transmission)
         {
-            DoubleAnimationUsingPath animation = CreateAnimation(ChannelEncoderToChannel, TimeSpan.Zero, AnimationDuration);
+            DoubleAnimationUsingPath animation = CreateAnimation(ChannelEncoderToChannel, TimeSpan.Zero,
+                AnimationDuration);
             Canvas bitPack = CreateBitPack(transmission.ChannelBits.Select(b => b == Binary.I), 10);
             BeginAnimation(animation, bitPack, () => AnimateChannelToChannelDecoder(transmission));
         }
 
         private void AnimateChannelToChannelDecoder(Transmission transmission)
         {
-            DoubleAnimationUsingPath animation = CreateAnimation(ChannelToChannelDecoder, TimeSpan.Zero, AnimationDuration);
+            DoubleAnimationUsingPath animation = CreateAnimation(ChannelToChannelDecoder, TimeSpan.Zero,
+                AnimationDuration);
             IEnumerable<bool> errors = transmission.ChannelBits.Zip(transmission.DistortedChannelBits, (a, b) => a != b);
             Canvas bitPack = CreateBitPack(transmission.DistortedChannelBits.Select(b => b == Binary.I), 10, errors);
             BeginAnimation(animation, bitPack, () => AnimateChannelDecoderToEntropyDecoder(transmission));
@@ -87,7 +91,8 @@ namespace MonadicIT.Visual.Views
 
         private void AnimateChannelDecoderToEntropyDecoder(Transmission transmission)
         {
-            DoubleAnimationUsingPath animation = CreateAnimation(ChannelDecoderToEntropyDecoder, TimeSpan.Zero, AnimationDuration);
+            DoubleAnimationUsingPath animation = CreateAnimation(ChannelDecoderToEntropyDecoder, TimeSpan.Zero,
+                AnimationDuration);
             IEnumerable<bool> errors = transmission.EntropyBits.Zip(transmission.DistortedEntropyBits, (a, b) => a != b);
             Canvas bitPack = CreateBitPack(transmission.DistortedEntropyBits.Select(b => b == Binary.I), 10, errors);
             BeginAnimation(animation, bitPack, () => AnimateEntropyDecoderToSink(transmission));
@@ -120,13 +125,14 @@ namespace MonadicIT.Visual.Views
 
             var stride = (int) Math.Ceiling(Math.Sqrt(bs.Length));
             int colCount = (bs.Length - 1)/stride + 1;
-            var slots = bs.Zip(errors, Tuple.Create).InChunksOf(stride).SelectMany((line, i) => line.Select((t, j) => new
-            {
-                Bit = t.Item1,
-                IsFlipped = t.Item2,
-                Row = j,
-                Column = i
-            }));
+            var slots =
+                bs.Zip(errors, Tuple.Create).InChunksOf(stride).SelectMany((line, i) => line.Select((t, j) => new
+                {
+                    Bit = t.Item1,
+                    IsFlipped = t.Item2,
+                    Row = j,
+                    Column = i
+                }));
 
             foreach (var slot in slots)
             {

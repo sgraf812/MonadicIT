@@ -20,8 +20,11 @@ Development was done with VS 2013, although VS 2012 could possibly work, too. I 
 How To Run
 ==========
 
-A Windows installation with .NET 4.0 Client Profile is required.
+A Windows installation with .NET 4.0 Client Profile is required. Then grab a version from the [CI server](https://ci.appveyor.com/project/sgraf812/monadicit), preferrably a release from the master branch and start playing around.
 
+What is This?
+=============
+Well, I tried to embed some short documentation inside the app. I will probably elaborate on what can be done with it at a later point (aka TODO: clean this up). That said, upon starting you find yourself with a sketch of a 4-tiered transmission system. Pro tip: Adjust the source symbol rate in the source model to bring life into the picture, adjust symbol probabilities, change channel error rate and channel coder.
 
 License
 =======

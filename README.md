@@ -12,6 +12,16 @@ Of course this is far from complete as this project to date only serves as a pro
 Yet extending it with different kinds of encoding techniques could be worthwhile and fun. 
 But, you know, I got only a finite amount of time to spare :)
 
+How To Build
+============
+
+Development was done with VS 2013, although VS 2012 could possibly work, too. I had .NET 4.5 installed, but .NET 4.0 should be fine too. Off the top of my head, I use C# 5 features. NuGet should download the referenced packages on build by itself.
+
+How To Run
+==========
+
+A Windows installation with .NET 4.0 Client Profile is required.
+
 
 License
 =======
